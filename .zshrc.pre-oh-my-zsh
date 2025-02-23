@@ -1,3 +1,0 @@
-export PATH="$HOME/.local/share/lvim/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-$ZDOTDIR/.zshrc
