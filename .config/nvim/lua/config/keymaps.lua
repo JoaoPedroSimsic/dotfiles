@@ -1,47 +1,27 @@
-local keymap = vim.keymap
-local opts = { noremap = true, silent = true }
+local map = vim.keymap.set
 
-keymap.set("n", "x", '"_x')
+local builtin = require("telescope.builtin")
+local dap = require("dap")
 
--- Increment/decrement
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "-", "<C-x>")
+vim.g.mapleader = " "
 
--- Select all
-keymap.set("n", "<C-a>", "gg<S-v>G")
+--Telescope
+map("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
+map("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
+map("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
+map("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 
--- Save file and quit
-keymap.set("n", "<Leader>w", ":update<Return>", opts)
-keymap.set("n", "<Leader>q", ":quit<Return>", opts)
-keymap.set("n", "<Leader>Q", ":qa<Return>", opts)
+--Neotree
+map("n", "<leader>t", ":Neotree toggle<CR>", { noremap = true, silent = true })
 
--- File explorer with NvimTree
-keymap.set("n", "<Leader>f", ":NvimTreeFindFile<Return>", opts)
-keymap.set("n", "<Leader>t", ":NvimTreeToggle<Return>", opts)
+--Lspconfig
+map("n", "K", vim.lsp.buf.hover, {})
+map("n", "gd", vim.lsp.buf.definition, {})
+map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
--- Tabs
-keymap.set("n", "te", ":tabedit")
-keymap.set("n", "<tab>", ":tabnext<Return>", opts)
-keymap.set("n", "<s-tab>", ":tabprev<Return>", opts)
-keymap.set("n", "tw", ":tabclose<Return>", opts)
+--none-ls
+map("n", "<leader>gf", vim.lsp.buf.format, {})
 
--- Split window
-keymap.set("n", "ss", ":split<Return>", opts)
-keymap.set("n", "sv", ":vsplit<Return>", opts)
-
--- Move window
-keymap.set("n", "sh", "<C-w>h")
-keymap.set("n", "sk", "<C-w>k")
-keymap.set("n", "sj", "<C-w>j")
-keymap.set("n", "sl", "<C-w>l")
-
--- Resize window
-keymap.set("n", "<C-S-h>", "<C-w><")
-keymap.set("n", "<C-S-l>", "<C-w>>")
-keymap.set("n", "<C-S-k>", "<C-w>+")
-keymap.set("n", "<C-S-j>", "<C-w>-")
-
--- Diagnostics
-keymap.set("n", "<C-j>", function()
-	vim.diagnostic.goto_next()
-end, opts)
+--dap
+--map("n", "<Leader>b", dap.toggle_breakpoint, {})
+--map("n", "<leader>c", dap.continue, {})
