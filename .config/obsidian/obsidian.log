@@ -1,0 +1,18 @@
+2025-02-18 20:50:32 Loading main app package /usr/lib/obsidian/obsidian.asar
+2025-02-18 20:50:33 Checking for update using Github
+2025-02-18 20:50:33 Success.
+2025-02-18 20:50:33 Latest version is 1.8.7
+2025-02-18 20:50:33 Downloading update from https://github.com/obsidianmd/obsidian-releases/releases/download/v1.8.7/obsidian-1.8.7.asar.gz
+2025-02-18 20:50:34 Verifying hash & signature. Size= 8128038
+2025-02-18 20:50:34 Saving file
+2025-02-18 20:50:34 Update complete.
+2025-02-19 23:23:04 Loading updated app package /home/joao/.config/obsidian/obsidian-1.8.7.asar
+2025-02-19 23:23:05 Checking for update using Github
+2025-02-19 23:23:05 Success.
+2025-02-19 23:23:05 Latest version is 1.8.7
+2025-02-19 23:23:05 App is up to date.
+2025-02-20 17:26:06 Loading updated app package /home/joao/.config/obsidian/obsidian-1.8.7.asar
+2025-02-20 17:26:07 Checking for update using Github
+2025-02-20 17:26:07 Success.
+2025-02-20 17:26:07 Latest version is 1.8.7
+2025-02-20 17:26:07 App is up to date.

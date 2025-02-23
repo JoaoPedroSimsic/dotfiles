@@ -1,0 +1,7 @@
+[Default Applications]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop
+application/x-compressed-tar=thunar.desktop
+
+[Added Associations]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop;
+application/x-compressed-tar=thunar.desktop;
