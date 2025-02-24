@@ -6,9 +6,15 @@ return {
 			"nvim-neotest/nvim-nio",
 			"williamboman/mason.nvim",
 			"jay-babu/mason-nvim-dap.nvim",
+			"theHamsta/nvim-dap-virtual-text",
 		},
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
+
+			dap.set_log_level("TRACE")
+			vim.cmd("let g:dap_log_file = '/home/joao/dap.log'")
+
+			require("nvim-dap-virtual-text").setup()
 
 			-- Mason setup with handlers
 			require("mason").setup()
@@ -67,6 +73,8 @@ return {
 					program = "${file}",
 					cwd = "${workspaceFolder}",
 					sourceMaps = true,
+					exitAfterTaskReturns = false,
+					debugAutoInterpretAllModules = false,
 					skipFiles = { "<node_internals>/**" },
 					resolveSourceMapLocations = {
 						"${workspaceFolder}/**",
@@ -79,6 +87,50 @@ return {
 
 			dap.configurations.typescript = dap.configurations.javascript
 
+			-- Register event handlers only once
+			if not dap.listeners.after.event_initialized["dapui_config"] then
+				dap.listeners.after.event_initialized["dapui_config"] = function()
+					vim.notify("Debug session started", vim.log.levels.INFO)
+					dapui.open()
+				end
+			end
+
+			if not dap.listeners.before.event_terminated["dapui_config"] then
+				dap.listeners.before.event_terminated["dapui_config"] = function()
+					vim.notify("Debug session terminated", vim.log.levels.INFO)
+					dapui.close()
+				end
+			end
+
+			if not dap.listeners.before.event_exited["dapui_config"] then
+				dap.listeners.before.event_exited["dapui_config"] = function()
+					vim.notify("Debug session exited", vim.log.levels.INFO)
+					dapui.close()
+				end
+			end
+
+			-- Enhanced error logging
+			if not dap.listeners.after.event_output["dapui_config"] then
+				dap.listeners.after.event_output["dapui_config"] = function(_, body)
+					if body.category == "stderr" then
+						vim.notify("Debug error: " .. body.output, vim.log.levels.ERROR)
+					end
+				end
+			end
+
+			-- Error handling for failed connections
+			if not dap.listeners.after.event_error["dapui_config"] then
+				dap.listeners.after.event_error["dapui_config"] = function(_, err)
+					vim.notify("Debug error: " .. vim.inspect(err), vim.log.levels.ERROR)
+				end
+			end
+
+
+
+
+
+
+--[[
 			-- Debug UI event handlers with error handling
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				vim.notify("Debug session started", vim.log.levels.INFO)
@@ -106,10 +158,8 @@ return {
 			dap.listeners.after.event_error["dapui_config"] = function(_, err)
 				vim.notify("Debug error: " .. vim.inspect(err), vim.log.levels.ERROR)
 			end
-
+			]]
 			-- Keymaps
-			vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
-			vim.keymap.set("n", "<Leader>c", dap.continue, { desc = "Continue" })
 			vim.keymap.set("n", "<Leader>si", dap.step_into, { desc = "Step Into" })
 			vim.keymap.set("n", "<Leader>so", dap.step_over, { desc = "Step Over" })
 			vim.keymap.set("n", "<Leader>st", dap.step_out, { desc = "Step Out" })

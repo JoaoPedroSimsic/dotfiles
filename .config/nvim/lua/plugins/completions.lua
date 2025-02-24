@@ -1,37 +1,65 @@
 return {
 	{
-		"hrsh7th/cmp-nvim-lsp"
-	},
-
-	{
-		"L3MON4D3/LuaSnip",
-		run = "make install_jsregexp",
-		dependencies = {
-			"saadparwaiz1/cmp_luasnip",
-			"rafamadriz/friendly-snippets",
-		},
+		"hrsh7th/cmp-nvim-lsp",
 	},
 
 	{
 		"hrsh7th/nvim-cmp",
+		optional = true,
+		dependencies = { "saadparwaiz1/cmp_luasnip" },
+		opts = function(_, opts)
+			-- Initialize sources table if it's nil
+			opts.sources = opts.sources or {}
+
+			opts.snippet = {
+				expand = function(args)
+					require("luasnip").lsp_expand(args.body)
+				end,
+			}
+
+			-- Add 'luasnip' source if not already present
+			table.insert(opts.sources, { name = "luasnip" })
+		end,
+		-- stylua: ignore
+		keys = {
+			{ "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
+			{ "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+		},
+	},
+
+	{
+		"L3MON4D3/LuaSnip",
+		lazy = true,
+		run = "make install_jsregexp",
+		dependencies = {
+			{
+				"rafamadriz/friendly-snippets",
+				config = function()
+					require("luasnip.loaders.from_vscode").lazy_load()
+					require("luasnip.loaders.from_vscode").lazy_load({
+						paths = { vim.fn.stdpath("config") .. "/snippets" },
+					})
+				end,
+			},
+		},
+		opts = function()
+			-- Custom snippet setup (if necessary)
+		end,
+	},
+
+	-- Custom LuaSnip and nvim-cmp setup
+	{
+		"hrsh7th/nvim-cmp",
+		dependencies = { "hrsh7th/cmp-path" },
 		config = function()
 			local cmp = require("cmp")
-			require("luasnip.loaders.from_vscode").lazy_load()
+			local luasnip = require("luasnip")
+
+			-- Set up the completion engine with LuaSnip
 			cmp.setup({
 				snippet = {
-					-- REQUIRED - you must specify a snippet engine
 					expand = function(args)
-						--vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-						require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-						-- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-						-- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-						-- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
-
-						-- For `mini.snippets` users:
-						-- local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
-						-- insert({ body = args.body }) -- Insert at cursor
-						-- cmp.resubscribe({ "TextChangedI", "TextChangedP" })
-						-- require("cmp.config").set_onetime({ sources = {} })
+						luasnip.lsp_expand(args.body) -- Expand snippet using luasnip
 					end,
 				},
 				window = {
@@ -43,16 +71,48 @@ return {
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
-					["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+					--["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<CR>"] = cmp.mapping(function()
+						if cmp.visible() then
+							if cmp.get_selected_entry() then
+								-- If a completion item is selected, confirm the selection
+								cmp.confirm({ select = true })
+							else
+								-- If no completion item is selected, simulate pressing Enter (new line)
+								vim.api.nvim_feedkeys(
+									vim.api.nvim_replace_termcodes("<CR>", true, true, true),
+									"n",
+									true
+								)
+							end
+						else
+							-- If cmp is not visible, behave like normal Enter (new line)
+							vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CR>", true, true, true), "n", true)
+						end
+					end, { "i", "s" }),
+
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item()
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					--{ name = "vsnip" }, -- For vsnip users.
-					{ name = "luasnip" }, -- For luasnip users.
-					-- { name = 'ultisnips' }, -- For ultisnips users.
-					-- { name = 'snippy' }, -- For snippy users.
-				}, {
+					{ name = "luasnip", options = { show_autosnippets = true } },
 					{ name = "buffer" },
+					{ name = "path" },
 				}),
 			})
 		end,

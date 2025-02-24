@@ -1,110 +1,131 @@
-// -*- mode: jsonc -*-
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    //"height": 10, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "margin-top": 5,
-    "margin-bottom": -13,
+// sourced from header module //
 
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/submap",
-        "hyprland/scratchpad",
-        "custom/media"
-    ],
+    "layer": "bottom",
+    "position": "bottom",
+    "mod": "dock",
+    "height": 40,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+
+
+	"modules-left": ["custom/left","custom/rofi","temperature","backlight","pulseaudio","battery","custom/right"],
+	"modules-center": ["custom/left","hyprland/workspaces","custom/right"],
+	"modules-right": ["custom/left","tray","network","clock","custom/right"],
+
+ 
+   "network": {
+        "tooltip": true,
+        "format-wifi": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
+        "format-ethernet": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
+        "tooltip-format": "Network: <big><b>{essid}</b></big>\nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>\nFrequency: <b>{frequency}MHz</b>\nInterface: <b>{ifname}</b>\nIP: <b>{ipaddr}/{cidr}</b>\nGateway: <b>{gwaddr}</b>\nNetmask: <b>{netmask}</b>",
+        "format-linked": "󰈀 {ifname} (No IP)",
+        "format-disconnected": " 󰖪 ",
+        "tooltip-format-disconnected": "Disconnected",
+        "interval": 2,
+        "on-click-right": "~/.config/waybar/network.py"
+  },
+
+
+     "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    // "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C ",
+    "format": "{temperatureC}°C "
+    },
+
+     "custom/rofi": {
+        "format": "  {}",
+        "on-click": "~/.config/hypr/scripts/Rofi-launcher.sh"
+	},
 
     "hyprland/workspaces": {
-          "disable-scroll": true,
-    "active-only": false,
-    "all-outputs": false,
-    "enable-bar-scroll": true,
-    "format": "{name}",
-    "on-scroll-up": "hyprctl dispatch workspace r-1",
-    "on-scroll-down": "hyprctl dispatch workspace r+1",
-    "on-click": "activate",
-    "sort-by-number": true,
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-click": "activate",
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
     },
 
-    "modules-center": [
-       "hyprland/window"
-    ],
-    
-    "fixed-center": true,
-
-    "hyprland/window": {
-      "separate-oututs": true
-    },  
-
-    "modules-right": [
-        "pulseaudio",
-        "memory",
-        "temperature",
-        "clock",
-        "custom/power"
-    ],
-    
-    "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
-
-    "memory": {
-        "format": "{}% "
-    },
-
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""]
-    }, 
+ 
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "format": "{icon} {volume}",
+        "format-muted": "婢",
+        "on-click": "pavucontrol -t 3",
+        "on-click-middle": "~/.config/hypr/scripts/volumecontrol.sh -o m",
+        "on-scroll-up": "~/.config/hypr/scripts/volumecontrol.sh -o i",
+        "on-scroll-down": "~/.config/hypr/scripts/volumecontrol.sh -o d",
+        "tooltip-format": "{icon} {desc} // {volume}%",
+        "scroll-step": 5,
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "hands-free": "",
+            "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
             "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
+   }
     },
-    "custom/media": {
-        "format": "{icon} {text}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+
+
+    "tray": {
+      "icon-size": 20,
+        "spacing": 9
     },
-    "custom/power": {
-        "format" : "⏻",
-		"tooltip": false,
-		"menu": "on-click",
-		"menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
-		"menu-actions": {
-			"shutdown": "shutdown",
-			"reboot": "reboot",
-			"suspend": "systemctl suspend",
-			"hibernate": "systemctl hibernate"
-		}
-    }
+
+
+  "clock": {
+        "format": " {:%Y-%m-%d %H:%M}",
+        "on-click": "~/.config/eww/scripts/toggle_control_center.sh"
+      },
+
+
+   "backlight": {
+    "device": "intel_backlight",
+    "on-scroll-up": "light -A 7",
+    "on-scroll-down": "light -U 7",
+    "format": "{icon} {percent}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      ""
+    ]
+    },
+
+
+// modules for padding //
+
+    "custom/left": {
+        "format": " ",
+        "interval" : "once",
+        "tooltip": false
+    },
+
+    "custom/right": {
+        "format": " ",
+        "interval" : "once",
+        "tooltip": false
+    },
+
 }
