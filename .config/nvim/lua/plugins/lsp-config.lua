@@ -9,7 +9,7 @@ return  {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "lua_ls", "clangd", "html", "ts_ls", "cssls", "gopls", "prismals", "intelephense" },
+			ensure_installed = { "lua_ls", "html", "ts_ls", "cssls", "gopls", "prismals", "intelephense" },
 		},
 	},
 
@@ -21,15 +21,11 @@ return  {
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities
 			})
-			lspconfig.clangd.setup({
-				capabilities = capabilities
-			})
 			lspconfig.html.setup({
 				capabilities = capabilities
 			})
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
-				flags = { allow_incremental_sync = false },
 			})
 			lspconfig.cssls.setup({
 				capabilities = capabilities
@@ -42,14 +38,6 @@ return  {
 			})
 			lspconfig.intelephense.setup({
 				capabilities = capabilities
-			})
-
-			vim.diagnostic.config({
-				virtual_text = true,
-				signs = true,
-				underline = true,
-				update_in_insert = false,
-				severity_sort = true,
 			})
 		end,
 	},

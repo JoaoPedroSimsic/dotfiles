@@ -8,26 +8,13 @@ return {
 
 		null_ls.setup({
 			debug = true,
-			timeout = 5000,
 			sources = {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.completion.spell,
 				require("none-ls.diagnostics.eslint"),
-				null_ls.builtins.formatting.prettier.with({
-					filetypes = {
-						"typescript",
-						"typescriptreact",
-						"javascript",
-						"javascriptreact",
-						"json",
-						"css",
-						"scss",
-						"html",
-					},
-				}),
+				null_ls.builtins.formatting.prettier,
 				null_ls.builtins.formatting.pint,
 				null_ls.builtins.formatting.blade_formatter,
-				null_ls.builtins.formatting.clang_format,
 			},
 		})
 	end,

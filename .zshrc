@@ -4,7 +4,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 
-export PATH="$HOME/.tmuxifier/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin/scripts:$HOME/.npm-global/bin:$GOBIN:$PATH"
+export PATH="$HOME/.tmuxifier/bin:$HOME/.local/bin/scripts:$HOME/.npm-global/bin:$GOBIN:$PATH"
 
 export TMUX_CONF="$HOME/.config/tmux/.tmux.conf"
 
@@ -21,8 +21,8 @@ fi
 
 # add keys to agent
 ssh-add -l > /dev/null || {
-	# ssh-add ~/.ssh/personal_key
-	# ssh-add ~/.ssh/work_key
+	ssh-add ~/.ssh/personal_key
+	ssh-add ~/.ssh/work_key
 }
 
 # Set list of themes to pick from when loading at random

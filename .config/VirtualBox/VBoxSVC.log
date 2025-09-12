@@ -1,0 +1,150 @@
+00:00:00.001999 main     VirtualBox XPCOM Server 7.1.6 r167084 linux.amd64 (Jan 27 2025 07:52:25) release log
+00:00:00.002000 main     Log opened 2025-04-01T18:11:07.063131000Z
+00:00:00.002001 main     Build Type: release
+00:00:00.002002 main     OS Product: Linux
+00:00:00.002003 main     OS Release: 6.13.7-arch1-1
+00:00:00.002004 main     OS Version: #1 SMP PREEMPT_DYNAMIC Thu, 13 Mar 2025 18:12:00 +0000
+00:00:00.002023 main     DMI Product Name: To Be Filled By O.E.M.
+00:00:00.002029 main     DMI Product Version: To Be Filled By O.E.M.
+00:00:00.002033 main     Firmware type: UEFI
+00:00:00.002666 main     Secure Boot: Disabled
+00:00:00.002700 main     Host RAM: 15923MB (15.5GB) total, 11327MB (11.0GB) available
+00:00:00.002703 main     Executable: /usr/lib/virtualbox/VBoxSVC
+00:00:00.002703 main     Process ID: 293084
+00:00:00.002703 main     Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.005148 main     IPC socket path: /tmp/.vbox-joao-ipc/ipcd
+00:00:00.045481 DCon01   VirtualBox: object creation starts
+00:00:00.047279 DCon01   Home directory: '/home/joao/.config/VirtualBox'
+00:00:00.048389 DCon01   Loading settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:00:00.055877 DCon01   Successfully initialised host USB using sysfs
+00:00:00.059097 DCon01   HostDnsMonitor: initializing
+00:00:00.059491 DCon01   NAT: resolv.conf: nameserver 127.0.0.53
+00:00:00.059510 DCon01   NAT: resolv.conf: ignoring "options edns0 trust-ad"
+00:00:00.059527 DCon01   HostDnsMonitor: updating information
+00:00:00.059561 DCon01   HostDnsMonitor: old information
+00:00:00.059566 DCon01     no server entries
+00:00:00.059570 DCon01     no domain set
+00:00:00.059573 DCon01     no search string entries
+00:00:00.059577 DCon01   HostDnsMonitor: new information
+00:00:00.059581 DCon01     server 1: 127.0.0.53
+00:00:00.059586 DCon01     domain: .
+00:00:00.059590 DCon01     search string 1: .
+00:00:00.067099 DCon01   VD: VDInit finished with VINF_SUCCESS
+00:00:00.068773 DCon01   ERROR [COM]: aRC=NS_ERROR_FAILURE (0x80004005) aIID={925084b0-625f-422f-a67d-0ede1880a56c} aComponent={SystemPropertiesWrap} aText={Cannot determine default Guest Additions ISO location. Most likely they are not available}, preserve=false aResultDetail=0
+00:00:00.072920 DCon01   Platform architecture set to 'x86'
+00:00:00.075623 DCon01   Loading settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:00:00.076266 DCon01   Platform architecture set to 'x86'
+00:00:00.077750 DCon01   VirtualBox: object created
+00:00:00.862102 DCon04   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:00:00.946210 DCon03   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is PoweredOff)}, preserve=false aResultDetail=0
+00:00:07.029725 DCon02   Launched VM: 2617248704 pid: 293251 (0x47983) frontend: GUI/Qt name: WIndows
+00:00:07.078259 DCon03   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:00:07.094355 DCon03   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is PoweredOff)}, preserve=false aResultDetail=0
+00:00:07.225721 DCon05   Platform architecture set to 'x86'
+00:00:07.245781 DCon08   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:00:07.250513 DCon04   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is PoweredOff)}, preserve=false aResultDetail=0
+00:00:07.708223 DCon08   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={70401eef-c8e9-466b-9660-45cb3e9979e4} aComponent={ExtPackManagerWrap} aText={No extension pack by the name 'Oracle VirtualBox Extension Pack' was found}, preserve=false aResultDetail=0
+00:00:09.512695 DCon04   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:00:09.532782 DCon04   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Starting)}, preserve=false aResultDetail=0
+00:00:09.621259 DCon06   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={7d510820-a678-4730-a862-818dcd3fbed0} aComponent={MediumWrap} aText={Property 'CRYPT/KeyId' does not exist}, preserve=false aResultDetail=0
+00:00:09.622114 DCon06   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={7d510820-a678-4730-a862-818dcd3fbed0} aComponent={MediumWrap} aText={Property 'CRYPT/KeyId' does not exist}, preserve=false aResultDetail=0
+00:00:09.622884 DCon06   HostDnsMonitorProxy::GetDomainName: .
+00:00:09.622949 DCon06   HostDnsMonitorProxy::GetNameServers:
+00:00:09.622951 DCon06     name server 1: 127.0.0.53
+00:00:09.623013 DCon06   HostDnsMonitorProxy::GetSearchStrings:
+00:00:09.623015 DCon06     search string 1: .
+00:00:09.659287 DCon05   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:00:09.675132 DCon04   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:00:09.783110 DCon04   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:00:09.786659 DCon04   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:00:30.281847 DCon03   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:00:30.284916 DCon03   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:02:30.298583 DCon11   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:02:31.985039 DCon06   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:02:32.518104 DCon06   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:02:53.052353 DCon02   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:02:53.060113 DCon02   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:02:53.097981 DCon06   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:02:53.101072 DCon06   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:02:53.151260 DCon02   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:02:53.162935 DCon02   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:02:53.426419 DCon14   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:02:53.428881 DCon14   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:03:12.597300 DCon04   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:03:13.388193 DCon14   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:03:13.391376 DCon14   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:03:17.148676 DCon03   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:03:17.154318 DCon03   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:03:17.197854 DCon04   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:03:17.208250 DCon04   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:03:17.505408 DCon04   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:03:17.508550 DCon04   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:08:14.008634 DCon10   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:08:14.656437 DCon10   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:08:14.660714 DCon10   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:08:20.928672 DCon15   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:08:20.932602 DCon15   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:08:20.972991 DCon15   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:08:20.975687 DCon15   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:08:21.030544 DCon12   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:08:21.041837 DCon03   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:08:21.314005 DCon03   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:08:21.317405 DCon03   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:18:42.090043 DCon21   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:18:42.866447 DCon20   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:18:42.869083 DCon20   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:18:54.009065 DCon17   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:18:54.223906 DCon17   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:18:54.292897 DCon15   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:18:54.302201 DCon15   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:18:54.601827 DCon23   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:18:54.908981 DCon23   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:18:56.702082 DCon18   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:18:57.483020 DCon20   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:18:57.702062 DCon20   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:21:19.714860 DCon23   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:21:19.718205 DCon23   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:21:46.683596 DCon23   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:21:46.687359 DCon23   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:24:47.201725 DCon25   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:24:47.342620 DCon25   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:24:47.401121 DCon25   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:24:47.410637 DCon25   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:24:47.712448 DCon15   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:24:47.912533 DCon15   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:25:00.605900 DCon24   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:25:00.609264 DCon24   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:25:01.691306 DCon25   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:25:01.695527 DCon25   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:25:03.396936 DCon20   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:25:03.400498 DCon20   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:25:03.410131 DCon25   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:25:03.416599 DCon25   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:25:04.202494 DCon25   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:25:04.205196 DCon25   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:25:04.214295 DCon04   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:25:04.224489 DCon25   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Running)}, preserve=false aResultDetail=0
+00:26:13.529213 DCon29   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:26:13.540013 DCon29   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is Stopping)}, preserve=false aResultDetail=0
+00:26:13.661474 DCon30   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={SessionMachine} aText={The machine is not mutable or saved (state is Stopping)}, preserve=false aResultDetail=0
+00:26:13.681075 DCon30   Saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox" with version "1.19-linux"
+00:26:13.684557 DCon30   Finished saving settings file "/home/joao/VirtualBox VMs/WIndows/WIndows.vbox"
+00:26:13.686326 DCon25   ERROR [COM]: aRC=NS_ERROR_INVALID_ARG (0x80070057) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={SessionMachine} aText={Properties with TRANSIENT or TRANSRESET flag cannot be set or modified if VM is not running}, preserve=false aResultDetail=0
+00:26:13.760687 DCon28   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:26:13.770771 DCon28   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is PoweredOff)}, preserve=false aResultDetail=0
+00:26:14.021541 DCon15   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:26:14.026189 DCon15   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:26:15.215917 DCon30   ERROR [COM]: aRC=VBOX_E_OBJECT_NOT_FOUND (0x80bb0001) aIID={5bfd8965-b81b-469f-8649-f717ce97a5d5} aComponent={NvramStoreWrap} aText={The UEFI NVRAM file is not existing for this machine}, preserve=false aResultDetail=0
+00:26:15.232833 DCon30   ERROR [COM]: aRC=VBOX_E_INVALID_VM_STATE (0x80bb0002) aIID={e36a5081-a82a-40bd-9e4e-42a44d6ce50f} aComponent={MachineWrap} aText={The machine is not mutable, saved or running (state is PoweredOff)}, preserve=false aResultDetail=0
+00:32:57.197611 DCon04   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:32:57.201736 DCon04   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+00:32:57.640266 DCon32   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+00:32:57.644046 DCon32   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+01:01:04.562863 DCon04   Saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml" with version "1.12-linux"
+01:01:04.565946 DCon04   Finished saving settings file "/home/joao/.config/VirtualBox/VirtualBox.xml"
+01:01:13.601539 main     VirtualBox: object deletion starts
+01:01:13.601566 main     ERROR [COM]: aRC=VBOX_E_OBJECT_IN_USE (0x80bb000c) aIID={7d510820-a678-4730-a862-818dcd3fbed0} aComponent={MediumWrap} aText={Medium '/home/joao/VirtualBox VMs/WIndows/WIndows.vdi' cannot be closed because it is still attached to 1 virtual machines}, preserve=false aResultDetail=0
+01:01:13.601896 main     HostDnsMonitor: shutting down ...
+01:01:13.602591 main     HostDnsMonitor: shut down
+01:01:13.620987 Watcher  ERROR [COM]: aRC=E_ACCESSDENIED (0x80070005) aIID={d644ad1e-c501-4fc7-9ab6-aa6d763bc540} aComponent={VirtualBoxWrap} aText={The object is not ready}, preserve=false aResultDetail=0
+01:01:13.621172 main     VirtualBox: object deleted

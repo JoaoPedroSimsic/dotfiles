@@ -1,0 +1,12 @@
+[Default Applications]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop
+application/x-compressed-tar=thunar.desktop
+application/vnd.rar=firefox.desktop
+audio/mpeg=firefox.desktop
+
+[Added Associations]
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=firefox.desktop;
+application/x-compressed-tar=thunar.desktop;
+text/markdown=kitty.desktop;nvim.desktop;
+application/vnd.rar=firefox.desktop;
+audio/mpeg=firefox-developer-edition.desktop;firefox.desktop;
