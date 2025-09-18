@@ -1,4 +1,4 @@
-return  {
+return {
 	{
 		"williamboman/mason.nvim",
 		config = function()
@@ -9,40 +9,72 @@ return  {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "lua_ls", "clangd", "html", "ts_ls", "cssls", "gopls", "prismals", "intelephense" },
+			ensure_installed = {
+				"lua_ls",
+				"clangd",
+				"html",
+				"ts_ls",
+				"cssls",
+				"gopls",
+				"prismals",
+				"intelephense",
+				"vue_ls",
+			},
 		},
 	},
 
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local capabilities = require('cmp_nvim_lsp').default_capabilities()
-			local lspconfig = require("lspconfig")
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+			vim.lsp.config("lua_ls", {
+				capabilities = capabilities,
 			})
-			lspconfig.clangd.setup({
-				capabilities = capabilities
+			vim.lsp.enable("lua_ls")
+
+			vim.lsp.config("clangd", {
+				capabilities = capabilities,
 			})
-			lspconfig.html.setup({
-				capabilities = capabilities
+			vim.lsp.enable("clangd")
+
+			vim.lsp.config("html", {
+				capabilities = capabilities,
 			})
-			lspconfig.ts_ls.setup({
+			vim.lsp.enable("html")
+
+			vim.lsp.config("ts_ls", { -- was ts_ls
 				capabilities = capabilities,
 				flags = { allow_incremental_sync = false },
+				filetypes = {
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+				},
 			})
-			lspconfig.cssls.setup({
-				capabilities = capabilities
+			vim.lsp.enable("ts_ls")
+
+			vim.lsp.config("cssls", {
+				capabilities = capabilities,
 			})
-			lspconfig.gopls.setup({
-				capabilities = capabilities
+			vim.lsp.enable("cssls")
+
+			vim.lsp.config("gopls", {
+				capabilities = capabilities,
 			})
-			lspconfig.prismals.setup({
-				capabilities = capabilities
+			vim.lsp.enable("gopls")
+
+			vim.lsp.config("prismals", {
+				capabilities = capabilities,
 			})
-			lspconfig.intelephense.setup({
-				capabilities = capabilities
+			vim.lsp.enable("prismals")
+
+			vim.lsp.config("intelephense", {
+				capabilities = capabilities,
 			})
+			vim.lsp.enable("intelephense")
 
 			vim.diagnostic.config({
 				virtual_text = true,
