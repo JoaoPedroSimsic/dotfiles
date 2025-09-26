@@ -17,8 +17,10 @@ PACKAGES=(
 	fd
 	diffutils
 	openssh
+	docker
+	lazydocker
 
-	#
+	#c
 	gcc
 	make
 	
