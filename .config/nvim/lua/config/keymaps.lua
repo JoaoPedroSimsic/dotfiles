@@ -1,7 +1,5 @@
 local map = vim.keymap.set
 local builtin = require("telescope.builtin")
-local dap = require("dap")
-local dapui = require("dapui")
 local harpoon = require("harpoon")
 harpoon:setup()
 
@@ -143,15 +141,6 @@ map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 --none-ls
 map("n", "<leader>f", vim.lsp.buf.format, {})
-
---dap
-map("n", "<Leader>b", dap.toggle_breakpoint, {})
-map("n", "<leader>c", dap.continue, {})
-map("n", "<Leader>si", dap.step_into, { desc = "Step Into" })
-map("n", "<Leader>so", dap.step_over, { desc = "Step Over" })
-map("n", "<Leader>st", dap.step_out, { desc = "Step Out" })
-map("n", "<Leader>dx", dap.terminate, { desc = "Terminate" })
-map("n", "<Leader>du", dapui.toggle, { desc = "Toggle UI" })
 
 --trouble
 map("n", "<leader>xx", ":Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
