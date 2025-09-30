@@ -17,10 +17,13 @@ PACKAGES=(
 	fd
 	diffutils
 	openssh
+	docker
+	docker-compose
 
-	#
+	# c
 	gcc
 	make
+	bear
 	
 	# typescript
 	nodejs
@@ -35,13 +38,14 @@ PACKAGES=(
 	luarocks
 	stylua
 
-	#php
+	# php
 	php
 	composer 
 	php-apache 
 	php-fpm
 	php-gd
 
+	# go
 	go
 )
 
