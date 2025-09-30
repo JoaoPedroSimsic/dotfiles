@@ -19,6 +19,9 @@ return {
 				"prismals",
 				"intelephense",
 				"vue_ls",
+				"dockerls",
+				"docker_compose_language_service",
+				"bashls",
 			},
 		},
 	},
@@ -43,7 +46,7 @@ return {
 			})
 			vim.lsp.enable("html")
 
-			vim.lsp.config("ts_ls", { -- was ts_ls
+			vim.lsp.config("ts_ls", {
 				capabilities = capabilities,
 				flags = { allow_incremental_sync = false },
 				filetypes = {
@@ -75,6 +78,21 @@ return {
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("intelephense")
+
+			vim.lsp.config("dockerls", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("dockerls")
+
+			vim.lsp.config("docker_compose_language_service", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("docker_compose_language_service")
+
+			vim.lsp.config("bashls", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("bashls")
 
 			vim.diagnostic.config({
 				virtual_text = true,
