@@ -51,21 +51,21 @@ map("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- Replace word under cursor
 
 vim.keymap.set({ "n", "x" }, "<leader>s", function()
-  local mode = vim.fn.mode()
-  local search_text = ""
+	local mode = vim.fn.mode()
+	local search_text = ""
 
-  if mode == "v" or mode == "V" or mode == "\22" then
-    vim.cmd('normal! "vy') -- yank visual selection into register v
-    search_text = vim.fn.getreg('v')
-    search_text = vim.fn.escape(search_text, '\\/.*$^~[]')
-  else
-    search_text = vim.fn.expand("<cword>")
-  end
+	if mode == "v" or mode == "V" or mode == "\22" then
+		vim.cmd('normal! "vy') -- yank visual selection into register v
+		search_text = vim.fn.getreg("v")
+		search_text = vim.fn.escape(search_text, "\\/.*$^~[]")
+	else
+		search_text = vim.fn.expand("<cword>")
+	end
 
-  -- Always do substitution on the whole file (% range)
+	-- Always do substitution on the whole file (% range)
 	local cmd = string.format(":%s/\\<%s\\>/%s/gc", "%s", search_text, search_text)
 
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, false, true), "c", true)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, false, true), "c", true)
 end, { desc = "Pre-fill substitution for selection or word, whole file" })
 
 -- map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gcI<Left><Left><Left>]])
@@ -80,6 +80,7 @@ map("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 map("n", "<leader>a", function()
 	harpoon:list():add()
 end)
+
 map("n", "<C-e>", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
@@ -87,14 +88,25 @@ end)
 map("n", "<M-1>", function()
 	harpoon:list():select(1)
 end)
+
 map("n", "<M-2>", function()
 	harpoon:list():select(2)
 end)
+
 map("n", "<M-3>", function()
 	harpoon:list():select(3)
 end)
+
 map("n", "<M-4>", function()
 	harpoon:list():select(4)
+end)
+
+map("n", "<M-5>", function()
+	harpoon:list():select(5)
+end)
+
+map("n", "<M-6>", function()
+	harpoon:list():select(6)
 end)
 
 --Navigate vim panes better
