@@ -45,8 +45,6 @@ fi
 cp -r "$DOTFILES/.config/lazygit" "$HOME/.config/"
 cp -r "$DOTFILES/.config/tmux" "$HOME/.config/"
 cp -r "$DOTFILES/.config/composer" "$HOME/.config/"
-cp -r "$DOTFILES/.config/go" "$HOME/.config/"
-cp -r "$DOTFILES/.config/rclone" "$HOME/.config/"
 cp -r "$DOTFILES/scripts" "$HOME/.local/bin/"
 
 echo "Dotfiles copied successfully"
