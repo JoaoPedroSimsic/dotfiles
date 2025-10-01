@@ -28,7 +28,20 @@ cp "$DOTFILES/.tmux.conf" "$HOME/.tmux.conf"
 cp "$DOTFILES/.config/starship.toml" "$HOME/.config/"
 sudo cp "$DOTFILES/php.ini" "/etc/php/"
 
-cp -r "$DOTFILES/.config/nvim" "$HOME/.config/"
+TARGET="$HOME/.config/nvim"
+
+if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
+    echo "Removing existing folder (not a symlink)..."
+    rm -rf "$TARGET"
+fi
+
+if [ ! -L "$TARGET" ]; then
+		ln -s "$DOTFILES/.config/nvim" "$TARGET"
+    echo "Symlink created."
+else
+    echo "Symlink already exists."
+fi
+
 cp -r "$DOTFILES/.config/lazygit" "$HOME/.config/"
 cp -r "$DOTFILES/.config/tmux" "$HOME/.config/"
 cp -r "$DOTFILES/.config/composer" "$HOME/.config/"
