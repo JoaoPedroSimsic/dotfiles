@@ -19,6 +19,7 @@ PACKAGES=(
 	openssh
 	docker
 	docker-compose
+	lazydocker
 
 	# c
 	gcc

@@ -171,5 +171,8 @@ vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true })
 vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true })
 
 -- Lazygit
-
 map("n", "<leader>lg", ":LazyGit<CR>", { desc = "LazyGit" })
+
+-- Lazydocker
+
+map("n", "<leader>ld", "<Cmd>lua require('lazydocker').toggle({ engine = 'docker' })<CR>", { desc = "LazyDocker"})
