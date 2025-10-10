@@ -1,10 +1,12 @@
+local shared_highlights = require("config.highlights")
+
 return {
 	"HiPhish/rainbow-delimiters.nvim",
+	dependencies = { "lukas-reineke/indent-blankline.nvim" },
+
 	config = function()
-		-- This module contains a number of default definitions
 		local rainbow_delimiters = require("rainbow-delimiters")
 
-		---@type rainbow_delimiters.config
 		vim.g.rainbow_delimiters = {
 			strategy = {
 				[""] = rainbow_delimiters.strategy["global"],
@@ -18,15 +20,7 @@ return {
 				[""] = 110,
 				lua = 210,
 			},
-			highlight = {
-				"RainbowDelimiterRed",
-				"RainbowDelimiterYellow",
-				"RainbowDelimiterBlue",
-				"RainbowDelimiterOrange",
-				"RainbowDelimiterGreen",
-				"RainbowDelimiterViolet",
-				"RainbowDelimiterCyan",
-			},
+			highlight = shared_highlights.groups,
 		}
 	end,
 }
