@@ -21,8 +21,8 @@ fi
 
 # add keys to agent
 ssh-add -l > /dev/null || {
-	# ssh-add ~/.ssh/personal_key
-	# ssh-add ~/.ssh/work_key
+	ssh-add ~/.ssh/personal_key
+	ssh-add ~/.ssh/work_key
 }
 
 # Set list of themes to pick from when loading at random
