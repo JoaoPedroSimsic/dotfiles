@@ -1,8 +1,14 @@
 return {
-	"savq/melange-nvim",
-	-- "rose-pine/neovim",
-	name = "melange",
-	config = function()
-		vim.cmd("colorscheme melange")
-	end
+	require("lazy").setup({
+  "neanias/everforest-nvim",
+  version = false,
+  lazy = false,
+  priority = 1000, 
+  config = function()
+    require("everforest").setup({
+				background = "hard",
+    })
+			vim.cmd("colorscheme everforest")
+  end,
+})
 }
