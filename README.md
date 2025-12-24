@@ -1,3 +1,3 @@
 ## WSL DOTFILES
 
-Windows terminal theme used: Earthsong
+Windows terminal theme used: Everblush
