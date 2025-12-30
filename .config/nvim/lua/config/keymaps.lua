@@ -140,9 +140,14 @@ map("n", "gd", vim.lsp.buf.definition, {})
 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 --none-ls
-map("n", "<leader>f", vim.lsp.buf.format, {})
+map("n", "<leader>f", function()
+  vim.lsp.buf.format({
+    filter = function(client)
+      return client.name == "null-ls"
+    end,
+  })
+end, { desc = "Format file with Prettier" })
 
---trouble
 map("n", "<leader>xx", ":Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
 
 --bufferline
