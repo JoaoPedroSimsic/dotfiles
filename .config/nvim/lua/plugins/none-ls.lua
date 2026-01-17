@@ -27,7 +27,12 @@ return {
 				}),
 				null_ls.builtins.formatting.pint,
 				null_ls.builtins.formatting.blade_formatter,
-				null_ls.builtins.formatting.clang_format,
+				null_ls.builtins.formatting.clang_format.with({
+					filetypes = {
+						"java",
+						"c",
+					},
+				}),
 			},
 		})
 	end,

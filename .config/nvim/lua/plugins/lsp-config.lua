@@ -22,6 +22,12 @@ return {
 				"dockerls",
 				"docker_compose_language_service",
 				"bashls",
+				"jdtls",
+			},
+			automatic_enable = {
+				exclude = {
+					"jdtls",
+				},
 			},
 		},
 	},
@@ -93,6 +99,11 @@ return {
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("bashls")
+
+			vim.lsp.config("jdtls", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("jdtls")
 
 			vim.diagnostic.config({
 				virtual_text = true,
