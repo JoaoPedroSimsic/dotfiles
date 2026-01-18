@@ -23,6 +23,7 @@ return {
 				"docker_compose_language_service",
 				"bashls",
 				"jdtls",
+				"lemminx",
 			},
 			automatic_enable = {
 				exclude = {
