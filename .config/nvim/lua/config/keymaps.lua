@@ -141,11 +141,11 @@ map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 --none-ls
 map("n", "<leader>f", function()
-  vim.lsp.buf.format({
-    filter = function(client)
-      return client.name == "null-ls"
-    end,
-  })
+	vim.lsp.buf.format({
+		filter = function(client)
+			return client.name == "null-ls"
+		end,
+	})
 end, { desc = "Format file with Prettier" })
 
 map("n", "<leader>xx", ":Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
@@ -180,4 +180,6 @@ map("n", "<leader>lg", ":LazyGit<CR>", { desc = "LazyGit" })
 
 -- Lazydocker
 
-map("n", "<leader>ld", "<Cmd>lua require('lazydocker').toggle({ engine = 'docker' })<CR>", { desc = "LazyDocker"})
+map("n", "<leader>ld", "<Cmd>lua require('lazydocker').toggle({ engine = 'docker' })<CR>", { desc = "LazyDocker" })
+
+
