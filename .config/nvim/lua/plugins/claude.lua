@@ -19,4 +19,10 @@ return {
 		{ "<leader>gh", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
 		{ "<leader>gf", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
 	},
+	opts = {
+		diff_opts = {
+			auto_close_on_accept = true,
+      --open_in_current_tab = true,
+		},
+	},
 }
