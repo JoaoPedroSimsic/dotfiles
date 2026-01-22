@@ -1,3 +1,3 @@
 ## WSL DOTFILES
 
-Windows terminal theme used: FrontEndDelight
+Windows terminal theme used: Brogrammer
