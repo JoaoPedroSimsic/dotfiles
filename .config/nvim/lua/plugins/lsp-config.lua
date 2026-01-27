@@ -24,6 +24,7 @@ return {
 				"bashls",
 				"jdtls",
 				"lemminx",
+				"pyright",
 			},
 			automatic_enable = {
 				exclude = {
@@ -105,6 +106,11 @@ return {
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("jdtls")
+
+			vim.lsp.config("pyright", {
+				capabilities = capabilities,
+			})
+			vim.lsp.enable("pyright")
 
 			vim.diagnostic.config({
 				virtual_text = true,

@@ -28,6 +28,7 @@ return {
 				null_ls.builtins.formatting.pint,
 				null_ls.builtins.formatting.blade_formatter,
 				null_ls.builtins.formatting.clang_format,
+        null_ls.builtins.formatting.black,
 				null_ls.builtins.formatting.google_java_format.with({
 					filetypes = { "java" },
 				}),
