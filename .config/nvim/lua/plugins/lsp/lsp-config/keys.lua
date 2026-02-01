@@ -1,8 +1,12 @@
+local float_toggle = require("config.utils.float_toggle")
+
 return {
 	{
 		"K",
-		vim.lsp.buf.hover,
-		desc = "LSP Hover",
+		function()
+			float_toggle.toggle("hover", vim.lsp.buf.hover)
+		end,
+		desc = "Toggle LSP Hover",
 		mode = "n",
 	},
 	{

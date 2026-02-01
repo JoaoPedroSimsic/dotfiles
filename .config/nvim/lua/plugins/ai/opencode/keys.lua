@@ -8,12 +8,20 @@ return {
 		desc = "Toggle opencode",
 	},
 	{
-		"<leader>ga",
+		"<leader>gs",
 		function()
 			require("opencode").ask("@this: ", { submit = true })
 		end,
-		mode = { "n", "x" },
+		mode = { "n", "v" },
 		desc = "Ask opencode…",
+	},
+	{
+		"<leader>ga",
+		function()
+			require("opencode").ask("@buffer: ", { submit = true })
+		end,
+		mode = "n",
+		desc = "Ask opencode about file…",
 	},
 	{
 		"<leader>gn",
