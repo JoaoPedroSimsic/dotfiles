@@ -1,7 +1,4 @@
 local map = vim.keymap.set
-local builtin = require("telescope.builtin")
-local harpoon = require("harpoon")
-harpoon:setup()
 
 vim.g.mapleader = " "
 
@@ -71,115 +68,8 @@ end, { desc = "Pre-fill substitution for selection or word, whole file" })
 -- Open NVim config
 map("n", "<leader>vpp", "<cmd>silent !tmux neww nvim ~/.config/nvim/init.lua<CR>")
 
---Make it rain
-map("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
-
--- Harpoon
-map("n", "<leader>a", function()
-	harpoon:list():add()
-end)
-
-map("n", "<C-e>", function()
-	harpoon.ui:toggle_quick_menu(harpoon:list())
-end)
-
-map("n", "<M-1>", function()
-	harpoon:list():select(1)
-end)
-
-map("n", "<M-2>", function()
-	harpoon:list():select(2)
-end)
-
-map("n", "<M-3>", function()
-	harpoon:list():select(3)
-end)
-
-map("n", "<M-4>", function()
-	harpoon:list():select(4)
-end)
-
-map("n", "<M-5>", function()
-	harpoon:list():select(5)
-end)
-
-map("n", "<M-6>", function()
-	harpoon:list():select(6)
-end)
-
---Navigate vim panes better
--- map("n", "<c-k>", ":wincmd k<CR>", { noremap = true, silent = true })
--- map("n", "J", ":wincmd j<CR>", { noremap = true, silent = true })
--- map("n", "<c-h>", ":wincmd h<CR>", { noremap = true, silent = true })
--- map("n", "<c-l>", ":wincmd l<CR>", { noremap = true, silent = true })
-
---Switch window
---vim.api.nvim_set_keymap('n', '<leader>h', '<C-w>h', { noremap = true })
---vim.api.nvim_set_keymap('n', '<leader>j', '<C-w>j',{ noremap = true })
---vim.api.nvim_set_keymap('n', '<leader>k', '<C-w>k',{ noremap = true })
---vim.api.nvim_set_keymap('n', '<leader>l', '<C-w>l',{ noremap = true })
-
---vim-tmux-navigator
-map("n", "<C-h>", ":TmuxNavigateLeft<CR>", { noremap = true, silent = true })
-map("n", "<C-j>", ":TmuxNavigateDown<CR>", { noremap = true, silent = true })
-map("n", "<C-k>", ":TmuxNavigateUp<CR>", { noremap = true, silent = true })
-map("n", "<C-l>", ":TmuxNavigateRight<CR>", { noremap = true, silent = true })
-
---Telescope
-map("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
-map("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
-map("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-map("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-
---Neotree
--- map("n", "<leader>t", ":Neotree toggle<CR>", { noremap = true, silent = true })
-
---Lspconfig
-map("n", "K", vim.lsp.buf.hover, {})
-map("n", "gd", vim.lsp.buf.definition, {})
-map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-
---none-ls
-map("n", "<leader>f", function()
-	vim.lsp.buf.format({
-		filter = function(client)
-			return client.name == "null-ls"
-		end,
-	})
-end, { desc = "Format file with Prettier" })
-
-map("n", "<leader>xx", ":Trouble diagnostics toggle<CR>", { desc = "Diagnostics (Trouble)" })
-
---bufferline
-map("n", "<A-Tab>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
-
---undotree
-map("n", "<leader>u", ":UndotreeToggle<CR>", { noremap = true, silent = true })
-
---code_runner
-map("n", "<leader>r", ":RunCode<CR>", { noremap = true, silent = true })
-
---Disabling arrow keys
 vim.api.nvim_set_keymap("n", "<Up>", "<Nop>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Down>", "<Nop>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Left>", "<Nop>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Right>", "<Nop>", { noremap = true })
-
-vim.api.nvim_set_keymap("i", "<Up>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<Down>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<Left>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<Right>", "<Nop>", { noremap = true })
-
-vim.api.nvim_set_keymap("v", "<Up>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("v", "<Down>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true })
-vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true })
-
--- Lazygit
-map("n", "<leader>lg", ":LazyGit<CR>", { desc = "LazyGit" })
-
--- Lazydocker
-
-map("n", "<leader>ld", "<Cmd>lua require('lazydocker').toggle({ engine = 'docker' })<CR>", { desc = "LazyDocker" })
-
 

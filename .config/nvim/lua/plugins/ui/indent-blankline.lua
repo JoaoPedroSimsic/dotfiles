@@ -1,4 +1,4 @@
-local shared_highlights = require("config.highlights")
+local shared_highlights = require("config.colors")
 
 return {
 	"lukas-reineke/indent-blankline.nvim",

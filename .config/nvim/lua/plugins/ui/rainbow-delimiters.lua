@@ -1,4 +1,4 @@
-local shared_highlights = require("config.highlights")
+local shared_highlights = require("config.colors")
 
 return {
 	"HiPhish/rainbow-delimiters.nvim",
@@ -7,7 +7,7 @@ return {
 	config = function()
 		local rainbow_delimiters = require("rainbow-delimiters")
 
-		vim.g.rainbow_delimiters = {
+		require('rainbow-delimiters.setup').setup({
 			strategy = {
 				[""] = rainbow_delimiters.strategy["global"],
 				vim = rainbow_delimiters.strategy["local"],
@@ -21,6 +21,6 @@ return {
 				lua = 210,
 			},
 			highlight = shared_highlights.groups,
-		}
+		})
 	end,
 }

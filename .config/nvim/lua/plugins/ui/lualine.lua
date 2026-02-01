@@ -1,0 +1,19 @@
+return {
+	"nvim-lualine/lualine.nvim",
+	dependencies = { "nvim-tree/nvim-web-devicons" },
+	opts = {
+		options = {
+			theme = "nightfly",
+		},
+		sections = {
+			lualine_z = {
+				{
+					require("opencode").statusline,
+					icon = "󰚩",
+					color = { fg = "#80a0ff" },
+				},
+				"location",
+			},
+		},
+	},
+}

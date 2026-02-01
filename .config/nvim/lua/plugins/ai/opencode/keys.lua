@@ -1,33 +1,60 @@
-local M = {}
-
-function M.setup()
-  vim.keymap.set({ "n", "t" }, "<leader>gg", function()
-    require("opencode").toggle()
-  end, { desc = "Toggle opencode" })
-
-	vim.keymap.set({ "n", "x" }, "<leader>ga>", function()
-		require("opencode").ask("@this: ", { submit = true })
-	end, { desc = "Ask opencode…" })
-
-	vim.keymap.set({ "n", "x" }, "<leader>gn", function()
-		require("opencode").select()
-	end, { desc = "Execute opencode action…" })
-
-	vim.keymap.set({ "n", "x" }, "go", function()
-		return require("opencode").operator("@this ")
-	end, { desc = "Add range to opencode", expr = true })
-
-	vim.keymap.set("n", "goo", function()
-		return require("opencode").operator("@this ") .. "_"
-	end, { desc = "Add line to opencode", expr = true })
-
-	vim.keymap.set("n", "W", function()
-		require("opencode").command("session.half.page.up")
-	end, { desc = "Scroll opencode up" })
-
-	vim.keymap.set("n", "S", function()
-		require("opencode").command("session.half.page.down")
-	end, { desc = "Scroll opencode down" })
-end
-
-return M
+return {
+	{
+		"<leader>gg",
+		function()
+			require("opencode").toggle()
+		end,
+		mode = { "n", "t" },
+		desc = "Toggle opencode",
+	},
+	{
+		"<leader>ga",
+		function()
+			require("opencode").ask("@this: ", { submit = true })
+		end,
+		mode = { "n", "x" },
+		desc = "Ask opencode…",
+	},
+	{
+		"<leader>gn",
+		function()
+			require("opencode").select()
+		end,
+		mode = { "n", "x" },
+		desc = "Execute opencode action…",
+	},
+	{
+		"go",
+		function()
+			return require("opencode").operator("@this ")
+		end,
+		mode = { "n", "x" },
+		expr = true,
+		desc = "Add range to opencode",
+	},
+	{
+		"goo",
+		function()
+			return require("opencode").operator("@this ") .. "_"
+		end,
+		mode = "n",
+		expr = true,
+		desc = "Add line to opencode",
+	},
+	{
+		"W",
+		function()
+			require("opencode").command("session.half.page.up")
+		end,
+		mode = "n",
+		desc = "Scroll opencode up",
+	},
+	{
+		"S",
+		function()
+			require("opencode").command("session.half.page.down")
+		end,
+		mode = "n",
+		desc = "Scroll opencode down",
+	},
+}

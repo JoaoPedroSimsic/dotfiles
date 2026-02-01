@@ -8,6 +8,9 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.termguicolors = true
 
+-- Reduce timeout for leader key
+vim.opt.timeoutlen = 2000
+
 vim.o.guicursor = "n-v-c:block"
 vim.o.guicursor = vim.o.guicursor .. ",i-c:block-blinkon1"
 vim.o.guicursor = vim.o.guicursor .. ",r:block"
