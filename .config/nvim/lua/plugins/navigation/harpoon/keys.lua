@@ -17,7 +17,7 @@ return {
     mode = "n",
   },
 	{
-		"<leader>1",
+		"<M-1>",
 		function()
 			require("harpoon"):list():select(1)
 		end,
@@ -25,7 +25,7 @@ return {
     mode = "n",
 	},
 	{
-		"<leader>2",
+		"<M-2>",
 		function()
 			require("harpoon"):list():select(2)
 		end,
@@ -33,7 +33,7 @@ return {
     mode = "n",
 	},
 	{
-		"<leader>3",
+		"<M-3>",
 		function()
 			require("harpoon"):list():select(3)
 		end,
@@ -41,7 +41,7 @@ return {
     mode = "n",
 	},
 	{
-		"<leader>4",
+		"<M-4>",
 		function()
 			require("harpoon"):list():select(4)
 		end,
@@ -49,7 +49,7 @@ return {
     mode = "n",
 	},
 	{
-		"<leader>5",
+		"<M-5>",
 		function()
 			require("harpoon"):list():select(5)
 		end,
@@ -57,7 +57,7 @@ return {
     mode = "n",
 	},
 	{
-		"<leader>6",
+		"<M-6>",
 		function()
 			require("harpoon"):list():select(6)
 		end,

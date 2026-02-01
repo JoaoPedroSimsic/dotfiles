@@ -9,8 +9,6 @@ return {
 			lualine_z = {
 				{
 					require("opencode").statusline,
-					icon = "󰚩",
-					color = { fg = "#80a0ff" },
 				},
 				"location",
 			},
