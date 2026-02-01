@@ -1,5 +1,6 @@
 return {
 	"folke/trouble.nvim",
-	cmd = "Trouble",
+	cmd = { "Trouble" },
+  opts = {},
 	keys = require("plugins.editor.trouble.keys"),
 }
