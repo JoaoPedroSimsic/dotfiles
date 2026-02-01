@@ -16,7 +16,7 @@ return {
 		desc = "Ask opencode…",
 	},
 	{
-		"<leader>ga",
+		"<leader>gb",
 		function()
 			require("opencode").ask("@buffer: ", { submit = true })
 		end,
@@ -64,5 +64,21 @@ return {
 		end,
 		mode = "n",
 		desc = "Scroll opencode down",
+	},
+	{
+		"<leader>gl",
+		function()
+			require("opencode").select_session()
+		end,
+		mode = "n",
+		desc = "List/resume OpenCode sessions",
+	},
+	{
+		"<leader>gq",
+		function()
+			require("plugins.ai.opencode.lifecycle").stop()
+		end,
+		mode = "n",
+		desc = "Stop OpenCode cleanly",
 	},
 }
