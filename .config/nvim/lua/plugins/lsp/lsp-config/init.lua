@@ -1,5 +1,6 @@
 return {
 	"neovim/nvim-lspconfig",
+  lazy = false,
   keys = require("plugins.lsp.lsp-config.keys"),
 	config = function()
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -21,7 +22,6 @@ return {
 
 		vim.lsp.config("ts_ls", {
 			capabilities = capabilities,
-			flags = { allow_incremental_sync = false },
 			filetypes = {
 				"javascript",
 				"javascriptreact",
