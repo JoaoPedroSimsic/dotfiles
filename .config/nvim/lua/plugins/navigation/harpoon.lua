@@ -1,7 +1,7 @@
 return {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
-	keys = require("plugins.navigation.harpoon.keys"),
+	keys = require("config.keymaps.navigation.harpoon"),
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},

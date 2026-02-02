@@ -1,7 +1,7 @@
 return {
 	"zbirenbaum/copilot.lua",
 	event = "VeryLazy",
-	keys = require("plugins.ai.copilot.keys"),
+	keys = require("config.keymaps.ai.copilot"),
 	config = function()
 		require("copilot").setup({
 			suggestion = {

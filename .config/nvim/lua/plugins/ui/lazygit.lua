@@ -11,5 +11,5 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 	},
-	keys = require("plugins.ui.lazygit.keys"),
+	keys = require("config.keymaps.ui.lazygit"),
 }

@@ -1,7 +1,7 @@
 return {
 	"neovim/nvim-lspconfig",
   lazy = false,
-  keys = require("plugins.lsp.lsp-config.keys"),
+  keys = require("config.keymaps.lsp.lsp-config"),
 	config = function()
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 

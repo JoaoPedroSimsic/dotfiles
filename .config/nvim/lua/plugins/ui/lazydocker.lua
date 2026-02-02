@@ -1,6 +1,6 @@
 return {
 	"crnvl96/lazydocker.nvim",
-  keys = require("plugins.ui.lazydocker.keys"),
+  keys = require("config.keymaps.ui.lazydocker"),
   lazy = true,
 	config = function()
 		require("lazydocker").setup({

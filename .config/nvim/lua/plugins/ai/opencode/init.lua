@@ -2,7 +2,7 @@ return {
 	"NickvanDyke/opencode.nvim",
 	lazy = true,
 	cmd = { "OpenCode", "OpenCodeChat" },
-	keys = require("plugins.ai.opencode.keys"),
+	keys = require("config.keymaps.ai.opencode"),
 	dependencies = {
 		{ "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
 	},
