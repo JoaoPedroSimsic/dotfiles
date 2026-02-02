@@ -4,7 +4,6 @@ return {
 		"BufReadPre",
 		"BufNewFile",
 	},
-	keys = require("config.keymaps.linter.lint"),
 	opts = {},
 	config = function()
 		local lint = require("lint")
