@@ -1,16 +1,10 @@
+local manifest = require("config.manifest")
+
 return {
 	"WhoIsSethDaniel/mason-tool-installer.nvim",
 	dependencies = { "williamboman/mason.nvim" },
 	opts = {
-		ensure_installed = {
-			"eslint_d",
-			"ruff",
-			"prettierd",
-			"stylua",
-			"black",
-			"clang-format",
-			"google-java-format",
-		},
+		ensure_installed = manifest.get_tools(),
 		auto_update = true,
 		run_on_start = true,
 	},
