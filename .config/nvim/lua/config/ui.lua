@@ -4,7 +4,7 @@ vim.o.guicursor = vim.o.guicursor .. ",i-c:block-blinkon1"
 vim.o.guicursor = vim.o.guicursor .. ",r:block"
 
 -- This makes the actual text in the buffer gray when it's an error
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = "#6272a4", italic = true }) 
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { fg = "#6272a4", italic = true })
 -- This makes the virtual text/lines gray
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { fg = "#6272a4" })
 
