@@ -15,4 +15,4 @@ vim.opt.number = true
 vim.opt.termguicolors = true
 
 -- Reduce timeout for leader key
-vim.opt.timeoutlen = 2000
+vim.opt.timeoutlen = 300

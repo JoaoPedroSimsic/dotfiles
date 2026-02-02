@@ -25,6 +25,14 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- Auto-reload files on external changes
 vim.o.autoread = true
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
-  command = "if mode() != 'c' | checktime | endif",
+  callback = function()
+    -- PERFORMANCE: Skip checktime in terminal buffers to prevent lag
+    if vim.bo.buftype == "terminal" then
+      return
+    end
+    if vim.fn.mode() ~= 'c' then
+      vim.cmd("checktime")
+    end
+  end,
   pattern = { "*" },
 })

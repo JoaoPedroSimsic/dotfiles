@@ -7,9 +7,6 @@ return {
 		},
 		sections = {
 			lualine_z = {
-				{
-					require("opencode").statusline,
-				},
 				"location",
 			},
 		},

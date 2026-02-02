@@ -4,7 +4,7 @@ vim.g.opencode_opts = {
 		snacks = {
 			win = {
 				position = "right",
-				size = 0.4,
+				size = 0.3,
 				border = "rounded",
 			},
 			args = {
@@ -15,10 +15,10 @@ vim.g.opencode_opts = {
 	},
 	events = {
 		enabled = true,
-		reload = true,
+		reload = false,
 		permissions = {
 			enabled = true,
-			idle_delay_ms = 200,
+			idle_delay_ms = 1500,
 		},
 	},
 	ask = {
@@ -41,5 +41,3 @@ vim.g.opencode_opts = {
 		},
 	},
 }
-
-vim.o.autoread = true
