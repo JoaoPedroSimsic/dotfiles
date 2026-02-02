@@ -1,4 +1,5 @@
 vim.g.opencode_opts = {
+	default_global_keymaps = false,
 	provider = {
 		enabled = "snacks",
 		snacks = {

@@ -1,7 +1,7 @@
 return {
 	"stevearc/conform.nvim",
 	cmd = { "ConformInfo" },
-	keys = require("plugins.formatter.conform.keys"),
+	keys = require("config.keymaps.formatter.conform"),
 	opts = {
 		formatters_by_ft = {
 			lua = { "stylua" },
