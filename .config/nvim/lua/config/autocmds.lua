@@ -1,4 +1,3 @@
--- Blade filetype configuration
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "blade",
 	callback = function()
@@ -7,7 +6,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Java filetype configuration
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "java",
 	callback = function()
@@ -22,17 +20,24 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
--- Auto-reload files on external changes
 vim.o.autoread = true
+
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
-  callback = function()
-    -- PERFORMANCE: Skip checktime in terminal buffers to prevent lag
-    if vim.bo.buftype == "terminal" then
-      return
-    end
-    if vim.fn.mode() ~= 'c' then
-      vim.cmd("checktime")
-    end
-  end,
-  pattern = { "*" },
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			return
+		end
+		if vim.fn.mode() ~= "c" then
+			vim.cmd("checktime")
+		end
+	end,
+	pattern = { "*" },
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+	callback = function()
+		if vim.bo.buftype == "" then
+			vim.cmd("normal! zz")
+		end
+	end,
 })
