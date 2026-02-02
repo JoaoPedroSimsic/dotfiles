@@ -10,6 +10,9 @@ return {
 			settings = {
 				save_on_toggle = false,
 				sync_on_ui_close = true,
+        key = function ()
+          return vim.loop.cwd()
+        end
 			},
 		})
 	end,
