@@ -3,10 +3,8 @@ return {
 	dependencies = { "williamboman/mason.nvim" },
 	opts = {
 		ensure_installed = {
-			-- Linters
 			"eslint_d",
 			"ruff",
-			-- Formatters
 			"prettierd",
 			"stylua",
 			"black",
