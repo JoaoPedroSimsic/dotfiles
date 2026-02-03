@@ -30,9 +30,9 @@ M.tools = {
 		css = { "prettierd" },
 		scss = { "prettierd" },
 		html = { "prettierd" },
-		blade = { "bladed_formatter" },
+		blade = { "blade-formatter" },
 		c = { "clang_format" },
-		java = { "google_java_format" },
+		java = { "google-java-format" },
 	},
 
 	linters = {

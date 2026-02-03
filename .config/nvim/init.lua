@@ -1,3 +1,4 @@
+require("config.java")
 require("config.options")
 require("config.ui")
 require("config.autocmds")
