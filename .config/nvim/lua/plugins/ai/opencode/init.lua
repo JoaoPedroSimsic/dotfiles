@@ -1,6 +1,7 @@
 return {
 	"NickvanDyke/opencode.nvim",
 	lazy = true,
+  commit = "849a5f63514667e63318521330f28acaf13a4125",
 	cmd = { "OpenCode", "OpenCodeChat" },
 	keys = require("config.keymaps.ai.opencode"),
 	dependencies = {
