@@ -17,6 +17,7 @@ M.tools = {
 		"jdtls",
 		"lemminx",
 		"pyright",
+    "terraformls",
 	},
 
 	formatters = {
