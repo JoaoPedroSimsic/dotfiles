@@ -1,5 +1,6 @@
 return {
 	"zbirenbaum/copilot.lua",
+	enabled = false,
 	event = "VeryLazy",
 	keys = require("config.keymaps.ai.copilot"),
 	config = function()
@@ -18,4 +19,3 @@ return {
 		})
 	end,
 }
-
