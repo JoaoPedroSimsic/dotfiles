@@ -1,6 +1,6 @@
 return {
 	"piersolenski/import.nvim",
-	keys = require("lua.config.keymaps.editor.import"),
+	keys = require("config.keymaps.editor.import"),
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 	},
