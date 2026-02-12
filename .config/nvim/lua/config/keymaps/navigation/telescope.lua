@@ -21,6 +21,13 @@ return {
 		desc = "Telescope buffers",
 	},
 	{
+		"<leader>fo",
+		function()
+			require("telescope.builtin").oldfiles()
+		end,
+		desc = "Telescope recent files",
+	},
+	{
 		"<leader>fh",
 		function()
 			require("telescope.builtin").help_tags()
