@@ -2,7 +2,9 @@ return {
 	"xiyaowong/transparent.nvim",
 	lazy = false,
 	config = function()
-		require("transparent").setup({})
+		require("transparent").setup({
+			exclude_groups = { "CursorLine" },
+		})
 		vim.cmd("TransparentEnable")
 	end,
 }
