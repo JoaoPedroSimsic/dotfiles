@@ -38,6 +38,7 @@ return {
 					".git/",
 					"build/",
 					"target/",
+          "public/",
 					"%.lock",
 				},
 
