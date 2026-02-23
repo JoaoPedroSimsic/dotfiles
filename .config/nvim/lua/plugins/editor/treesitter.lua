@@ -15,7 +15,20 @@ return {
 
 		local configs = require("nvim-treesitter.configs")
 		configs.setup({
-			ensure_installed = { "php", "html", "blade", "typescript", "java", "go", "css", "lua", "json", "python" },
+			ensure_installed = {
+				"php",
+				"html",
+				"blade",
+				"typescript",
+				"java",
+				"go",
+				"css",
+				"lua",
+				"json",
+				"python",
+				"c_sharp",
+				"razor",
+			},
 			auto_install = true,
 			sync_install = false,
 			highlight = {

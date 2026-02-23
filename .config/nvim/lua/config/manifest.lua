@@ -17,7 +17,7 @@ M.tools = {
 		"jdtls",
 		"lemminx",
 		"pyright",
-    "terraformls",
+		"terraformls",
 	},
 
 	formatters = {
@@ -34,6 +34,7 @@ M.tools = {
 		blade = { "blade-formatter" },
 		c = { "clang_format" },
 		java = { "google-java-format" },
+		cs = { "csharpier" },
 	},
 
 	linters = {
