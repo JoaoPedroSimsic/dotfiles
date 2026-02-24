@@ -6,4 +6,11 @@ return {
 		end,
 		mode = "n",
 	},
+	{
+		"<leader>m",
+		function()
+			MiniNotify.show_history()
+		end,
+		mode = "n",
+	},
 }

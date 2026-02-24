@@ -35,6 +35,7 @@ M.tools = {
 		c = { "clang_format" },
 		java = { "google-java-format" },
 		cs = { "csharpier" },
+		go = { "goimports", "gofumpt" },
 	},
 
 	linters = {
@@ -43,6 +44,7 @@ M.tools = {
 		javascriptreact = { "eslint_d" },
 		typescriptreact = { "eslint_d" },
 		python = { "pylint" },
+		go = { "golangcilint" },
 	},
 }
 
@@ -50,11 +52,31 @@ M.get_tools = function()
 	local all = {}
 	local seen = {}
 
-	for _, list in pairs(M.tools) do
-		for _, item in ipairs(list) do
-			if not seen[item] then
-				table.insert(all, item)
-				seen[item] = true
+	local mason_name_map = {
+		["golangcilint"] = "golangci-lint",
+		["clang_format"] = "clang-format",
+	}
+
+	for group_name, group_data in pairs(M.tools) do
+		if group_name == "servers" then
+			for _, item in ipairs(group_data) do
+				local mason_name = mason_name_map[item] or item
+				if not seen[mason_name] then
+					table.insert(all, mason_name)
+					seen[mason_name] = true
+				end
+			end
+		else
+			for _, items in pairs(group_data) do
+				if type(items) == "table" then
+					for _, item in ipairs(items) do
+						local mason_name = mason_name_map[item] or item
+						if not seen[mason_name] then
+							table.insert(all, mason_name)
+							seen[mason_name] = true
+						end
+					end
+				end
 			end
 		end
 	end
