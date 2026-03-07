@@ -9,6 +9,7 @@ echo "Copying dotfiles from $DOTFILES to system..."
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.tmuxifier"
 mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.config/tmux"
 
 cp "$DOTFILES/.zshrc" "$HOME/.zshrc"
 
@@ -32,6 +33,11 @@ cp -r "$DOTFILES/.config/lazygit" "$HOME/.config/"
 cp -r "$DOTFILES/.config/tmux" "$HOME/.config/"
 cp -r "$DOTFILES/.config/composer" "$HOME/.config/"
 cp -r "$DOTFILES/scripts" "$HOME/.local/bin/"
+cp "$DOTFILES/.tmux.conf" "$HOME/.config/tmux/tmux.conf"
+
+if [ -f "$HOME/.tmux.conf" ]; then
+    rm "$HOME/.tmux.conf"
+fi
 
 echo "Dotfiles copied successfully"
 
