@@ -18,6 +18,7 @@ M.tools = {
 		"lemminx",
 		"pyright",
 		"terraformls",
+		"rust_analyzer",
 	},
 
 	formatters = {
@@ -35,6 +36,7 @@ M.tools = {
 		c = { "clang_format" },
 		java = { "google-java-format" },
 		go = { "goimports", "gofumpt" },
+		rust = { "rustfmt" },
 	},
 
 	linters = {
