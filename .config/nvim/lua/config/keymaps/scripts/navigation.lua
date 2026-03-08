@@ -4,8 +4,8 @@ local map = vim.keymap.set
 map("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 map("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 
-map("n", "k", "kzz")
-map("n", "j", "jzz")
+map({ "n", "v" }, "k", "kzz")
+map({ "n", "v" }, "j", "jzz")
 
 -- Improves search navigation by centering it
 map("n", "n", "nzzzv", { noremap = true, silent = true })

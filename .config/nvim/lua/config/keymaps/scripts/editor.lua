@@ -17,7 +17,7 @@ vim.keymap.set({ "n", "x" }, "<leader>s", function()
 	local search_text = ""
 
 	if mode == "v" or mode == "V" or mode == "\22" then
-		vim.cmd('normal! "vy') 
+		vim.cmd('normal! "vy')
 		search_text = vim.fn.getreg("v")
 		search_text = vim.fn.escape(search_text, "\\/.*$^~[]")
 	else
