@@ -10,6 +10,7 @@ path=(
   "$HOME/.local/bin/scripts"
   "$HOME/.npm-global/bin"
   "$HOME/.local/bin"
+  "$HOME/.cargo/bin"
   "$GOBIN"
   $path 
 )
