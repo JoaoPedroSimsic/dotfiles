@@ -25,6 +25,7 @@ return {
 				"html",
 				"blade",
 				"typescript",
+        "angular",
 				"java",
 				"go",
 				"css",
