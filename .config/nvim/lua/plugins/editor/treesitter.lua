@@ -3,54 +3,68 @@ return {
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
-		---@class parser_config
-		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+		local parsers = require("nvim-treesitter.parsers")
 
-		parser_config.blade = {
+		-- 1. Register custom parser (Blade)
+		parsers.blade = {
 			install_info = {
 				url = "https://github.com/EmranMR/tree-sitter-blade",
 				files = { "src/parser.c" },
 				branch = "main",
+				revision = "HEAD",
 			},
 			filetype = "blade",
+			tier = "community",
 		}
 
-		local configs = require("nvim-treesitter.configs")
-		configs.setup({
-			modules = {},
-			ignore_install = {},
+		-- 2. Register the language mapping
+		vim.treesitter.language.register("blade", { "blade" })
 
-			ensure_installed = {
-				"php",
-				"html",
-				"blade",
-				"typescript",
-        "angular",
-				"java",
-				"go",
-				"css",
-				"lua",
-				"json",
-				"python",
-				"c_sharp",
-				"razor",
-				"markdown",
-				"markdown_inline",
+		-- 3. Install your preferred parsers (The new 'setup')
+		-- This replaces 'ensure_installed'
+		require("nvim-treesitter").install({
+			"php",
+			"html",
+			"blade",
+			"typescript",
+			"angular",
+			"java",
+			"go",
+			"css",
+			"lua",
+			"json",
+			"python",
+			"c_sharp",
+			"razor",
+			"markdown",
+			"markdown_inline",
+		})
+
+		-- 4. Enable Highlighting & Indent (The New Core Way)
+		-- The rewrite prefers using Autocmds or ftplugins
+		vim.api.nvim_create_autocmd("FileType", {
+			-- Add the filetypes you want treesitter to handle
+			pattern = { "lua", "php", "blade", "javascript", "typescript", "c_sharp" },
+			callback = function(args)
+				-- Check file size like you did before
+				local max_filesize = 100 * 1024
+				local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(args.buf))
+				if ok and stats and stats.size > max_filesize then
+					return
+				end
+
+				-- Enable Highlighting
+				vim.treesitter.start(args.buf)
+				-- Enable Indentation
+				vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			end,
+		})
+
+		-- 5. Custom filetype detection
+		vim.filetype.add({
+			pattern = {
+				[".*%.blade%.php"] = "blade",
 			},
-			auto_install = true,
-			sync_install = false,
-			highlight = {
-				enable = true,
-				disable = function(_, buf)
-					local max_filesize = 100 * 1024
-					local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-					if ok and stats and stats.size > max_filesize then
-						return true
-					end
-				end,
-				additional_vim_regex_highlighting = false,
-			},
-			indent = { enable = true },
 		})
 	end,
 }

@@ -1,131 +1,96 @@
 #!/usr/bin/env bash
 set -e
 
-echo "--- Starting System Setup ---"
+echo "--- Starting System Setup (Linux Mint) ---"
 
-PACKAGES=(
+# 1. Package Installation
+# Removed kubectl from here as it requires a separate repo/binary
+APT_PACKAGES=(
     # general
-    zsh which lazygit tmux neovim starship fzf ripgrep xclip fd diffutils openssh
+    zsh tmux neovim fzf ripgrep xclip fd-find diffutils openssh-client curl git unzip
     # docker
-    docker docker-compose lazydocker
+    docker.io docker-compose
     # c
-    gcc make bear
+    gcc make bear build-essential
     # typescript
     nodejs npm
     # python
-    python python-pip
+    python3 python3-pip
     # lua
-    lua luarocks stylua
+    lua5.4 luarocks
     # php
-    php composer php-apache php-fpm php-gd
+    php php-cli php-fpm php-gd libapache2-mod-php composer
     # go
-    go
+    golang-go
     # java
-    jdk21-openjdk maven
-    # k8s
-    skaffold minikube kubectl
+    openjdk-21-jdk maven
 )
 
-# 1. Package Installation
-if command -v pacman &>/dev/null; then
-    echo "Detected pacman"
-    sudo pacman -Syu --needed --noconfirm "${PACKAGES[@]}"
-elif command -v apt &>/dev/null; then
-    echo "Detected apt"
-    sudo apt update
-    sudo apt install -y "${PACKAGES[@]}"
-else
-    echo "No supported package manager found"
-    exit 1
+echo "Updating repositories and installing base packages..."
+sudo apt update
+sudo apt install -y "${APT_PACKAGES[@]}"
+
+# Fix for 'fd' (Mint names the binary fdfind)
+if ! command -v fd &>/dev/null; then
+    sudo ln -sf /usr/bin/fdfind /usr/local/bin/fd
 fi
 
-echo "Packages installed successfully."
+# 2. External Binaries (Not in Mint Repos)
+echo -e "\n--- Installing External Tools ---"
 
-# 2. SSH Key Setup
-echo -e "\n--- SSH Key Setup ---"
-echo "1) Generate a new SSH key"
-echo "2) Use an existing key (specify path)"
-echo "3) Skip SSH setup"
-read -p "Choose an option [1-3]: " SSH_CHOICE
-
-SELECTED_SSH_KEY=""
-
-case $SSH_CHOICE in
-    1)
-        read -p "Enter the ssh key email: " EMAIL
-        SELECTED_SSH_KEY="$HOME/.ssh/id_ed25519_setup"
-        if [ ! -f "$SELECTED_SSH_KEY" ]; then
-            ssh-keygen -t ed25519 -C "$EMAIL" -f "$SELECTED_SSH_KEY" -N ""
-            echo "SSH key generated successfully."
-        else
-            echo "Key already exists at $SELECTED_SSH_KEY."
-        fi
-        
-        echo -e "\nCopy the following public key to GitHub: https://github.com/settings/ssh/new\n"
-        cat "${SELECTED_SSH_KEY}.pub"
-        echo ""
-        read -p "Press Enter after adding the key to GitHub..."
-        ;;
-
-    2)
-        read -e -p "Enter the full path to your existing private key: " EXISTING_PATH
-        # Expand tilde if present
-        SELECTED_SSH_KEY="${EXISTING_PATH/#\~/$HOME}"
-        
-        if [ ! -f "$SELECTED_SSH_KEY" ]; then
-            echo "Error: File $SELECTED_SSH_KEY not found. Skipping SSH setup."
-            SELECTED_SSH_KEY=""
-        fi
-        ;;
-
-    *)
-        echo "Skipping SSH setup."
-        ;;
-esac
-
-# Add key to agent and test if a key was selected/created
-if [ -n "$SELECTED_SSH_KEY" ]; then
-    eval "$(ssh-agent -s)"
-    ssh-add "$SELECTED_SSH_KEY"
-    echo "Testing SSH connection to GitHub..."
-    ssh -T git@github.com || true
+# Kubectl (Manual binary install for Mint)
+if ! command -v kubectl &>/dev/null; then
+    echo "Installing kubectl..."
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    rm kubectl
 fi
 
-# 3. Global Language Modules
-echo -e "\n--- Installing Language Modules ---"
-
-NPM_MODULES=(typescript eslint prettier neovim blade-formatter)
-sudo npm install -g "${NPM_MODULES[@]}"
-echo "NPM modules installed."
-
-COMPOSER_MODULES=(laravel/pint)
-composer global require "${COMPOSER_MODULES[@]}"
-echo "Composer modules installed."
-
-# 4. Git Clones with directory checks (Prevents crash if exists)
-echo -e "\n--- Setting up Tools & Shell ---"
-
-if [ ! -d "$HOME/.tmuxifier" ]; then
-    echo "Installing tmuxifier..."
-    git clone git@github.com:jimeh/tmuxifier.git ~/.tmuxifier
-else
-    echo "Tmuxifier already installed."
+# Starship
+if ! command -v starship &>/dev/null; then
+    echo "Installing Starship..."
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Installing oh-my-zsh..."
-    export RUNZSH=no
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-    echo "oh-my-zsh already installed."
+# Lazygit
+if ! command -v lazygit &>/dev/null; then
+    echo "Installing Lazygit..."
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+    rm lazygit.tar.gz lazygit
 fi
 
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-    echo "Installing zsh-autosuggestions..."
-    git clone git@github.com:zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-else
-    echo "zsh-autosuggestions already installed."
+# Lazydocker
+if ! command -v lazydocker &>/dev/null; then
+    echo "Installing Lazydocker..."
+    curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
 fi
 
-echo -e "\n--- Setup Complete! ---"
+# Stylua
+if ! command -v stylua &>/dev/null; then
+    echo "Installing Stylua..."
+    curl -Lo stylua.zip https://github.com/JohnnyMorganz/StyLua/releases/latest/download/stylua-linux-x86_64.zip
+    unzip stylua.zip
+    sudo install stylua /usr/local/bin
+    rm stylua.zip stylua
+fi
+
+# Minikube
+if ! command -v minikube &>/dev/null; then
+    echo "Installing Minikube..."
+    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    sudo install minikube-linux-amd64 /usr/local/bin/minikube
+    rm minikube-linux-amd64
+fi
+
+# Skaffold
+if ! command -v skaffold &>/dev/null; then
+    echo "Installing Skaffold..."
+    curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+    sudo install skaffold /usr/local/bin/skaffold
+    rm skaffold
+fi
+
+echo "Packages and binaries installed successfully."

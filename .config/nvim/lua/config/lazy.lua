@@ -31,7 +31,6 @@ require("lazy").setup({
 		{ import = "plugins.formatter" },
 		{ import = "plugins.linter" },
 		{ import = "languages.c#" },
-		{ import = "languages.go" },
 	},
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.

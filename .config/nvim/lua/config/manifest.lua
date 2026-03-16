@@ -35,7 +35,6 @@ M.tools = {
 		blade = { "blade-formatter" },
 		c = { "clang_format" },
 		java = { "google-java-format" },
-		cs = { "csharpier" },
 		go = { "goimports", "gofumpt" },
 		rust = { "rustfmt" },
 	},
