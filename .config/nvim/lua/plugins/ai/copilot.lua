@@ -2,7 +2,7 @@ return {
 	"zbirenbaum/copilot.lua",
 	enabled = false,
 	event = "VeryLazy",
-	keys = require("config.keymaps.ai.copilot"),
+	keys = require("config.keymaps.ai.init"),
 	config = function()
 		require("copilot").setup({
 			suggestion = {
