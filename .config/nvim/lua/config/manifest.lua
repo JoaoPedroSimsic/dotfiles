@@ -1,6 +1,9 @@
 local M = {}
 
 M.tools = {
+
+	ai = "cursor",
+
 	servers = {
 		"lua_ls",
 		"clangd",
@@ -60,22 +63,24 @@ M.get_tools = function()
 	}
 
 	for group_name, group_data in pairs(M.tools) do
-		if group_name == "servers" then
-			for _, item in ipairs(group_data) do
-				local mason_name = mason_name_map[item] or item
-				if not seen[mason_name] then
-					table.insert(all, mason_name)
-					seen[mason_name] = true
+		if type(group_data) == "table" then
+			if group_name == "servers" then
+				for _, item in ipairs(group_data) do
+					local mason_name = mason_name_map[item] or item
+					if not seen[mason_name] then
+						table.insert(all, mason_name)
+						seen[mason_name] = true
+					end
 				end
-			end
-		else
-			for _, items in pairs(group_data) do
-				if type(items) == "table" then
-					for _, item in ipairs(items) do
-						local mason_name = mason_name_map[item] or item
-						if not seen[mason_name] then
-							table.insert(all, mason_name)
-							seen[mason_name] = true
+			else
+				for _, items in pairs(group_data) do
+					if type(items) == "table" then
+						for _, item in ipairs(items) do
+							local mason_name = mason_name_map[item] or item
+							if not seen[mason_name] then
+								table.insert(all, mason_name)
+								seen[mason_name] = true
+							end
 						end
 					end
 				end
