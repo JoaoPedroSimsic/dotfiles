@@ -1,0 +1,35 @@
+font-family = JetBrains Mono
+font-size = 11
+
+background = 0d0500
+foreground = ff6600
+
+cursor-color = ff6600
+cursor-style = block
+cursor-style-blink = false
+
+selection-background = 4a2800
+selection-foreground = ff6600
+
+palette = 0=#1a0a00
+palette = 1=#ff3300
+palette = 2=#ff6600
+palette = 3=#ff9933
+palette = 4=#cc5500
+palette = 5=#ff6600
+palette = 6=#ff8040
+palette = 7=#ff6600
+palette = 8=#4a2800
+palette = 9=#ff5533
+palette = 10=#ff8040
+palette = 11=#ffaa55
+palette = 12=#ff6600
+palette = 13=#ff8855
+palette = 14=#ffaa77
+palette = 15=#ffcc99
+
+window-decoration = false
+window-padding-x = 4
+window-padding-y = 4
+
+background-opacity = 0.95
