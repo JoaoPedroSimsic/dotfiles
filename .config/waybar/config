@@ -1,51 +1,88 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 20,
+    "height": 18,
     "spacing": 0,
+    "margin-top": 0,
+    "margin-left": 0,
+    "margin-right": 0,
 
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-left": ["hyprland/workspaces", "hyprland/submap", "hyprland/window"],
     "modules-center": [],
-    "modules-right": ["cpu", "memory", "pulseaudio", "network", "battery", "clock"],
+    "modules-right": ["tray", "cpu", "memory", "pulseaudio", "network", "battery", "clock"],
 
     "hyprland/workspaces": {
         "format": "[{name}]",
-        "on-click": "activate"
+        "on-click": "activate",
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+
+    "hyprland/submap": {
+        "format": "<RESIZE>",
+        "tooltip": false
     },
 
     "hyprland/window": {
-        "format": "| {}",
-        "max-length": 50
+        "format": "| {title}",
+        "max-length": 40,
+        "separate-outputs": true
+    },
+
+    "tray": {
+        "icon-size": 14,
+        "spacing": 8
     },
 
     "cpu": {
-        "format": "CPU:{usage}%",
-        "interval": 2
+        "format": "CPU:{usage:02}%",
+        "interval": 2,
+        "on-click": "ghostty -e btop"
     },
 
     "memory": {
-        "format": "MEM:{percentage}%",
-        "interval": 2
+        "format": "MEM:{percentage:02}%",
+        "interval": 2,
+        "on-click": "ghostty -e btop"
     },
 
     "pulseaudio": {
-        "format": "VOL:{volume}%",
-        "format-muted": "VOL:MUTE",
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        "format": "VOL:{volume:02}%",
+        "format-muted": "VOL:---",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-click-right": "pavucontrol"
     },
 
     "network": {
-        "format-wifi": "NET:{signalStrength}%",
+        "format-wifi": "NET:{signalStrength:02}%",
         "format-ethernet": "NET:ETH",
-        "format-disconnected": "NET:OFF"
+        "format-disconnected": "NET:---",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "on-click": "ghostty -e nmtui"
     },
 
     "battery": {
-        "format": "BAT:{capacity}%",
-        "format-charging": "CHG:{capacity}%"
+        "format": "BAT:{capacity:02}%",
+        "format-charging": "CHG:{capacity:02}%",
+        "format-plugged": "PWR:{capacity:02}%",
+        "format-critical": "LOW:{capacity:02}%",
+        "states": {
+            "warning": 30,
+            "critical": 15
+        }
     },
 
     "clock": {
-        "format": "{:%Y-%m-%d %H:%M}"
+        "format": "{:%Y-%m-%d|%H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "format": {
+                "today": "<span color='#ff6600'><b>{}</b></span>"
+            }
+        }
     }
 }
