@@ -1,6 +1,8 @@
-#version 100
-precision highp float;
-varying vec2 v_texcoord;
+#version 300 es
+
+precision mediump float;
+in vec2 v_texcoord;
+layout(location = 0) out vec4 fragColor;
 uniform sampler2D tex;
 
 void main() {
@@ -12,7 +14,7 @@ void main() {
     curved_uv = curved_uv * 0.5 + 0.5;
     
     if (curved_uv.x < 0.0 || curved_uv.x > 1.0 || curved_uv.y < 0.0 || curved_uv.y > 1.0) {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        fragColor = vec4(0.0, 0.0, 0.0, 1.0);
         return;
     }
     
@@ -20,7 +22,7 @@ void main() {
     float pixelSize = 3.0;
     vec2 pixelUV = floor(curved_uv * texSize / pixelSize) * pixelSize / texSize;
     
-    vec4 color = texture2D(tex, pixelUV);
+    vec4 color = texture(tex, pixelUV);
     float luma = dot(color.rgb, vec3(0.299, 0.587, 0.114));
     
     float scanline = sin(curved_uv.y * 480.0 * 3.14159) * 0.5 + 0.5;
@@ -33,5 +35,5 @@ void main() {
     vec3 dark = vec3(0.05, 0.02, 0.0);
     vec3 final_color = mix(dark, amber, luma);
     
-    gl_FragColor = vec4(final_color, 1.0);
+    fragColor = vec4(final_color, 1.0);
 }
