@@ -1,11 +1,15 @@
+/* Wofi - CRT Amber TUI Style */
+/* Looks like a text-mode menu */
+
 * {
     font-family: "JetBrains Mono", "Terminus", monospace;
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 window {
-    background-color: #1a0a00;
-    border: 2px solid #ff6600;
+    background-color: #0d0500;
+    border: 1px solid #ff6600;
 }
 
 #input {
@@ -13,11 +17,14 @@ window {
     color: #ff6600;
     border: none;
     border-bottom: 1px solid #4a2800;
-    padding: 8px;
+    padding: 4px 8px;
+    margin: 0;
 }
 
 #input:focus {
     border-bottom: 1px solid #ff6600;
+    outline: none;
+    box-shadow: none;
 }
 
 #outer-box {
@@ -36,14 +43,16 @@ window {
 }
 
 #entry {
-    padding: 4px 8px;
-    color: #804000;
+    padding: 2px 8px;
+    color: #4a2800;
     background: transparent;
+    margin: 0;
 }
 
 #entry:selected {
-    background-color: #331a00;
+    background-color: #1a0a00;
     color: #ff6600;
+    outline: none;
 }
 
 #text {

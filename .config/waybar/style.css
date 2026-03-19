@@ -1,8 +1,12 @@
+/* Waybar - CRT Amber TUI Style */
+/* Looks like a text-mode status bar */
+
 * {
     border: none;
     border-radius: 0;
-    font-family: "JetBrains Mono", "Terminus", monospace;
+    font-family: "JetBrains Mono", "Terminus", "Courier New", monospace;
     font-size: 11px;
+    font-weight: bold;
     min-height: 0;
     margin: 0;
     padding: 0;
@@ -11,15 +15,15 @@
 window#waybar {
     background-color: #0d0500;
     color: #ff6600;
-    border-bottom: 1px solid #ff6600;
+    border-bottom: 1px solid #4a2800;
 }
 
 #workspaces {
-    padding-left: 2px;
+    padding-left: 0;
 }
 
 #workspaces button {
-    padding: 0 2px;
+    padding: 0 4px;
     color: #4a2800;
     background: transparent;
     border: none;
@@ -36,46 +40,24 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: #331a00;
+    background: #1a0a00;
     color: #ff6600;
 }
 
 #submap {
-    color: #ff3300;
-    padding: 0 8px;
-    background: #1a0a00;
-}
-
-#window {
-    color: #804000;
-    padding: 0 8px;
-}
-
-#tray {
-    padding: 0 8px;
-}
-
-#tray > .passive {
-    -gtk-icon-effect: dim;
-}
-
-#tray > .needs-attention {
-    -gtk-icon-effect: highlight;
+    color: #ff6600;
+    padding: 0 4px;
+    background: #331a00;
 }
 
 #cpu,
 #memory,
 #pulseaudio,
 #network,
-#battery,
 #clock {
-    padding: 0 6px;
+    padding: 0 4px;
     color: #ff6600;
     background: transparent;
-}
-
-#cpu {
-    border-left: 1px solid #331a00;
 }
 
 #pulseaudio.muted {
@@ -86,28 +68,6 @@ window#waybar {
     color: #4a2800;
 }
 
-#battery.charging {
-    color: #ff9933;
-}
-
-#battery.warning:not(.charging) {
-    color: #ff6600;
-    animation: blink 1s linear infinite;
-}
-
-#battery.critical:not(.charging) {
-    color: #ff3300;
-    animation: blink 0.5s linear infinite;
-}
-
-@keyframes blink {
-    to {
-        color: #4a2800;
-    }
-}
-
 #clock {
-    border-left: 1px solid #331a00;
-    padding-left: 8px;
     padding-right: 4px;
 }

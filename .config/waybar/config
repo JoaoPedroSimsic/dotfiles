@@ -1,18 +1,18 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 18,
+    "height": 16,
     "spacing": 0,
     "margin-top": 0,
     "margin-left": 0,
     "margin-right": 0,
 
-    "modules-left": ["hyprland/workspaces", "hyprland/submap", "hyprland/window"],
+    "modules-left": ["hyprland/workspaces", "hyprland/submap"],
     "modules-center": [],
-    "modules-right": ["tray", "cpu", "memory", "pulseaudio", "network", "battery", "clock"],
+    "modules-right": ["cpu", "memory", "pulseaudio", "network", "clock"],
 
     "hyprland/workspaces": {
-        "format": "[{name}]",
+        "format": "{name}",
         "on-click": "activate",
         "persistent-workspaces": {
             "*": 5
@@ -20,69 +20,35 @@
     },
 
     "hyprland/submap": {
-        "format": "<RESIZE>",
+        "format": " RESIZE",
         "tooltip": false
-    },
-
-    "hyprland/window": {
-        "format": "| {title}",
-        "max-length": 40,
-        "separate-outputs": true
-    },
-
-    "tray": {
-        "icon-size": 14,
-        "spacing": 8
     },
 
     "cpu": {
         "format": "CPU:{usage:02}%",
-        "interval": 2,
-        "on-click": "ghostty -e btop"
+        "interval": 2
     },
 
     "memory": {
         "format": "MEM:{percentage:02}%",
-        "interval": 2,
-        "on-click": "ghostty -e btop"
+        "interval": 2
     },
 
     "pulseaudio": {
-        "format": "VOL:{volume:02}%",
-        "format-muted": "VOL:---",
-        "format-icons": {
-            "default": ["", "", ""]
-        },
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-right": "pavucontrol"
+        "format": "VOL:{volume}%",
+        "format-muted": "VOL:MUTE",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
 
     "network": {
-        "format-wifi": "NET:{signalStrength:02}%",
+        "format-wifi": "NET:OK",
         "format-ethernet": "NET:ETH",
-        "format-disconnected": "NET:---",
-        "tooltip-format": "{ifname}: {ipaddr}",
-        "on-click": "ghostty -e nmtui"
-    },
-
-    "battery": {
-        "format": "BAT:{capacity:02}%",
-        "format-charging": "CHG:{capacity:02}%",
-        "format-plugged": "PWR:{capacity:02}%",
-        "format-critical": "LOW:{capacity:02}%",
-        "states": {
-            "warning": 30,
-            "critical": 15
-        }
+        "format-disconnected": "NET:--",
+        "tooltip-format": "{ifname}: {ipaddr}"
     },
 
     "clock": {
-        "format": "{:%Y-%m-%d|%H:%M}",
-        "tooltip-format": "<tt>{calendar}</tt>",
-        "calendar": {
-            "format": {
-                "today": "<span color='#ff6600'><b>{}</b></span>"
-            }
-        }
+        "format": "{:%Y-%m-%d %H:%M}",
+        "tooltip": false
     }
 }
