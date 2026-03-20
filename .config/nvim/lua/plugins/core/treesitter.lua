@@ -3,19 +3,28 @@ return {
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
-		---@class parser_config
-		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+		-- Try to configure blade parser (optional, may not work with newer treesitter)
+		local ok_parsers, parsers = pcall(require, "nvim-treesitter.parsers")
+		if ok_parsers and parsers.get_parser_configs then
+			local ok_config, parser_config = pcall(parsers.get_parser_configs)
+			if ok_config and parser_config then
+				parser_config.blade = {
+					install_info = {
+						url = "https://github.com/EmranMR/tree-sitter-blade",
+						files = { "src/parser.c" },
+						branch = "main",
+					},
+					filetype = "blade",
+				}
+			end
+		end
 
-		parser_config.blade = {
-			install_info = {
-				url = "https://github.com/EmranMR/tree-sitter-blade",
-				files = { "src/parser.c" },
-				branch = "main",
-			},
-			filetype = "blade",
-		}
+		local ok_configs, configs = pcall(require, "nvim-treesitter.configs")
+		if not ok_configs then
+			vim.notify("nvim-treesitter.configs not available yet", vim.log.levels.WARN)
+			return
+		end
 
-		local configs = require("nvim-treesitter.configs")
 		configs.setup({
 			modules = {},
 			ignore_install = {},
@@ -25,7 +34,7 @@ return {
 				"html",
 				"blade",
 				"typescript",
-        "angular",
+				"angular",
 				"java",
 				"go",
 				"css",

@@ -1,5 +1,0 @@
-require("config.keymaps.scripts.diagnostics")
-require("config.keymaps.scripts.editor")
-require("config.keymaps.scripts.navigation")
-require("config.keymaps.scripts.files")
-require("config.keymaps.scripts.tmux")
