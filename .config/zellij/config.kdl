@@ -1,0 +1,75 @@
+keybinds {
+    normal {
+        unbind "Ctrl h"
+    }
+    
+    shared_except "locked" {
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        
+        bind "Alt n" { NewPane; }
+        bind "Alt x" { CloseFocus; }
+        
+        bind "Alt t" { NewTab; }
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        
+        bind "Alt f" { ToggleFocusFullscreen; }
+        bind "Alt z" { TogglePaneFrames; }
+    }
+}
+
+theme "custom-minimal" {
+    fg "#d8d8d8"
+    bg "#1c1c1c"
+    black "#1c1c1c"
+    red "#d75f5f"
+    green "#87af87"
+    yellow "#d7af5f"
+    blue "#5f87af"
+    magenta "#af87af"
+    cyan "#5fafaf"
+    white "#d8d8d8"
+    orange "#d7875f"
+}
+
+themes {
+    custom-minimal {
+        fg 216 216 216
+        bg 28 28 28
+        black 28 28 28
+        red 215 95 95
+        green 135 175 135
+        yellow 215 175 95
+        blue 95 135 175
+        magenta 175 135 175
+        cyan 95 175 175
+        white 216 216 216
+        orange 215 135 95
+    }
+}
+
+simplified_ui true
+pane_frames false
+default_layout "compact"
+
+on_force_close "quit"
+scroll_buffer_size 10000
+copy_on_select false
+scrollback_editor "nvim"
+
+mouse_mode true
+copy_clipboard "system"
+
+session_serialization false
+pane_viewport_serialization false
+scrollback_lines_to_serialize 0
+
+default_shell "nu"
+
+auto_layout true
