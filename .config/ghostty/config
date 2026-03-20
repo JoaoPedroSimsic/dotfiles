@@ -1,40 +1,13 @@
-# Ghostty - CRT Amber Terminal Config
+# Ghostty - CRT Terminal Config
+config-file = colors.conf
 
-# Use a classic monospace font
+# Font
 font-family = JetBrains Mono
 font-size = 11
 
-# Amber phosphor colors
-background = 0d0500
-foreground = ff6600
-
 # Solid block cursor - no blinking
-cursor-color = ff6600
 cursor-style = block
 cursor-style-blink = false
-
-# Selection in darker amber
-selection-background = 4a2800
-selection-foreground = ff6600
-
-# Monochrome amber palette - all shades of amber/orange
-# This makes everything render in amber tones
-palette = 0=#1a0a00
-palette = 1=#ff3300
-palette = 2=#ff6600
-palette = 3=#ff9933
-palette = 4=#cc5500
-palette = 5=#ff6600
-palette = 6=#ff8040
-palette = 7=#ff6600
-palette = 8=#4a2800
-palette = 9=#ff5533
-palette = 10=#ff8040
-palette = 11=#ffaa55
-palette = 12=#ff6600
-palette = 13=#ff8855
-palette = 14=#ffaa77
-palette = 15=#ffcc99
 
 # No window decorations - pure terminal
 window-decoration = false

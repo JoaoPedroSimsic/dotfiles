@@ -1,5 +1,5 @@
-/* Waybar - CRT Amber TUI Style */
-/* Looks like a text-mode status bar */
+/* Waybar - CRT TUI Style */
+@import "colors.css";
 
 * {
     border: none;
@@ -13,9 +13,9 @@
 }
 
 window#waybar {
-    background-color: #ff6600;
-    color: #0d0500;
-    border-bottom: 1px solid #4a2800;
+    background-color: var(--black);
+    color: var(--base);
+    border-bottom: 1px solid var(--dim);
 }
 
 #workspaces {
@@ -24,30 +24,30 @@ window#waybar {
 
 #workspaces button {
     padding: 0 4px;
-    color: #0d0500;
+    color: var(--dim);
     background: transparent;
     border: none;
     margin: 0;
 }
 
 #workspaces button.active {
-    color: #0d0500;
-    background: #ff8833;
+    color: var(--black);
+    background: var(--bright);
 }
 
 #workspaces button.urgent {
-    color: #ff3300;
+    color: var(--error, red);
 }
 
 #workspaces button:hover {
-    background: #ff8833;
-    color: #0d0500;
+    background: var(--bg);
+    color: var(--base);
 }
 
 #submap {
-    color: #0d0500;
+    color: var(--black);
     padding: 0 4px;
-    background: #ff8833;
+    background: var(--dim);
 }
 
 #cpu,
@@ -56,16 +56,16 @@ window#waybar {
 #network,
 #clock {
     padding: 0 4px;
-    color: #0d0500;
+    color: var(--base);
     background: transparent;
 }
 
 #pulseaudio.muted {
-    color: #4a2800;
+    color: var(--dim);
 }
 
 #network.disconnected {
-    color: #4a2800;
+    color: var(--dim);
 }
 
 #clock {
