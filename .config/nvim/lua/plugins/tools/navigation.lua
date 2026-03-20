@@ -78,12 +78,12 @@ return {
 			},
 		},
 		config = function()
-			require("harpoon").setup({
+			require("harpoon"):setup({
 				settings = {
 					save_on_toggle = false,
 					sync_on_ui_close = true,
 					key = function()
-						return vim.loop.cwd()
+						return vim.uv.cwd() or vim.fn.getcwd()
 					end,
 				},
 			})

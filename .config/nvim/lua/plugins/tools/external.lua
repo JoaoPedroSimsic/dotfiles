@@ -61,7 +61,8 @@ return {
 		},
 		dependencies = "saghen/blink.download",
 		config = function()
-			require("kubectl").setup()
+			---@diagnostic disable-next-line: missing-fields
+			require("kubectl").setup({})
 		end,
 	},
 }
