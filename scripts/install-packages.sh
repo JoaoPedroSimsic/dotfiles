@@ -110,6 +110,13 @@ echo "Installing global composer modules"
 sudo composer global require "${COMPOSER_MODULES[@]}"
 echo "Composer modules installed successfully"
 
+if command -v yay &>/dev/null; then
+	echo "Installing AUR packages"
+	yay -S --needed --noconfirm bibata-cursor-theme
+else
+	echo "yay not found, skipping AUR packages (install bibata-cursor-theme manually)"
+fi
+
 echo "Installing tmuxifier"
 git clone git@github.com:jimeh/tmuxifier.git ~/.tmuxifier
 echo "Tmuxifier installed successfully"
