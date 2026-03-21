@@ -1,7 +1,7 @@
 # Starship - Clean Two-Line Prompt
 
 format = """
-$directory $git_branch$git_status
+$directory $git_branch$git_status$all
 $character"""
 
 add_newline = true
@@ -11,8 +11,8 @@ format = "[$path]($style)[$read_only]($read_only_style)"
 style = "bold cyan"
 read_only = " RO"
 read_only_style = "bold red"
-truncation_length = 4
-truncate_to_repo = true
+truncation_length = 3
+truncate_to_repo = false
 
 [git_branch]
 format = "on [$branch]($style)"
@@ -50,225 +50,43 @@ format = "[@$hostname]($style) "
 style = "bold"
 ssh_only = true
 
-# Disable all fancy modules
-[aws]
-disabled = true
-
-[azure]
-disabled = true
-
-[buf]
-disabled = true
-
-[bun]
-disabled = true
-
-[c]
-disabled = true
-
-[cmake]
-disabled = true
-
-[cobol]
-disabled = true
-
-[conda]
-disabled = true
-
-[container]
-disabled = true
-
-[crystal]
-disabled = true
-
-[daml]
-disabled = true
-
-[dart]
-disabled = true
-
-[deno]
-disabled = true
-
-[docker_context]
-disabled = true
-
-[dotnet]
-disabled = true
-
-[elixir]
-disabled = true
-
-[elm]
-disabled = true
-
-[env_var]
-disabled = true
-
-[erlang]
-disabled = true
-
-[fennel]
-disabled = true
-
-[fill]
-disabled = true
-
-[fossil_branch]
-disabled = true
-
-[gcloud]
-disabled = true
-
-[golang]
-disabled = true
-
-[gradle]
-disabled = true
-
-[guix_shell]
-disabled = true
-
-[haskell]
-disabled = true
-
-[haxe]
-disabled = true
-
-[helm]
-disabled = true
-
-[hg_branch]
-disabled = true
-
-[java]
-disabled = true
-
-[jobs]
-disabled = true
-
-[julia]
-disabled = true
-
-[kotlin]
-disabled = true
-
-[kubernetes]
-disabled = true
-
-[lua]
-disabled = true
-
-[memory_usage]
-disabled = true
-
-[meson]
-disabled = true
-
-[nim]
-disabled = true
-
-[nix_shell]
-disabled = true
-
+# Language/tool versions - only show when detected
 [nodejs]
-disabled = true
-
-[ocaml]
-disabled = true
-
-[opa]
-disabled = true
-
-[openstack]
-disabled = true
-
-[os]
-disabled = true
-
-[package]
-disabled = true
-
-[perl]
-disabled = true
-
-[php]
-disabled = true
-
-[pijul_channel]
-disabled = true
-
-[pulumi]
-disabled = true
-
-[purescript]
-disabled = true
+format = "[$symbol($version)]($style) "
+symbol = "node "
 
 [python]
-disabled = true
-
-[quarto]
-disabled = true
-
-[raku]
-disabled = true
-
-[red]
-disabled = true
-
-[rlang]
-disabled = true
-
-[ruby]
-disabled = true
+format = "[$symbol$version]($style) "
+symbol = "py "
 
 [rust]
-disabled = true
+format = "[$symbol($version)]($style) "
+symbol = "rs "
 
-[scala]
-disabled = true
+[golang]
+format = "[$symbol($version)]($style) "
+symbol = "go "
 
-[shell]
-disabled = true
+[java]
+format = "[$symbol($version)]($style) "
+symbol = "java "
 
-[shlvl]
-disabled = true
+[php]
+format = "[$symbol($version)]($style) "
+symbol = "php "
 
-[singularity]
-disabled = true
+[ruby]
+format = "[$symbol($version)]($style) "
+symbol = "rb "
 
-[solidity]
-disabled = true
+[nix_shell]
+format = "[$symbol$state]($style) "
+symbol = "nix "
 
-[spack]
-disabled = true
+[docker_context]
+format = "[$symbol$context]($style) "
+symbol = "docker "
 
-[status]
-disabled = true
-
-[sudo]
-disabled = true
-
-[swift]
-disabled = true
-
-[terraform]
-disabled = true
-
-[time]
-disabled = true
-
-[typst]
-disabled = true
-
-[vagrant]
-disabled = true
-
-[vcsh]
-disabled = true
-
-[vlang]
-disabled = true
-
-[zig]
-disabled = true
+[package]
+format = "[$symbol$version]($style) "
+symbol = "pkg "
