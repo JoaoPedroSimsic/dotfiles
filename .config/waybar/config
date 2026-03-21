@@ -8,7 +8,7 @@
     "margin-right": 0,
 
     "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-    "modules-center": ["clock"],
+    "modules-center": ["custom/date", "clock"],
     "modules-right": ["custom/weather", "hyprland/language", "pulseaudio", "network"],
 
     "hyprland/workspaces": {
@@ -16,39 +16,37 @@
         "format-window-separator": " ",
         "window-rewrite-default": " ",
         "window-rewrite": {
-            "class<firefox>": " ",
-            "class<chromium>": " ",
-            "class<google-chrome>": " ",
-            "class<brave-browser>": " ",
-            "class<Alacritty>": " ",
-            "class<kitty>": " ",
-            "class<ghostty>": " ",
-            "class<foot>": " ",
-            "class<org.codeberg.dnkl.foot>": " ",
-            "class<com.mitchellh.ghostty>": " ",
-            "class<code>": " ",
-            "class<Code>": " ",
-            "class<nvim>": " ",
-            "class<neovim>": " ",
-            "class<nautilus>": " ",
-            "class<org.gnome.Nautilus>": " ",
-            "class<thunar>": " ",
-            "class<nemo>": " ",
-            "class<dolphin>": " ",
-            "class<spotify>": " ",
-            "class<Spotify>": " ",
-            "class<discord>": " ",
-            "class<slack>": " ",
-            "class<telegram>": " ",
-            "class<org.telegram.desktop>": " ",
-            "class<steam>": " ",
-            "class<gimp>": " ",
-            "class<obs>": " ",
-            "class<mpv>": " ",
-            "class<vlc>": " ",
-            "class<org.wezfurlong.wezterm>": " ",
-            "class<Zellij>": " ",
-            "class<zellij>": " "
+            "firefox": " ",
+            "chromium": " ",
+            "google-chrome": " ",
+            "brave-browser": " ",
+            "Alacritty": " ",
+            "kitty": " ",
+            "ghostty": " ",
+            "foot": " ",
+            "org.codeberg.dnkl.foot": " ",
+            "com.mitchellh.ghostty": " ",
+            "code": " ",
+            "Code": " ",
+            "nvim": " ",
+            "neovim": " ",
+            "nautilus": " ",
+            "org.gnome.Nautilus": " ",
+            "thunar": " ",
+            "nemo": " ",
+            "dolphin": " ",
+            "spotify": " ",
+            "Spotify": " ",
+            "discord": " ",
+            "slack": " ",
+            "telegram": " ",
+            "org.telegram.desktop": " ",
+            "steam": " ",
+            "gimp": " ",
+            "obs": " ",
+            "mpv": " ",
+            "vlc": " ",
+            "org.wezfurlong.wezterm": " "
         },
         "on-click": "activate",
         "persistent-workspaces": {
@@ -93,8 +91,14 @@
         "tooltip-format": "{ifname}: {ipaddr}"
     },
 
+    "custom/date": {
+        "format": " {}",
+        "exec": "date '+%Y-%m-%d'",
+        "interval": 60
+    },
+
     "clock": {
-        "format": " {:%Y-%m-%d}   {:%H:%M}",
+        "format": " {:%H:%M}",
         "tooltip-format": "{:%A, %B %d, %Y}"
     }
 }

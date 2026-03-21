@@ -51,6 +51,7 @@ window#waybar {
   background: @black;
 }
 
+#custom-date,
 #custom-weather,
 #language,
 #pulseaudio,
