@@ -1,3 +1,5 @@
+theme = "amber"
+
 [search]
 placeholder = "Search..."
 delay = 0
