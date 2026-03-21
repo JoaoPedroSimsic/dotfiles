@@ -1,31 +1,22 @@
-# Ghostty - CRT Terminal Config
 config-file = colors.conf
 
-# Font
-font-family = JetBrains Mono
+font-family = JetBrainsMono Nerd Font
 font-size = 11
 
-# Solid block cursor - no blinking
 cursor-style = block
 cursor-style-blink = false
 
-# No window decorations - pure terminal
 window-decoration = false
 
-# Minimal padding
 window-padding-x = 2
 window-padding-y = 2
 
-# Fully opaque - no transparency
 background-opacity = 1.0
 
-# Bold is just bright, no actual bold font
 bold-is-bright = true
 
-# Disable ligatures for authentic look
-font-feature = -calt
-font-feature = -liga
-font-feature = -dlig
+font-feature = calt
+font-feature = liga
+font-feature = dlig
 
-# Fast response
 scrollback-limit = 10000
