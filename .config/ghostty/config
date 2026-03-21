@@ -15,8 +15,8 @@ background-opacity = 1.0
 
 bold-is-bright = true
 
-font-feature = calt
-font-feature = liga
-font-feature = dlig
+font-feature = +calt
+font-feature = +liga
+font-feature = +dlig
 
 scrollback-limit = 10000
