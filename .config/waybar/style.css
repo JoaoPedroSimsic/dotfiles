@@ -13,8 +13,8 @@
 }
 
 window#waybar {
-    background-color: @black;
-    color: @base;
+    background-color: @base;
+    color: @black;
     border-bottom: 1px solid @dim;
 }
 
@@ -24,15 +24,15 @@ window#waybar {
 
 #workspaces button {
     padding: 0 4px;
-    color: @dim;
+    color: @bg;
     background: transparent;
     border: none;
     margin: 0;
 }
 
 #workspaces button.active {
-    color: @black;
-    background: @bright;
+    color: @base;
+    background: @black;
 }
 
 #workspaces button.urgent {
@@ -40,14 +40,14 @@ window#waybar {
 }
 
 #workspaces button:hover {
-    background: @bg;
-    color: @base;
+    background: @bright;
+    color: @black;
 }
 
 #submap {
-    color: @black;
+    color: @base;
     padding: 0 4px;
-    background: @dim;
+    background: @black;
 }
 
 #cpu,
@@ -56,16 +56,16 @@ window#waybar {
 #network,
 #clock {
     padding: 0 4px;
-    color: @base;
+    color: @black;
     background: transparent;
 }
 
 #pulseaudio.muted {
-    color: @dim;
+    color: @bg;
 }
 
 #network.disconnected {
-    color: @dim;
+    color: @bg;
 }
 
 #clock {
