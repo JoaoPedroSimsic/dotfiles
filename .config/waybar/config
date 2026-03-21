@@ -8,40 +8,47 @@
     "margin-right": 0,
 
     "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-    "modules-center": [],
-    "modules-right": ["custom/weather", "hyprland/language", "pulseaudio", "network", "clock"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/weather", "hyprland/language", "pulseaudio", "network"],
 
     "hyprland/workspaces": {
-        "format": "{name}: {windows}",
+        "format": "{name}{windows}",
         "format-window-separator": " ",
-        "window-rewrite-default": "",
+        "window-rewrite-default": " ",
         "window-rewrite": {
-            "class<firefox>": "",
-            "class<chromium>": "",
-            "class<google-chrome>": "",
-            "class<brave-browser>": "",
-            "class<Alacritty>": "",
-            "class<kitty>": "",
-            "class<ghostty>": "",
-            "class<foot>": "",
-            "class<code>": "",
-            "class<Code>": "",
-            "class<nvim>": "",
-            "class<neovim>": "",
-            "class<nautilus>": "",
-            "class<thunar>": "",
-            "class<nemo>": "",
-            "class<dolphin>": "",
-            "class<spotify>": "",
-            "class<Spotify>": "",
-            "class<discord>": "",
-            "class<slack>": "",
-            "class<telegram>": "",
-            "class<steam>": "",
-            "class<gimp>": "",
-            "class<obs>": "",
-            "class<mpv>": "",
-            "class<vlc>": ""
+            "class<firefox>": " ",
+            "class<chromium>": " ",
+            "class<google-chrome>": " ",
+            "class<brave-browser>": " ",
+            "class<Alacritty>": " ",
+            "class<kitty>": " ",
+            "class<ghostty>": " ",
+            "class<foot>": " ",
+            "class<org.codeberg.dnkl.foot>": " ",
+            "class<com.mitchellh.ghostty>": " ",
+            "class<code>": " ",
+            "class<Code>": " ",
+            "class<nvim>": " ",
+            "class<neovim>": " ",
+            "class<nautilus>": " ",
+            "class<org.gnome.Nautilus>": " ",
+            "class<thunar>": " ",
+            "class<nemo>": " ",
+            "class<dolphin>": " ",
+            "class<spotify>": " ",
+            "class<Spotify>": " ",
+            "class<discord>": " ",
+            "class<slack>": " ",
+            "class<telegram>": " ",
+            "class<org.telegram.desktop>": " ",
+            "class<steam>": " ",
+            "class<gimp>": " ",
+            "class<obs>": " ",
+            "class<mpv>": " ",
+            "class<vlc>": " ",
+            "class<org.wezfurlong.wezterm>": " ",
+            "class<Zellij>": " ",
+            "class<zellij>": " "
         },
         "on-click": "activate",
         "persistent-workspaces": {
@@ -71,7 +78,7 @@
     },
 
     "pulseaudio": {
-        "format": " {volume}%",
+        "format": "{icon} {volume}%",
         "format-muted": " MUTE",
         "format-icons": {
             "default": ["", "", ""]
@@ -87,8 +94,7 @@
     },
 
     "clock": {
-        "format": " {:%H:%M}",
-        "format-alt": " {:%Y-%m-%d}",
+        "format": " {:%Y-%m-%d}   {:%H:%M}",
         "tooltip-format": "{:%A, %B %d, %Y}"
     }
 }
