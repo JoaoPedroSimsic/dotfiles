@@ -5,6 +5,9 @@ keybinds clear-defaults=false {
         bind "Alt j" { MoveFocus "Down"; }
         bind "Alt k" { MoveFocus "Up"; }
     }
+    shared_except "locked" "normal" {
+        bind "Ctrl c" { SwitchToMode "Normal"; }
+    }
 }
 
 theme "custom"
