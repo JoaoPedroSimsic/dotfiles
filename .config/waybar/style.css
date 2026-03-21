@@ -13,9 +13,9 @@
 }
 
 window#waybar {
-    background-color: var(--black);
-    color: var(--base);
-    border-bottom: 1px solid var(--dim);
+    background-color: @black;
+    color: @base;
+    border-bottom: 1px solid @dim;
 }
 
 #workspaces {
@@ -24,30 +24,30 @@ window#waybar {
 
 #workspaces button {
     padding: 0 4px;
-    color: var(--dim);
+    color: @dim;
     background: transparent;
     border: none;
     margin: 0;
 }
 
 #workspaces button.active {
-    color: var(--black);
-    background: var(--bright);
+    color: @black;
+    background: @bright;
 }
 
 #workspaces button.urgent {
-    color: var(--error, red);
+    color: red;
 }
 
 #workspaces button:hover {
-    background: var(--bg);
-    color: var(--base);
+    background: @bg;
+    color: @base;
 }
 
 #submap {
-    color: var(--black);
+    color: @black;
     padding: 0 4px;
-    background: var(--dim);
+    background: @dim;
 }
 
 #cpu,
@@ -56,16 +56,16 @@ window#waybar {
 #network,
 #clock {
     padding: 0 4px;
-    color: var(--base);
+    color: @base;
     background: transparent;
 }
 
 #pulseaudio.muted {
-    color: var(--dim);
+    color: @dim;
 }
 
 #network.disconnected {
-    color: var(--dim);
+    color: @dim;
 }
 
 #clock {
