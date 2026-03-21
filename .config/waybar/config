@@ -9,10 +9,40 @@
 
     "modules-left": ["hyprland/workspaces", "hyprland/submap"],
     "modules-center": [],
-    "modules-right": ["cpu", "memory", "pulseaudio", "network", "clock"],
+    "modules-right": ["custom/weather", "hyprland/language", "pulseaudio", "network", "clock"],
 
     "hyprland/workspaces": {
-        "format": "{name}",
+        "format": "{name}: {windows}",
+        "format-window-separator": " ",
+        "window-rewrite-default": "",
+        "window-rewrite": {
+            "class<firefox>": "",
+            "class<chromium>": "",
+            "class<google-chrome>": "",
+            "class<brave-browser>": "",
+            "class<Alacritty>": "",
+            "class<kitty>": "",
+            "class<ghostty>": "",
+            "class<foot>": "",
+            "class<code>": "",
+            "class<Code>": "",
+            "class<nvim>": "",
+            "class<neovim>": "",
+            "class<nautilus>": "",
+            "class<thunar>": "",
+            "class<nemo>": "",
+            "class<dolphin>": "",
+            "class<spotify>": "",
+            "class<Spotify>": "",
+            "class<discord>": "",
+            "class<slack>": "",
+            "class<telegram>": "",
+            "class<steam>": "",
+            "class<gimp>": "",
+            "class<obs>": "",
+            "class<mpv>": "",
+            "class<vlc>": ""
+        },
         "on-click": "activate",
         "persistent-workspaces": {
             "*": 5
@@ -24,31 +54,41 @@
         "tooltip": false
     },
 
-    "cpu": {
-        "format": "CPU:{usage:02}%",
-        "interval": 2
+    "custom/weather": {
+        "format": "{}",
+        "exec": "curl -s 'wttr.in/?format=%c%t' 2>/dev/null || echo ' --'",
+        "interval": 900,
+        "tooltip": false
     },
 
-    "memory": {
-        "format": "MEM:{percentage:02}%",
-        "interval": 2
+    "hyprland/language": {
+        "format": " {}",
+        "format-en": "EN",
+        "format-pt": "PT",
+        "format-es": "ES",
+        "format-de": "DE",
+        "format-fr": "FR"
     },
 
     "pulseaudio": {
-        "format": "VOL:{volume}%",
-        "format-muted": "VOL:MUTE",
+        "format": " {volume}%",
+        "format-muted": " MUTE",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
 
     "network": {
-        "format-wifi": "NET:OK",
-        "format-ethernet": "NET:ETH",
-        "format-disconnected": "NET:--",
+        "format-wifi": " {essid}",
+        "format-ethernet": " {ifname}",
+        "format-disconnected": " OFF",
         "tooltip-format": "{ifname}: {ipaddr}"
     },
 
     "clock": {
-        "format": "{:%Y-%m-%d %H:%M}",
-        "tooltip": false
+        "format": " {:%H:%M}",
+        "format-alt": " {:%Y-%m-%d}",
+        "tooltip-format": "{:%A, %B %d, %Y}"
     }
 }
