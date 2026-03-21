@@ -1,39 +1,27 @@
-# Starship - Minimal Retro Prompt
-# Looks like an old-school terminal prompt
+# Starship - Clean Two-Line Prompt
 
-format = """$username$hostname$directory$git_branch$git_status$character"""
+format = """
+$directory $git_branch$git_status
+$character"""
 
-# No extra newlines
-add_newline = false
-
-[username]
-format = "[$user]($style)"
-style_user = "bold"
-style_root = "bold red"
-show_always = false
-
-[hostname]
-format = "[@$hostname]($style)"
-style = "bold"
-ssh_only = true
+add_newline = true
 
 [directory]
-format = "[$path]($style)[$read_only]($read_only_style) "
-style = "bold"
+format = "[$path]($style)[$read_only]($read_only_style)"
+style = "bold cyan"
 read_only = " RO"
 read_only_style = "bold red"
-truncation_length = 3
+truncation_length = 4
 truncate_to_repo = true
-fish_style_pwd_dir_length = 1
 
 [git_branch]
-format = "[($branch)]($style) "
-style = "bold"
+format = "on [$branch]($style)"
+style = "bold purple"
 symbol = ""
 
 [git_status]
-format = "[$all_status$ahead_behind]($style)"
-style = "bold"
+format = " [$all_status$ahead_behind]($style)"
+style = "bold yellow"
 conflicted = "!"
 ahead = "+"
 behind = "-"
@@ -46,9 +34,21 @@ renamed = "r"
 deleted = "x"
 
 [character]
-success_symbol = "[>](bold)"
+success_symbol = "[>](bold green)"
 error_symbol = "[>](bold red)"
-vimcmd_symbol = "[<](bold)"
+vimcmd_symbol = "[<](bold yellow)"
+
+# Only show when relevant
+[username]
+format = "[$user]($style) "
+style_user = "bold"
+style_root = "bold red"
+show_always = false
+
+[hostname]
+format = "[@$hostname]($style) "
+style = "bold"
+ssh_only = true
 
 # Disable all fancy modules
 [aws]
