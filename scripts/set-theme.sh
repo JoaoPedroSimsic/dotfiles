@@ -154,4 +154,14 @@ sed \
     -e "s/{{BLACK}}/#$BLACK/g" \
     "$DOTFILES/.config/mako/config.template" > "$DOTFILES/.config/mako/config"
 
+# ── 8. Generate .config/walker/style.css from template ───────────────────────
+
+sed \
+    -e "s/{{BASE}}/#$BASE/g"   \
+    -e "s/{{BRIGHT}}/#$BRIGHT/g" \
+    -e "s/{{DIM}}/#$DIM/g"     \
+    -e "s/{{BG}}/#$BG/g"       \
+    -e "s/{{BLACK}}/#$BLACK/g" \
+    "$DOTFILES/.config/walker/style.css.template" > "$DOTFILES/.config/walker/style.css"
+
 echo "Done. Color files generated."

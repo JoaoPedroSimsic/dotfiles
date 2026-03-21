@@ -1,0 +1,66 @@
+* {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+}
+
+#window {
+    background-color: #0a0400;
+    border: 2px solid #ff6600;
+}
+
+#box {
+    background-color: #0a0400;
+}
+
+#search {
+    background-color: #1a0a00;
+    color: #ff6600;
+    border: none;
+    border-bottom: 1px solid #471d00;
+    padding: 10px;
+}
+
+#search:focus {
+    outline: none;
+}
+
+#list {
+    background-color: #0a0400;
+}
+
+#item {
+    padding: 8px 10px;
+    color: #ff6600;
+    background-color: transparent;
+}
+
+#item:selected {
+    background-color: #ff6600;
+    color: #0a0400;
+}
+
+#item:hover {
+    background-color: #471d00;
+}
+
+#icon {
+    margin-right: 10px;
+}
+
+#text {
+    color: inherit;
+}
+
+#label {
+    color: inherit;
+}
+
+scrollbar {
+    background-color: #0a0400;
+}
+
+scrollbar slider {
+    background-color: #471d00;
+    border-radius: 0;
+    min-width: 4px;
+}
