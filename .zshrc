@@ -1,3 +1,4 @@
+export ZSH="$HOME/.oh-my-zsh"
 export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 export EDITOR="nvim"
