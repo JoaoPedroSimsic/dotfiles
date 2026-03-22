@@ -116,6 +116,8 @@ alias v = nvim
 alias vi = nvim
 alias vim = nvim
 
+alias z = zellij
+
 alias c = clear
 alias q = exit
 alias reload = exec nu
