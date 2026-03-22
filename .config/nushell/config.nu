@@ -62,6 +62,34 @@ $env.config = {
             mode: [emacs, vi_normal, vi_insert]
             event: { send: historyhintcomplete }
         }
+        {
+            name: zellij_nav_left
+            modifier: alt
+            keycode: char_h
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: executehostcommand, cmd: "zellij action move-focus left" }
+        }
+        {
+            name: zellij_nav_down
+            modifier: alt
+            keycode: char_j
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: executehostcommand, cmd: "zellij action move-focus down" }
+        }
+        {
+            name: zellij_nav_up
+            modifier: alt
+            keycode: char_k
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: executehostcommand, cmd: "zellij action move-focus up" }
+        }
+        {
+            name: zellij_nav_right
+            modifier: alt
+            keycode: char_l
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: executehostcommand, cmd: "zellij action move-focus right" }
+        }
     ]
 }
 
