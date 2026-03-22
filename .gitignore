@@ -1,2 +1,4 @@
-go
-rclone
+*.backup
+*.bak*
+*sqlite*
+
