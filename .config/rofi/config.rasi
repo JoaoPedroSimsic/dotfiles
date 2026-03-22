@@ -1,11 +1,10 @@
 configuration {
     modi: "drun,run";
-    show-icons: false;
+    show-icons: true;
     font: "JetBrains Mono 11";
     drun-display-format: "{name}";
-    display-drun: "";
-    display-run: "";
-    cursor: "text";
+    kb-secondary-copy: "";
+    kb-cancel: "Escape,Control+c,Control+bracketleft";
 }
 
-@theme "theme.rasi"
+@theme "~/.config/rofi/theme.rasi"
