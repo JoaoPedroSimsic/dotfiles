@@ -1,6 +1,4 @@
 *.backup
 *.bak*
 *sqlite*
-zellij/
-.config/zellij/
 
