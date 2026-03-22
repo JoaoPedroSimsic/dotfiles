@@ -313,17 +313,25 @@ themes {
         }
         frame_selected {
             base 255 102 0
-            background 0
+            background 10 4 0
             emphasis_0 255 102 0
             emphasis_1 255 102 0
-            emphasis_2 255 156 89
-            emphasis_3 0
+            emphasis_2 255 102 0
+            emphasis_3 255 102 0
+        }
+        frame_unselected {
+            base 71 29 0
+            background 10 4 0
+            emphasis_0 71 29 0
+            emphasis_1 71 29 0
+            emphasis_2 71 29 0
+            emphasis_3 71 29 0
         }
         frame_highlight {
             base 255 102 0
-            background 0
-            emphasis_0 255 156 89
-            emphasis_1 0
+            background 10 4 0
+            emphasis_0 255 102 0
+            emphasis_1 255 102 0
             emphasis_2 255 102 0
             emphasis_3 255 102 0
         }
@@ -415,7 +423,7 @@ default_mode "normal"
 // The name of the default layout to load on startup
 // Default: "default"
 // 
-default_layout "compact"
+default_layout "default"
  
 // The folder in which Zellij will look for layouts
 // (Requires restart)
@@ -441,7 +449,7 @@ mouse_mode true
 //   - true (default, enabled)
 //   - false
 // 
-pane_frames false
+pane_frames true
  
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
