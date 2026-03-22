@@ -1,0 +1,11 @@
+configuration {
+    modi: "drun,run";
+    show-icons: false;
+    font: "JetBrains Mono 11";
+    drun-display-format: "{name}";
+    display-drun: "";
+    display-run: "";
+    cursor: "text";
+}
+
+@theme "theme.rasi"

@@ -142,7 +142,7 @@ sed \
     -e "s/{{BLACK}}/#$BLACK/g" \
     "$DOTFILES/.config/mako/config.template" > "$DOTFILES/.config/mako/config"
 
-# ── 7. Generate .config/tofi/config from template ────────────────────────────
+# ── 7. Generate .config/rofi/theme.rasi from template ────────────────────────
 
 sed \
     -e "s/{{BASE}}/#$BASE/g"   \
@@ -150,6 +150,6 @@ sed \
     -e "s/{{DIM}}/#$DIM/g"     \
     -e "s/{{BG}}/#$BG/g"       \
     -e "s/{{BLACK}}/#$BLACK/g" \
-    "$DOTFILES/.config/tofi/config.template" > "$DOTFILES/.config/tofi/config"
+    "$DOTFILES/.config/rofi/theme.rasi.template" > "$DOTFILES/.config/rofi/theme.rasi"
 
 echo "Done. Color files generated."
