@@ -1,3 +1,7 @@
+vim.opt.equalalways = false
+
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+
 -- Indentation
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2

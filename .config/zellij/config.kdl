@@ -150,7 +150,7 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
-        bind "Ctrl q" { Quit; }
+        bind "Ctrl q" { Detach; }
     }
     shared_except "locked" "move" {
         bind "Alt m" { SwitchToMode "move"; }
@@ -472,7 +472,7 @@ pane_frames true
 //   - detach (Default)
 //   - quit
 // 
-on_force_close "quit"
+on_force_close "detach"
  
 // Configure the scroll back buffer size
 // This is the number of lines zellij stores for each pane in the scroll back
@@ -657,4 +657,4 @@ show_startup_tips false
 // of this command will be used instead of the discovered RESURRECT_COMMAND
 // can be useful for removing wrappers around commands
 // Note: be sure to escape backslashes and similar characters properly
-// post_command_discovery_hook "echo $RESURRECT_COMMAND | sed <your_regex_here>"
+post_command_discovery_hook "echo $RESURRECT_COMMAND | sed 's|/nix/store/[^/]*/bin/nvim.*|nvim|g; s|/nix/store/[^/]*/bin/||g'"

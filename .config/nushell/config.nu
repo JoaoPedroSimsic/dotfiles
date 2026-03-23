@@ -1,3 +1,5 @@
+use ~/.config/nushell/scripts/grave.nu *
+
 $env.config = {
     show_banner: false
 
@@ -89,6 +91,13 @@ $env.config = {
             keycode: char_l
             mode: [emacs, vi_normal, vi_insert]
             event: { send: executehostcommand, cmd: "zellij action move-focus right" }
+        }
+        {
+            name: grave_session_selector
+            modifier: control
+            keycode: char_g
+            mode: [emacs, vi_normal, vi_insert]
+            event: { send: executehostcommand, cmd: "grave" }
         }
     ]
 }
