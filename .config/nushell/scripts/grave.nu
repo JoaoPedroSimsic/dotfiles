@@ -108,13 +108,28 @@ def run-picker [] {
         $"($status_icon) ($s.display)"
     })
     
-    let selected = ($display_lines | str join "\n" | fzf --ansi --reverse --border=bold --border-label=" 󰘁 Graveyard " --prompt=" " --pointer="▶" --color="label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600,hl:#ff9c59,hl+:#ff9c59" | str trim)
-    
+    print -n "\e[2 q"
+
+    let selected = ($display_lines 
+      | str join "\n" 
+      | fzf --ansi 
+            --margin=15%,20% 
+            --layout=reverse 
+            --info=inline-right 
+            --separator="─" 
+            --border=sharp 
+            --border-label=" Grave " 
+            --prompt=" " 
+            --pointer=" " 
+            --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
+      | str trim)
+
+    print -n "\e[0 q"
+
     if ($selected | is-empty) {
         return null
     }
     
-    # Extract session name: get part before │, then get the last word (session name)
     let session_name = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
     $session_name
 }
