@@ -1,6 +1,6 @@
 keybinds clear-defaults=true {
     locked {
-        bind "Ctrl g" { SwitchToMode "normal"; }
+        bind "Ctrl l" { SwitchToMode "normal"; }
     }
     pane {
         bind "left" { MoveFocus "left"; }
@@ -144,7 +144,14 @@ keybinds clear-defaults=true {
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
         bind "Alt f" { ToggleFloatingPanes; }
-        bind "Ctrl g" { SwitchToMode "locked"; }
+        bind "Ctrl l" { SwitchToMode "locked"; }
+        bind "Ctrl g" {
+            Run "nu" "-c" "use ~/.config/nushell/scripts/grave.nu *; grave switch" {
+                floating true
+                close_on_exit true
+                name "Grave"
+            }
+        }
         bind "Alt i" { MoveTab "left"; }
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
@@ -397,6 +404,7 @@ web_client {
 ui {
     pane_frames {
         hide_session_name true
+        show_current_path true
     }
 }
  

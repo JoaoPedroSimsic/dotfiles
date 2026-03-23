@@ -86,15 +86,25 @@ def cleanup-old-sessions [] {
     }
 }
 
-def run-picker [] {
+def run-picker [--no-border (-n) --exclude-current (-e)] {
     cleanup-old-sessions
     
-    let sessions = (get-zellij-sessions)
+    let all_sessions = (get-zellij-sessions)
+    let sessions = if $exclude_current {
+        $all_sessions | where status != "current"
+    } else {
+        $all_sessions
+    }
     
     if ($sessions | is-empty) {
         print ""
+        let empty_args = if $no_border {
+            ["--ansi" "--reverse" "--prompt= " "--pointer=" "--color=prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
+        } else {
+            ["--ansi" "--reverse" "--border=bold" "--border-label= 󰘁 Graveyard " "--prompt= " "--pointer=" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
+        }
         try {
-            "  No sessions in the graveyard" | ^fzf --ansi --reverse --border=bold --border-label=" 󰘁 Graveyard " --prompt=" " --pointer=" " --color="label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" --disabled --header="  Press ESC to exit" | ignore
+            "  No other sessions available" | ^fzf ...$empty_args | ignore
         }
         return null
     }
@@ -113,10 +123,16 @@ def run-picker [] {
     
     print --stderr -n "\e[2 q"
 
+    let fzf_args = if $no_border {
+        ["--ansi" "--layout=reverse" "--info=inline-right" "--prompt= " "--pointer= " "--highlight-line" "--color=prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff"]
+    } else {
+        ["--ansi" "--margin=15%,20%" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer= " "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
+    }
+
     try {
         $display_lines 
         | str join "\n" 
-        | ^fzf --ansi --margin=15%,20% --layout=reverse --info=inline-right --separator="─" --border=sharp --border-label=" Grave " --prompt=" " --pointer=" " --highlight-line --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
+        | ^fzf ...$fzf_args
         | save -f $tmp_out
     }
 
@@ -133,10 +149,10 @@ def run-picker [] {
     $session_name
 }
 
-export def main [] {
+export def main [--switch (-s)] {
     let inside_zellij = ($env | get -o ZELLIJ | is-not-empty)
     
-    if $inside_zellij {
+    if $inside_zellij and not $switch {
         zellij action launch-or-focus-plugin "session-manager" --floating --move-to-focused-tab
     } else {
         let session_name = (run-picker)
@@ -145,6 +161,15 @@ export def main [] {
             sleep 50ms
             ^zellij attach $session_name
         }
+    }
+}
+
+export def "grave switch" [] {
+    let session_name = (run-picker --no-border --exclude-current)
+    if $session_name != null and $session_name != "" {
+        fix-nix-paths $session_name
+        sleep 50ms
+        ^zellij attach $session_name
     }
 }
 
