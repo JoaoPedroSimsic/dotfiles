@@ -20,3 +20,5 @@ font-feature = +liga
 font-feature = +dlig
 
 scrollback-limit = 10000
+
+keybind = ctrl+q=text:\x11

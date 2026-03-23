@@ -127,9 +127,8 @@ export def main [] {
     } else {
         let session_name = (run-picker)
         if $session_name != null and $session_name != "" {
-            # Fix any broken nix store paths before attaching
             fix-nix-paths $session_name
-            exec sh -c $"zellij attach '($session_name)'"
+            ^zellij attach $session_name
         }
     }
 }
