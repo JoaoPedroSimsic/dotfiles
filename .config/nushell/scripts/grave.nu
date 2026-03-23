@@ -142,6 +142,7 @@ export def main [] {
         let session_name = (run-picker)
         if $session_name != null and $session_name != "" {
             fix-nix-paths $session_name
+            sleep 50ms
             ^zellij attach $session_name
         }
     }
