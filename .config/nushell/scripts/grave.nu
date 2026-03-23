@@ -116,7 +116,7 @@ def run-picker [] {
     try {
         $display_lines 
         | str join "\n" 
-        | ^fzf --ansi --margin=15%,20% --layout=reverse --info=inline-right --separator="─" --border=sharp --border-label=" Grave " --prompt=" " --pointer=" " --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
+        | ^fzf --ansi --margin=15%,20% --layout=reverse --info=inline-right --separator="─" --border=sharp --border-label=" Grave " --prompt=" " --pointer=" " --highlight-line --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
         | save -f $tmp_out
     }
 
