@@ -11,7 +11,6 @@ def fix-nix-paths [session_name: string] {
     if ($layout_file | path exists) {
         let content = (open $layout_file --raw)
         if ($content | str contains "/nix/store/") {
-            # Use sed for reliable regex replacement
             ^sed -i 's|command "/nix/store/[^"]*/bin/nvim"|command="nvim"|g' $layout_file
             ^sed -i '/args "--cmd" "lua dofile/d' $layout_file
             ^sed -i 's|/nix/store/[^/]*/bin/||g' $layout_file
@@ -94,7 +93,9 @@ def run-picker [] {
     
     if ($sessions | is-empty) {
         print ""
-        echo "  No sessions in the graveyard" | fzf --ansi --reverse --border=bold --border-label=" 󰘁 Graveyard " --prompt=" " --pointer=" " --color="label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" --disabled --header="  Press ESC to exit" | ignore
+        try {
+            "  No sessions in the graveyard" | ^fzf --ansi --reverse --border=bold --border-label=" 󰘁 Graveyard " --prompt=" " --pointer=" " --color="label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" --disabled --header="  Press ESC to exit" | ignore
+        }
         return null
     }
     
@@ -108,23 +109,21 @@ def run-picker [] {
         $"($status_icon) ($s.display)"
     })
     
-    print -n "\e[2 q"
+    let tmp_out = (mktemp -t grave_out.XXXXXX)
+    
+    print --stderr -n "\e[2 q"
 
-    let selected = ($display_lines 
-      | str join "\n" 
-      | fzf --ansi 
-            --margin=15%,20% 
-            --layout=reverse 
-            --info=inline-right 
-            --separator="─" 
-            --border=sharp 
-            --border-label=" Grave " 
-            --prompt=" " 
-            --pointer=" " 
-            --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
-      | str trim)
+    try {
+        $display_lines 
+        | str join "\n" 
+        | ^fzf --ansi --margin=15%,20% --layout=reverse --info=inline-right --separator="─" --border=sharp --border-label=" Grave " --prompt=" " --pointer=" " --color="label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600" 
+        | save -f $tmp_out
+    }
 
-    print -n "\e[0 q"
+    print --stderr -n "\e[0 q"
+
+    let selected = (open $tmp_out | str trim)
+    rm -f $tmp_out
 
     if ($selected | is-empty) {
         return null
