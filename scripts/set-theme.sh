@@ -152,4 +152,42 @@ sed \
     -e "s/{{BLACK}}/#$BLACK/g" \
     "$DOTFILES/.config/rofi/theme.rasi.template" > "$DOTFILES/.config/rofi/theme.rasi"
 
+# ── 8. Generate .config/hypr/hyprlock.conf from template ─────────────────────
+
+if [ -f "$DOTFILES/.config/hypr/hyprlock.conf.template" ]; then
+    sed \
+        -e "s/{{BASE}}/$BASE/g"   \
+        -e "s/{{BRIGHT}}/$BRIGHT/g" \
+        -e "s/{{DIM}}/$DIM/g"     \
+        -e "s/{{BG}}/$BG/g"       \
+        -e "s/{{BLACK}}/$BLACK/g" \
+        -e "s/{{ERROR}}/$ERROR/g" \
+        "$DOTFILES/.config/hypr/hyprlock.conf.template" > "$DOTFILES/.config/hypr/hyprlock.conf"
+fi
+
+# ── 9. Generate SDDM theme Main.qml from template ────────────────────────────
+
+SDDM_THEME_DIR="$(dirname "$DOTFILES")/modules/sddm-theme"
+if [ -f "$SDDM_THEME_DIR/Main.qml.template" ]; then
+    sed \
+        -e "s/{{BASE}}/$BASE/g"   \
+        -e "s/{{BRIGHT}}/$BRIGHT/g" \
+        -e "s/{{DIM}}/$DIM/g"     \
+        -e "s/{{BG}}/$BG/g"       \
+        -e "s/{{BLACK}}/$BLACK/g" \
+        -e "s/{{ERROR}}/$ERROR/g" \
+        "$SDDM_THEME_DIR/Main.qml.template" > "$SDDM_THEME_DIR/Main.qml"
+    echo "SDDM theme updated. Run 'sudo nixos-rebuild switch' to apply."
+fi
+
+# ── 10. Generate .config/nushell/scripts/grave.nu from template ──────────────
+
+sed \
+    -e "s/{{BASE}}/$BASE/g"   \
+    -e "s/{{BRIGHT}}/$BRIGHT/g" \
+    -e "s/{{DIM}}/$DIM/g"     \
+    -e "s/{{BG}}/$BG/g"       \
+    -e "s/{{BLACK}}/$BLACK/g" \
+    "$DOTFILES/.config/nushell/scripts/grave.nu.template" > "$DOTFILES/.config/nushell/scripts/grave.nu"
+
 echo "Done. Color files generated."
