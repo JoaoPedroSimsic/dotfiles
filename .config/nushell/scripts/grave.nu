@@ -168,7 +168,7 @@ def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     if $output == "" { null } else { $output }
 }
 
-export def fzf-inner [--margin: string = "15%,15%" --exclude-current --edit] {
+export def fzf-inner [--margin: string = "15%,15%" --exclude-current] {
     let sessions = (get-zellij-sessions)
     let filtered = if $exclude_current {
         $sessions | where status != "current"
@@ -187,28 +187,9 @@ export def fzf-inner [--margin: string = "15%,15%" --exclude-current --edit] {
         "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display\""
     }
     
-    let exclude_flag = if $exclude_current { "--exclude-current" } else { "" }
-    let toggle_edit = if $edit { "" } else { "--edit" }
+    let delete_cmd = "execute-silent(nu -c 'use ~/.config/nushell/scripts/grave.nu *; delete-session \"{1}\"')+reload-sync(" + $lines_cmd + ")"
     
-    let become_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; fzf-inner --margin '($margin)' ($exclude_flag) ($toggle_edit)\""
-    
-    let delete_action = "execute(nu -c 'use ~/.config/nushell/scripts/grave.nu *; delete-session \"{1}\"')"
-    let reload_action = "reload(" + $lines_cmd + ")" 
-
-    let colors = if $edit {
-        "label:#ff9c59,border:#ff9c59,prompt:#ff9c59,fg+:#0a0400,bg+:#ff9c59,hl:#ff6600,hl+:#ffffff,separator:#ff9c59"
-    } else {
-        "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
-    }
-    
-    let label = if $edit { " EDIT " } else { " Grave " }
-    let header = if $edit { "  Tab: normal │ d: delete │ Esc: close" } else { "  Tab: edit mode │ Enter: switch │ Esc: close" }
-    
-    let bind_arg = if $edit {
-        "--bind=j:down,k:up,h:first,l:last,d:" + $delete_action + "+" + $reload_action + ",tab:become(" + $become_cmd + ")"
-    } else {
-        "--bind=tab:become(" + $become_cmd + ")"
-    }
+    let colors = "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
     
     let lines = ($filtered | each { |s|
         $"($s.name) │ ($s.display)"
@@ -216,17 +197,15 @@ export def fzf-inner [--margin: string = "15%,15%" --exclude-current --edit] {
     
     let fzf_args = [
         "--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" 
-        "--border=sharp" $"--border-label=($label)" "--prompt= " "--pointer=" 
-        "--highlight-line" $"--color=($colors)" $"--header=($header)" 
+        "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" 
+        "--highlight-line" $"--color=($colors)" "--header=  Enter: switch │ ctrl-d: delete │ Esc: close" 
         "--delimiter=│" $"--margin=($margin)" "--with-nth=1.."
+        "--bind=j:down,k:up,h:first,l:last"
+        $"--bind=ctrl-d:($delete_cmd)"
     ]
     
     let result = try {
-        if $edit {
-            $lines | ^fzf ...$fzf_args "--disabled" $bind_arg
-        } else {
-            $lines | ^fzf ...$fzf_args $bind_arg
-        }
+        $lines | ^fzf ...$fzf_args
     } catch { "" } 
 
     if ($result | str trim) != "" {
