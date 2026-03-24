@@ -124,9 +124,9 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
     print --stderr -n "\e[2 q"
 
     let fzf_args = if $no_border {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--prompt= " "--pointer= " "--highlight-line" "--color=prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff"]
+        ["--ansi" "--layout=reverse" "--info=inline-right" "--prompt= " "--pointer=" "--highlight-line" "--color=prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff"]
     } else {
-        ["--ansi" "--margin=15%,20%" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer= " "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
+        ["--ansi" "--margin=15%,20%" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
     }
 
     try {
@@ -167,22 +167,14 @@ export def main [--switch (-s)] {
 export def "grave switch" [] {
     let pid_file = "/tmp/grave-pid"
     
-    # Check if already open - kill the previous fzf process
     if ($pid_file | path exists) {
-        let pid = (open $pid_file | str trim)
-        if $pid != "" {
-            try { ^kill $pid }
-        }
+        try { ^kill (open $pid_file | str trim) }
         rm -f $pid_file
         exit
     }
     
-    # Save our PID (fzf will be a child process)
     $nu.pid | into string | save -f $pid_file
-    
     let session_name = (run-picker --no-border --exclude-current)
-    
-    # Clean up
     rm -f $pid_file
     
     if $session_name != null and $session_name != "" {
