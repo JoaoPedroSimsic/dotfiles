@@ -119,7 +119,7 @@ def cleanup-old-sessions [] {
     }
 }
 
-def run-picker [--no-border (-n) --exclude-current (-e)] {
+def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     cleanup-old-sessions
     
     let all_sessions = (get-zellij-sessions)
@@ -131,11 +131,7 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
     
     if ($sessions | is-empty) {
         print ""
-        let empty_args = if $no_border {
-            ["--ansi" "--reverse" "--prompt= " "--pointer=" "--color=prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
-        } else {
-            ["--ansi" "--reverse" "--border=bold" "--border-label= 󰘁 Graveyard " "--prompt= " "--pointer=" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
-        }
+        let empty_args = ["--ansi" "--reverse" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
         try {
             "  No other sessions available" | ^fzf ...$empty_args | ignore
         }
@@ -158,10 +154,10 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
     
     print --stderr -n "\e[2 q"
 
-    let fzf_args = if $no_border {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--prompt= " "--pointer=" "--highlight-line" "--color=prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff"]
+    let fzf_args = if $fullscreen {
+        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
     } else {
-        ["--ansi" "--margin=15%,20%" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
+        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--margin=15%,15%" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#000000,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
     }
 
     try {
@@ -210,7 +206,7 @@ export def "grave switch" [] {
     }
     
     $nu.pid | into string | save -f $pid_file
-    let session_name = (run-picker --no-border --exclude-current)
+    let session_name = (run-picker --exclude-current --fullscreen)
     rm -f $pid_file
     
     if $session_name != null and $session_name != "" {

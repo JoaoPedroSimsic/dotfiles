@@ -150,6 +150,9 @@ keybinds clear-defaults=true {
                 floating true
                 close_on_exit true
                 name "Grave"
+                borderless true
+                width "70%"
+                height "75%"
             }
         }
         bind "Alt i" { MoveTab "left"; }
