@@ -1,7 +1,7 @@
 const MAX_SESSIONS = 10
 
 def fix-nix-paths [session_name: string] {
-    let session_info_dir = (get-session-info-dir)
+    let session_info_dir = (get-session-info-dir $session_name)
     if $session_info_dir == null {
         return
     }
@@ -18,32 +18,58 @@ def fix-nix-paths [session_name: string] {
     }
 }
 
-def get-session-info-dir [] {
+def get-session-info-dir [session_name: string] {
     let session_dir = $"($env.HOME)/.cache/zellij"
-    let version_dirs = (ls $session_dir | where type == dir | where name =~ '\d+\.\d+' | get name)
     
-    if ($version_dirs | is-empty) {
-        return null
+    # Search all version directories for the session
+    let version_dirs = (ls $session_dir | where type == dir | get name)
+    
+    for dir in $version_dirs {
+        let session_path = $"($dir)/session_info/($session_name)"
+        if ($session_path | path exists) {
+            return $"($dir)/session_info"
+        }
     }
     
-    let latest_version_dir = $version_dirs | last
-    $"($latest_version_dir)/session_info"
+    null
 }
 
-def get-cwd-for-session [session_name: string] {
-    let session_info_dir = (get-session-info-dir)
+def get-session-details [session_name: string] {
+    let session_info_dir = (get-session-info-dir $session_name)
     if $session_info_dir == null {
-        return "unknown"
+        return { cwd: "unknown", tabs: 0, commands: [], branch: "" }
     }
     
     let layout_file = $"($session_info_dir)/($session_name)/session-layout.kdl"
     
     if ($layout_file | path exists) {
         let content = (open $layout_file --raw)
-        let cwd_match = ($content | parse --regex 'cwd "([^"]+)"' | get -o capture0 | first | default "unknown")
-        $cwd_match | str replace $env.HOME "~"
+        
+        # Get cwd (keep raw for git check)
+        let cwd_raw = ($content | parse --regex 'cwd "([^"]+)"' | get -o capture0 | first | default "")
+        let cwd = if $cwd_raw == "" { "unknown" } else { $cwd_raw | str replace $env.HOME "~" }
+        
+        # Count tabs
+        let tabs = ($content | split row "tab name=" | length) - 1
+        
+        # Get running commands (exclude shells, extract basename from full paths)
+        let commands = ($content 
+            | parse --regex 'pane command="([^"]+)"' 
+            | get -o capture0 
+            | each { |cmd| $cmd | path basename }
+            | uniq 
+            | where { |cmd| $cmd not-in ["nu", "bash", "zsh", "fish", "sh"] }
+        )
+        
+        # Get git branch
+        let branch = if $cwd_raw != "" and ($cwd_raw | path exists) {
+            let result = (do { ^git -C $cwd_raw rev-parse --abbrev-ref HEAD } | complete)
+            if $result.exit_code == 0 { $result.stdout | str trim } else { "" }
+        } else { "" }
+        
+        { cwd: $cwd, tabs: $tabs, commands: $commands, branch: $branch }
     } else {
-        "unknown"
+        { cwd: "unknown", tabs: 0, commands: [], branch: "" }
     }
 }
 
@@ -62,13 +88,20 @@ def get-zellij-sessions [] {
             "active"
         }
         
-        let cwd = (get-cwd-for-session $session_name)
+        let details = (get-session-details $session_name)
+        
+        # Build display: cwd (branch) │ commands │ tabs
+        let cwd_branch = if $details.branch != "" { $"($details.cwd) \(($details.branch)\)" } else { $details.cwd }
+        let cmd_str = if ($details.commands | is-empty) { "" } else { $details.commands | str join " " }
+        let tab_str = if $details.tabs > 1 { $"($details.tabs) tabs" } else { "" }
+        let info_parts = ([$cmd_str, $tab_str] | where { |p| $p != "" } | str join " │ ")
+        let info = if $info_parts != "" { $" │ ($info_parts)" } else { "" }
         
         {
             name: $session_name
-            cwd: $cwd
+            cwd: $details.cwd
             status: $status
-            display: $"($session_name) │ ($cwd)"
+            display: $"($cwd_branch)($info)"
         }
     }
 }
@@ -109,6 +142,7 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
         return null
     }
     
+    # Build display lines with hidden session name prefix for extraction
     let display_lines = ($sessions | each { |s|
         let status_icon = match $s.status {
             "exited" => "󰆍"
@@ -116,7 +150,8 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
             "active" => ""
             _ => " "
         }
-        $"($status_icon) ($s.display)"
+        # Format: "icon session_name │ display"
+        $"($status_icon) ($s.name) │ ($s.display)"
     })
     
     let tmp_out = (mktemp -t grave_out.XXXXXX)
@@ -145,6 +180,7 @@ def run-picker [--no-border (-n) --exclude-current (-e)] {
         return null
     }
     
+    # Extract session name (first part after icon, before first │)
     let session_name = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
     $session_name
 }
