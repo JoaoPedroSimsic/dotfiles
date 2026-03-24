@@ -1,0 +1,32 @@
+-- dotfiles/.config/nvim/lua/config/theme.lua.template
+vim.cmd("hi clear")
+if vim.fn.exists("syntax_on") then
+  vim.cmd("syntax reset")
+end
+vim.g.colors_name = "dynamic_theme"
+
+-- 1. Standard UI and Editor
+vim.api.nvim_set_hl(0, "Normal", { fg = "#{{BASE}}", bg = "#{{BLACK}}" })
+vim.api.nvim_set_hl(0, "NormalFloat", { fg = "#{{BASE}}", bg = "#{{BLACK}}" }) -- Floating windows
+vim.api.nvim_set_hl(0, "LineNr", { fg = "#{{DIM}}" })
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#{{DIM}}" }) -- Or a very dark gray/surface color
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#{{BRIGHT}}", bold = true })
+vim.api.nvim_set_hl(0, "SignColumn", { bg = "#{{BLACK}}" })
+vim.api.nvim_set_hl(0, "Comment", { fg = "#{{DIM}}" })
+
+-- 2. Standard Syntax & Treesitter
+vim.api.nvim_set_hl(0, "@variable", { fg = "#{{BASE}}" })
+vim.api.nvim_set_hl(0, "@function", { fg = "#{{BRIGHT}}" })
+vim.api.nvim_set_hl(0, "@keyword", { fg = "#{{BRIGHT}}", bold = true })
+vim.api.nvim_set_hl(0, "@string", { fg = "#{{BASE}}" })
+vim.api.nvim_set_hl(0, "@number", { fg = "#{{BRIGHT}}" })
+vim.api.nvim_set_hl(0, "@operator", { fg = "#{{DIM}}" })
+vim.api.nvim_set_hl(0, "@type", { fg = "#{{BRIGHT}}" })
+vim.api.nvim_set_hl(0, "@property", { fg = "#{{BASE}}" })
+vim.api.nvim_set_hl(0, "@punctuation", { fg = "#{{DIM}}" })
+vim.api.nvim_set_hl(0, "@constructor", { fg = "#{{BRIGHT}}" })
+
+-- 3. Plugins
+vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = "#{{DIM}}" })
+vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = "#{{DIM}}" })
+vim.api.nvim_set_hl(0, "NvimTreeNormal", { fg = "#{{BASE}}", bg = "#{{BLACK}}" })

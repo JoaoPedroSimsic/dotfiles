@@ -190,4 +190,31 @@ sed \
     -e "s/{{BLACK}}/$BLACK/g" \
     "$DOTFILES/.config/nushell/scripts/grave.nu.template" > "$DOTFILES/.config/nushell/scripts/grave.nu"
 
+# ── 11. Generate .config/nvim/lua/config/theme.lua from template ─────────────
+
+NVIM_LUA_DIR="$DOTFILES/.config/nvim/lua/config"
+NVIM_TEMPLATE="$NVIM_LUA_DIR/theme.lua.template"
+NVIM_CONFIG="$NVIM_LUA_DIR/theme.lua"
+
+mkdir -p "$NVIM_LUA_DIR"
+
+if [ -f "$NVIM_TEMPLATE" ]; then
+    sed -e "s/{{BASE}}/$BASE/g" \
+        -e "s/{{BRIGHT}}/$BRIGHT/g" \
+        -e "s/{{DIM}}/$DIM/g" \
+        -e "s/{{BG}}/$BG/g" \
+        -e "s/{{BLACK}}/$BLACK/g" \
+        "$NVIM_TEMPLATE" > "$NVIM_CONFIG"
+    
+    # Attempt to reload the theme in all running Neovim instances
+    if command -v nvim >/dev/null 2>&1; then
+        # Use globbing instead of ls (fixes shellcheck SC2045)
+        for server in "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"/nvim.*.0; do
+            # Ensure the file exists (in case the glob doesn't match anything)
+            [ -e "$server" ] || continue
+            nvim --server "$server" --remote-send '<Esc>:lua package.loaded["config.theme"] = nil<CR>:require("config.theme")<CR>' &>/dev/null
+        done
+    fi
+fi
+
 echo "Done. Color files generated."
