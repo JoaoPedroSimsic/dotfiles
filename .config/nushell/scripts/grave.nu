@@ -165,11 +165,46 @@ export def main [--switch (-s)] {
 }
 
 export def "grave switch" [] {
+    let pid_file = "/tmp/grave-pid"
+    
+    # Check if already open - kill the previous fzf process
+    if ($pid_file | path exists) {
+        let pid = (open $pid_file | str trim)
+        if $pid != "" {
+            try { ^kill $pid }
+        }
+        rm -f $pid_file
+        exit
+    }
+    
+    # Save our PID (fzf will be a child process)
+    $nu.pid | into string | save -f $pid_file
+    
     let session_name = (run-picker --no-border --exclude-current)
+    
+    # Clean up
+    rm -f $pid_file
+    
     if $session_name != null and $session_name != "" {
         fix-nix-paths $session_name
         sleep 50ms
-        ^zellij attach $session_name
+        ^zellij action switch-session $session_name
+    }
+}
+
+# Toggle the grave pane - checks if Grave exists and toggles accordingly
+export def "grave toggle" [] {
+    let layout = (zellij action dump-layout)
+    
+    # Look for a pane with name="Grave" and extract its id
+    let grave_match = ($layout | parse --regex 'pane.*id=(\d+).*name="Grave"' | get -o capture0 | first)
+    
+    if $grave_match != null {
+        # Grave pane exists, close it by ID
+        zellij action close-pane --pane-id $grave_match
+    } else {
+        # No Grave pane, create one
+        zellij run --floating --close-on-exit --name "Grave" -- nu -c "use ~/.config/nushell/scripts/grave.nu *; grave switch"
     }
 }
 
