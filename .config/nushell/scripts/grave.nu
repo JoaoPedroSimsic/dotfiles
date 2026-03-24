@@ -6,24 +6,30 @@ def fix-nix-paths [session_name: string] {
         return
     }
     
-    let layout_file = $"($session_info_dir)/($session_name)/session-layout.kdl"
+    let session_dir = $"($session_info_dir)/($session_name)"
+    let files = [$"($session_dir)/session-layout.kdl" $"($session_dir)/session-metadata.kdl"]
     
-    if ($layout_file | path exists) {
-        let content = (open $layout_file --raw)
-        if ($content | str contains "/nix/store/") {
-            ^sed -i 's|command "/nix/store/[^"]*/bin/nvim"|command="nvim"|g' $layout_file
-            ^sed -i '/args "--cmd" "lua dofile/d' $layout_file
-            ^sed -i 's|/nix/store/[^/]*/bin/||g' $layout_file
+    for file in $files {
+        if ($file | path exists) {
+            let content = (open $file --raw)
+            if ($content | str contains "/nix/store/") {
+                ^sed -i 's|command "/nix/store/[^"]*/bin/nvim"|command="nvim"|g' $file
+                ^sed -i '/args "--cmd" "lua dofile/d' $file
+                ^sed -i 's|/nix/store/[^/]*/bin/||g' $file
+            }
         }
     }
 }
 
 def get-session-info-dir [session_name: string] {
-    let session_dir = $"($env.HOME)/.cache/zellij"
+    let base_dir = $"($env.HOME)/.cache/zellij"
     
-    # Search all version directories for the session
-    let version_dirs = (ls $session_dir | where type == dir | get name)
+    let contract_path = $"($base_dir)/contract_version_1/session_info/($session_name)"
+    if ($contract_path | path exists) {
+        return $"($base_dir)/contract_version_1/session_info"
+    }
     
+    let version_dirs = (ls $base_dir | where type == dir | get name)
     for dir in $version_dirs {
         let session_path = $"($dir)/session_info/($session_name)"
         if ($session_path | path exists) {
@@ -40,19 +46,41 @@ def get-session-details [session_name: string] {
         return { cwd: "unknown", tabs: 0, commands: [], branch: "" }
     }
     
-    let layout_file = $"($session_info_dir)/($session_name)/session-layout.kdl"
+    let session_dir = $"($session_info_dir)/($session_name)"
+    let metadata_file = $"($session_dir)/session-metadata.kdl"
+    let layout_file = $"($session_dir)/session-layout.kdl"
     
-    if ($layout_file | path exists) {
+    if ($metadata_file | path exists) {
+        let content = (open $metadata_file --raw)
+        
+        let titles = ($content | parse --regex 'title "([^"]+)"' | get -o capture0)
+        let cwd_raw = ($titles | where { |t| ($t | str starts-with "/") or ($t | str starts-with "~") } | first | default "")
+        let cwd = if $cwd_raw == "" { "unknown" } else { $cwd_raw | str replace $env.HOME "~" }
+        
+        let tabs = ($content | parse --regex 'tab \{' | length)
+        
+        let commands = ($titles 
+            | where { |t| not (($t | str starts-with "/") or ($t | str starts-with "~") or ($t | str contains "://")) }
+            | each { |cmd| $cmd | split row " " | first | path basename }
+            | uniq 
+            | where { |cmd| $cmd not-in ["nu", "bash", "zsh", "fish", "sh", ""] }
+        )
+        
+        let cwd_expanded = ($cwd_raw | str replace "~" $env.HOME)
+        let branch = if $cwd_expanded != "" and ($cwd_expanded | path exists) {
+            let result = (do { ^git -C $cwd_expanded rev-parse --abbrev-ref HEAD } | complete)
+            if $result.exit_code == 0 { $result.stdout | str trim } else { "" }
+        } else { "" }
+        
+        { cwd: $cwd, tabs: $tabs, commands: $commands, branch: $branch }
+    } else if ($layout_file | path exists) {
         let content = (open $layout_file --raw)
         
-        # Get cwd (keep raw for git check)
         let cwd_raw = ($content | parse --regex 'cwd "([^"]+)"' | get -o capture0 | first | default "")
         let cwd = if $cwd_raw == "" { "unknown" } else { $cwd_raw | str replace $env.HOME "~" }
         
-        # Count tabs
         let tabs = ($content | split row "tab name=" | length) - 1
         
-        # Get running commands (exclude shells, extract basename from full paths)
         let commands = ($content 
             | parse --regex 'pane command="([^"]+)"' 
             | get -o capture0 
@@ -61,7 +89,6 @@ def get-session-details [session_name: string] {
             | where { |cmd| $cmd not-in ["nu", "bash", "zsh", "fish", "sh"] }
         )
         
-        # Get git branch
         let branch = if $cwd_raw != "" and ($cwd_raw | path exists) {
             let result = (do { ^git -C $cwd_raw rev-parse --abbrev-ref HEAD } | complete)
             if $result.exit_code == 0 { $result.stdout | str trim } else { "" }
@@ -74,23 +101,26 @@ def get-session-details [session_name: string] {
 }
 
 def get-zellij-sessions [] {
-    let output = (zellij list-sessions --no-formatting | lines)
+    let result = (do { zellij list-sessions --no-formatting } | complete)
+    if $result.exit_code != 0 {
+        return []
+    }
+    let output = ($result.stdout | lines)
     
     $output | each { |line|
         let parts = ($line | split row " ")
         let session_name = ($parts | first)
         
-        let status = if ($line | str contains "EXITED") {
-            "exited"
-        } else if ($line | str contains "current") {
+        let status = if ($line | str contains "current") {
             "current"
+        } else if ($line | str contains "EXITED") {
+            "exited"
         } else {
-            "active"
+            "detached"
         }
         
         let details = (get-session-details $session_name)
         
-        # Build display: cwd (branch) │ commands │ tabs
         let cwd_branch = if $details.branch != "" { $"($details.cwd) \(($details.branch)\)" } else { $details.cwd }
         let cmd_str = if ($details.commands | is-empty) { "" } else { $details.commands | str join " " }
         let tab_str = if $details.tabs > 1 { $"($details.tabs) tabs" } else { "" }
@@ -114,7 +144,11 @@ def cleanup-old-sessions [] {
         let to_delete = ($exited_sessions | skip $MAX_SESSIONS)
         
         for session in $to_delete {
-            zellij delete-session $session.name --force
+            try { zellij delete-session $session.name --force }
+            let session_info = (get-session-info-dir $session.name)
+            if $session_info != null {
+                try { rm -r -f $"($session_info)/($session.name)" }
+            }
         }
     }
 }
@@ -126,7 +160,7 @@ def run-picker [--exclude-current (-e) --fullscreen (-f)] {
 
     print --stderr -n "\e[2 q"
     let output = try {
-        ^nu --no-config-file -c $"use ~/.config/nushell/scripts/grave.nu *; grave fzf-inner --margin '($margin)' ($exclude_flag)"
+        ^nu --no-config-file -c $"use ~/.config/nushell/scripts/grave.nu *; fzf-inner --margin '($margin)' ($exclude_flag)"
     } catch { "" }
     print --stderr -n "\e[0 q"
 
@@ -134,7 +168,7 @@ def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     if $output == "" { null } else { $output }
 }
 
-export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --edit] {
+export def fzf-inner [--margin: string = "15%,15%" --exclude-current --edit] {
     let sessions = (get-zellij-sessions)
     let filtered = if $exclude_current {
         $sessions | where status != "current"
@@ -143,20 +177,24 @@ export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --e
     }
     
     if ($filtered | is-empty) {
+        "No sessions" | ^fzf --disabled --layout=reverse --border=sharp --border-label=" Grave " $"--margin=($margin)" --no-info --pointer="" --color="bg:-1,bg+:-1,fg:#ff6600,fg+:#ff6600,label:#ff6600,border:#ff6600,hl:#ff6600,hl+:#ff6600,gutter:-1" --bind="enter:abort,esc:abort"
         return
     }
     
     let lines_cmd = if $exclude_current {
-        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display --exclude-current\""
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display --exclude-current\""
     } else {
-        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display\""
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display\""
     }
     
     let exclude_flag = if $exclude_current { "--exclude-current" } else { "" }
     let toggle_edit = if $edit { "" } else { "--edit" }
-    let become_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave fzf-inner --margin '($margin)' ($exclude_flag) ($toggle_edit)\""
-    let delete_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave delete-session {2}\"; " + $become_cmd
     
+    let become_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; fzf-inner --margin '($margin)' ($exclude_flag) ($toggle_edit)\""
+    
+    let delete_action = "execute(nu -c 'use ~/.config/nushell/scripts/grave.nu *; delete-session \"{1}\"')"
+    let reload_action = "reload(" + $lines_cmd + ")" 
+
     let colors = if $edit {
         "label:#ff9c59,border:#ff9c59,prompt:#ff9c59,fg+:#0a0400,bg+:#ff9c59,hl:#ff6600,hl+:#ffffff,separator:#ff9c59"
     } else {
@@ -166,20 +204,14 @@ export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --e
     let label = if $edit { " EDIT " } else { " Grave " }
     let header = if $edit { "  Tab: normal │ d: delete │ Esc: close" } else { "  Tab: edit mode │ Enter: switch │ Esc: close" }
     
-    let mode_binds = if $edit {
-        $"--disabled '--bind=j:down,k:up,h:first,l:last,d:become(($delete_cmd)),tab:become(($become_cmd))'"
+    let bind_arg = if $edit {
+        "--bind=j:down,k:up,h:first,l:last,d:" + $delete_action + "+" + $reload_action + ",tab:become(" + $become_cmd + ")"
     } else {
-        $"'--bind=tab:become(($become_cmd))'"
+        "--bind=tab:become(" + $become_cmd + ")"
     }
     
     let lines = ($filtered | each { |s|
-        let status_icon = match $s.status {
-            "exited" => "󰆍"
-            "current" => ""
-            "active" => ""
-            _ => " "
-        }
-        $"($status_icon) ($s.name) │ ($s.display)"
+        $"($s.name) │ ($s.display)"
     } | str join "\n")
     
     let fzf_args = [
@@ -188,12 +220,6 @@ export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --e
         "--highlight-line" $"--color=($colors)" $"--header=($header)" 
         "--delimiter=│" $"--margin=($margin)" "--with-nth=1.."
     ]
-    
-    let bind_arg = if $edit {
-        "--bind=j:down,k:up,h:first,l:last,d:become(" + $delete_cmd + "),tab:become(" + $become_cmd + ")"
-    } else {
-        "--bind=tab:become(" + $become_cmd + ")"
-    }
     
     let result = try {
         if $edit {
@@ -208,8 +234,18 @@ export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --e
     }
 }
 
-export def "grave delete-session" [name: string] {
+export def delete-session [fzf_input: string] {
+    let name = ($fzf_input | str replace -r '^[dxs*] ' '' | str trim)
+    
+    try { zellij kill-session $name }
     try { zellij delete-session $name --force }
+    
+    let session_info = (get-session-info-dir $name)
+    if $session_info != null {
+        try { rm -r -f $"($session_info)/($name)" }
+    }
+    
+    sleep 150ms
 }
 
 export def main [--switch (-s)] {
@@ -249,15 +285,12 @@ export def switch [] {
 
 export def toggle [] {
     let layout = (zellij action dump-layout)
-    # Look for a pane with name="Grave" and extract its id
     let grave_match = ($layout | parse --regex 'pane.*id=(\d+).*name="Grave"' | get -o capture0 | first)
 
     if $grave_match != null {
-        # Grave pane exists, close it by ID
         zellij action close-pane --pane-id $grave_match
     } else {
-        # No Grave pane, create one
-        zellij run --floating --close-on-exit --name "Grave" -- nu --no-config-file -c "use ~/.config/nushell/scripts/grave.nu *; grave switch"
+      zellij run --floating --close-on-exit --name "Grave" -- nu --no-config-file -c "use ~/.config/nushell/scripts/grave.nu *; switch"
     }
 }
 
@@ -268,18 +301,49 @@ export def clean [--keep (-k): int = 10] {
     if ($exited_sessions | length) <= $keep {
         let count = ($exited_sessions | length)
         print $"Only ($count) exited sessions, nothing to clean."
+        print "Note: Detached sessions are not deleted (may be attached elsewhere)."
+        print "Use 'grave kill' to delete all detached sessions."
         return
     }
     
     let to_delete = ($exited_sessions | skip $keep)
     
     for session in $to_delete {
-        zellij delete-session $session.name --force
+        try { zellij delete-session $session.name --force }
+        let session_info = (get-session-info-dir $session.name)
+        if $session_info != null {
+            try { rm -r -f $"($session_info)/($session.name)" }
+        }
         print $"Deleted: ($session.name)"
     }
     
     let deleted_count = ($to_delete | length)
-    print $"Cleaned up ($deleted_count) sessions, kept ($keep) most recent."
+    print $"Cleaned up ($deleted_count) exited sessions, kept ($keep) most recent."
+}
+
+export def kill [--keep (-k): int = 0] {
+    let sessions = (get-zellij-sessions)
+    let deletable = ($sessions | where status in ["detached", "exited"])
+    
+    if ($deletable | length) <= $keep {
+        let count = ($deletable | length)
+        print $"Only ($count) detached/exited sessions, nothing to kill."
+        return
+    }
+    
+    let to_delete = ($deletable | skip $keep)
+    
+    for session in $to_delete {
+        try { zellij delete-session $session.name --force }
+        let session_info = (get-session-info-dir $session.name)
+        if $session_info != null {
+            try { rm -r -f $"($session_info)/($session.name)" }
+        }
+        print $"Killed: ($session.name)"
+    }
+    
+    let deleted_count = ($to_delete | length)
+    print $"Killed ($deleted_count) sessions, kept ($keep)."
 }
 
 export def list [] {
@@ -294,13 +358,12 @@ export def list-display [--exclude-current (-e)] {
         $all_sessions
     }
     
+    if ($sessions | is-empty) {
+        print "No sessions"
+        return
+    }
+    
     $sessions | each { |s|
-        let status_icon = match $s.status {
-            "exited" => "󰆍"
-            "current" => ""
-            "active" => ""
-            _ => " "
-        }
-        $"($status_icon) ($s.name) │ ($s.display)"
+        $"($s.name) │ ($s.display)"
     } | str join "\n"
 }
