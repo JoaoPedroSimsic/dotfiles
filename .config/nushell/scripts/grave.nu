@@ -154,11 +154,19 @@ def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     
     print --stderr -n "\e[2 q"
 
-    let fzf_args = if $fullscreen {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
-    } else {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--margin=15%,15%" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"]
-    }
+    # Colors for normal and edit modes
+    let normal_colors = "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
+    let edit_colors = "label:#ff9c59,border:#ff9c59,prompt:#ff9c59,fg+:#0a0400,bg+:#ff9c59,hl:#ff6600,hl+:#ffffff,separator:#ff9c59"
+    
+    # Bindings: Tab toggles mode, d deletes in edit mode
+    let bindings = $"tab:transform:[[ \\$FZF_BORDER_LABEL =~ EDIT ]] && echo 'change-border-label( Grave )+change-color(($normal_colors))+rebind(change,enter)' || echo 'change-border-label( EDIT )+change-color(($edit_colors))+unbind(change,enter)',d:transform:[[ \\$FZF_BORDER_LABEL =~ EDIT ]] && echo 'execute-silent(zellij delete-session {2} --force)+reload(nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display --exclude-current\")'"
+    
+    let margin_arg = if $fullscreen { "" } else { "--margin=15%,15%" }
+    
+    let fzf_args = ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" $"--color=($normal_colors)" "--bind" $bindings "--delimiter=│" $margin_arg]
+    
+    # Filter out empty args
+    let fzf_args = ($fzf_args | where { |a| $a != "" })
 
     try {
         $display_lines 
@@ -255,4 +263,23 @@ export def "grave clean" [--keep (-k): int = 10] {
 
 export def "grave list" [] {
     get-zellij-sessions
+}
+
+export def "grave list-display" [--exclude-current (-e)] {
+    let all_sessions = (get-zellij-sessions)
+    let sessions = if $exclude_current {
+        $all_sessions | where status != "current"
+    } else {
+        $all_sessions
+    }
+    
+    $sessions | each { |s|
+        let status_icon = match $s.status {
+            "exited" => "󰆍"
+            "current" => ""
+            "active" => ""
+            _ => " "
+        }
+        $"($status_icon) ($s.name) │ ($s.display)"
+    } | str join "\n"
 }

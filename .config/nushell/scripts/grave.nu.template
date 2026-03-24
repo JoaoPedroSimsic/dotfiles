@@ -154,27 +154,68 @@ def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     
     print --stderr -n "\e[2 q"
 
-    let fzf_args = if $fullscreen {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--color=label:#{{BASE}},border:#{{BASE}},prompt:#{{BASE}},fg+:#{{BLACK}},bg+:#{{BASE}},hl:#{{BRIGHT}},hl+:#ffffff,separator:#{{BASE}}"]
-    } else {
-        ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" "--margin=15%,15%" "--color=label:#{{BASE}},border:#{{BASE}},prompt:#{{BASE}},fg+:#{{BLACK}},bg+:#{{BASE}},hl:#{{BRIGHT}},hl+:#ffffff,separator:#{{BASE}}"]
-    }
-
-    try {
-        $display_lines 
-        | str join "\n" 
-        | ^fzf ...$fzf_args
-        | save -f $tmp_out
+    mut edit_mode = false
+    mut result = null
+    
+    loop {
+        let colors = if $edit_mode {
+            "label:#{{BRIGHT}},border:#{{BRIGHT}},prompt:#{{BRIGHT}},fg+:#{{BLACK}},bg+:#{{BRIGHT}},hl:#{{BASE}},hl+:#ffffff,separator:#{{BRIGHT}}"
+        } else {
+            "label:#{{BASE}},border:#{{BASE}},prompt:#{{BASE}},fg+:#{{BLACK}},bg+:#{{BASE}},hl:#{{BRIGHT}},hl+:#ffffff,separator:#{{BASE}}"
+        }
+        
+        let label = if $edit_mode { " EDIT " } else { " Grave " }
+        let header = if $edit_mode { "  Tab: normal │ d: delete │ Esc: close" } else { "  Tab: edit mode │ Enter: switch │ Esc: close" }
+        
+        let margin_arg = if $fullscreen { [] } else { ["--margin=15%,15%"] }
+        
+        # Refresh session list
+        let current_sessions = (get-zellij-sessions)
+        let filtered = if $exclude_current {
+            $current_sessions | where status != "current"
+        } else {
+            $current_sessions
+        }
+        
+        let lines = ($filtered | each { |s|
+            let status_icon = match $s.status {
+                "exited" => "󰆍"
+                "current" => ""
+                "active" => ""
+                _ => " "
+            }
+            $"($status_icon) ($s.name) │ ($s.display)"
+        })
+        
+        let fzf_args = ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" $"--border-label=($label)" "--prompt= " "--pointer=" "--highlight-line" $"--color=($colors)" "--expect=tab,d" $"--header=($header)" "--delimiter=│" ...$margin_arg]
+        
+        let output = ($lines | str join "\n" | ^fzf ...$fzf_args | lines)
+        
+        if ($output | is-empty) {
+            break
+        }
+        
+        let key = ($output | first | str trim)
+        let selected = if ($output | length) > 1 { $output | get 1 | str trim } else { "" }
+        
+        if $key == "tab" {
+            $edit_mode = not $edit_mode
+            continue
+        } else if $key == "d" and $edit_mode and $selected != "" {
+            let session_name = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
+            try { zellij delete-session $session_name --force }
+            continue
+        } else if $selected != "" {
+            $result = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
+            break
+        } else {
+            break
+        }
     }
 
     print --stderr -n "\e[0 q"
-
-    let selected = (open $tmp_out | str trim)
-    rm -f $tmp_out
-
-    if ($selected | is-empty) {
-        return null
-    }
+    $result
+}
     
     # Extract session name (first part after icon, before first │)
     let session_name = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
@@ -255,4 +296,23 @@ export def "grave clean" [--keep (-k): int = 10] {
 
 export def "grave list" [] {
     get-zellij-sessions
+}
+
+export def "grave list-display" [--exclude-current (-e)] {
+    let all_sessions = (get-zellij-sessions)
+    let sessions = if $exclude_current {
+        $all_sessions | where status != "current"
+    } else {
+        $all_sessions
+    }
+    
+    $sessions | each { |s|
+        let status_icon = match $s.status {
+            "exited" => "󰆍"
+            "current" => ""
+            "active" => ""
+            _ => " "
+        }
+        $"($status_icon) ($s.name) │ ($s.display)"
+    } | str join "\n"
 }

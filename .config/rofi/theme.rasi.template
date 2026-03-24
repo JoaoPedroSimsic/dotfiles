@@ -13,7 +13,8 @@ window {
     background-color: transparent;
     border:           0px;
     border-radius:    0px;
-    width:            400px;
+    width:            500px;
+    height:            500px;
     padding:          0px;
 }
 

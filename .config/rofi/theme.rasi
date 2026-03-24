@@ -13,7 +13,8 @@ window {
     background-color: transparent;
     border:           0px;
     border-radius:    0px;
-    width:            400px;
+    width:            500px;
+    height:           500px;
     padding:          0px;
 }
 
@@ -82,6 +83,7 @@ element normal.normal {
 }
 
 element-text {
+    font:             "JetBrainsMono Nerd Font 13";
     background-color: transparent;
     text-color:       inherit;
     highlight:        none;
@@ -89,6 +91,6 @@ element-text {
 
 element-icon {
     background-color: transparent;
-    size:             16px;
+    size:             20px;
     margin:           0px 8px 0px 0px;
 }
