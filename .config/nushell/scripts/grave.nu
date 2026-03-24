@@ -177,19 +177,20 @@ export def fzf-inner [--margin: string = "15%,15%" --exclude-current] {
     }
     
     if ($filtered | is-empty) {
-        "No sessions" | ^fzf --disabled --layout=reverse --border=sharp --border-label=" Grave " $"--margin=($margin)" --no-info --pointer="" --color="bg:-1,bg+:-1,fg:#ff6600,fg+:#ff6600,label:#ff6600,border:#ff6600,hl:#ff6600,hl+:#ff6600,gutter:-1" --bind="enter:abort,esc:abort"
+        let colors = "label:#ff6600,border:#ff6600,fg:#ff6600,fg+:#ff6600,bg:-1,bg+:-1,gutter:-1,pointer:-1,header:#ff6600"
+        "No sessions" | ^fzf --disabled --layout=reverse --border=sharp --border-label=" Grave " $"--margin=($margin)" --no-info --pointer="" $"--color=($colors)" --header="  Esc: close" --bind="enter:abort,esc:abort"
         return
     }
     
     let lines_cmd = if $exclude_current {
-        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display --exclude-current\""
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display-or-empty --exclude-current\""
     } else {
-        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display\""
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; list-display-or-empty\""
     }
     
     let delete_cmd = "execute-silent(nu -c 'use ~/.config/nushell/scripts/grave.nu *; delete-session \"{1}\"')+reload-sync(" + $lines_cmd + ")"
     
-    let colors = "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
+    let colors = "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600,pointer:#ff6600"
     
     let lines = ($filtered | each { |s|
         $"($s.name) │ ($s.display)"
@@ -198,8 +199,8 @@ export def fzf-inner [--margin: string = "15%,15%" --exclude-current] {
     let fzf_args = [
         "--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" 
         "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" 
-        "--highlight-line" $"--color=($colors)" "--header=  Enter: switch │ ctrl-d: delete │ Esc: close" 
-        "--delimiter=│" $"--margin=($margin)" "--with-nth=1.."
+        "--highlight-line" $"--color=($colors)" "--header=  Enter: switch │ ctrl-d: delete │ Esc: close"
+        "--header-border=line" "--delimiter=│" $"--margin=($margin)" "--with-nth=1.."
         "--bind=j:down,k:up,h:first,l:last"
         $"--bind=ctrl-d:($delete_cmd)"
     ]
@@ -338,11 +339,27 @@ export def list-display [--exclude-current (-e)] {
     }
     
     if ($sessions | is-empty) {
-        print "No sessions"
-        return
+        ""
+    } else {
+        $sessions | each { |s|
+            $"($s.name) │ ($s.display)"
+        } | str join "\n"
+    }
+}
+
+export def list-display-or-empty [--exclude-current (-e)] {
+    let all_sessions = (get-zellij-sessions)
+    let sessions = if $exclude_current {
+        $all_sessions | where status != "current"
+    } else {
+        $all_sessions
     }
     
-    $sessions | each { |s|
-        $"($s.name) │ ($s.display)"
-    } | str join "\n"
+    if ($sessions | is-empty) {
+        "No sessions"
+    } else {
+        $sessions | each { |s|
+            $"($s.name) │ ($s.display)"
+        } | str join "\n"
+    }
 }
