@@ -1,4 +1,4 @@
-use ~/.config/nushell/scripts/grave.nu *
+use ~/.config/nushell/scripts/grave.nu
 
 $env.config = {
     show_banner: false

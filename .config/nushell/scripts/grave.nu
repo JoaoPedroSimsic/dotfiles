@@ -121,72 +121,95 @@ def cleanup-old-sessions [] {
 
 def run-picker [--exclude-current (-e) --fullscreen (-f)] {
     cleanup-old-sessions
-    
-    let all_sessions = (get-zellij-sessions)
-    let sessions = if $exclude_current {
-        $all_sessions | where status != "current"
+    let margin = if $fullscreen { "0%,0%" } else { "15%,15%" }
+    let exclude_flag = if $exclude_current { "--exclude-current" } else { "" }
+
+    print --stderr -n "\e[2 q"
+    let output = try {
+        ^nu --no-config-file -c $"use ~/.config/nushell/scripts/grave.nu *; grave fzf-inner --margin '($margin)' ($exclude_flag)"
+    } catch { "" }
+    print --stderr -n "\e[0 q"
+
+    let output = ($output | str trim)
+    if $output == "" { null } else { $output }
+}
+
+export def "grave fzf-inner" [--margin: string = "15%,15%" --exclude-current --edit] {
+    let sessions = (get-zellij-sessions)
+    let filtered = if $exclude_current {
+        $sessions | where status != "current"
     } else {
-        $all_sessions
+        $sessions
     }
     
-    if ($sessions | is-empty) {
-        print ""
-        let empty_args = ["--ansi" "--reverse" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--color=label:#ff6600,border:#ff6600,prompt:#ff6600,pointer:#ff6600" "--disabled" "--header=  Press ESC to exit"]
-        try {
-            "  No other sessions available" | ^fzf ...$empty_args | ignore
-        }
-        return null
+    if ($filtered | is-empty) {
+        return
     }
     
-    # Build display lines with hidden session name prefix for extraction
-    let display_lines = ($sessions | each { |s|
+    let lines_cmd = if $exclude_current {
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display --exclude-current\""
+    } else {
+        "nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display\""
+    }
+    
+    let exclude_flag = if $exclude_current { "--exclude-current" } else { "" }
+    let toggle_edit = if $edit { "" } else { "--edit" }
+    let become_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave fzf-inner --margin '($margin)' ($exclude_flag) ($toggle_edit)\""
+    let delete_cmd = $"nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave delete-session {2}\"; " + $become_cmd
+    
+    let colors = if $edit {
+        "label:#ff9c59,border:#ff9c59,prompt:#ff9c59,fg+:#0a0400,bg+:#ff9c59,hl:#ff6600,hl+:#ffffff,separator:#ff9c59"
+    } else {
+        "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
+    }
+    
+    let label = if $edit { " EDIT " } else { " Grave " }
+    let header = if $edit { "  Tab: normal │ d: delete │ Esc: close" } else { "  Tab: edit mode │ Enter: switch │ Esc: close" }
+    
+    let mode_binds = if $edit {
+        $"--disabled '--bind=j:down,k:up,h:first,l:last,d:become(($delete_cmd)),tab:become(($become_cmd))'"
+    } else {
+        $"'--bind=tab:become(($become_cmd))'"
+    }
+    
+    let lines = ($filtered | each { |s|
         let status_icon = match $s.status {
             "exited" => "󰆍"
             "current" => ""
             "active" => ""
             _ => " "
         }
-        # Format: "icon session_name │ display"
         $"($status_icon) ($s.name) │ ($s.display)"
-    })
+    } | str join "\n")
     
-    let tmp_out = (mktemp -t grave_out.XXXXXX)
+    let fzf_args = [
+        "--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" 
+        "--border=sharp" $"--border-label=($label)" "--prompt= " "--pointer=" 
+        "--highlight-line" $"--color=($colors)" $"--header=($header)" 
+        "--delimiter=│" $"--margin=($margin)" "--with-nth=1.."
+    ]
     
-    print --stderr -n "\e[2 q"
-
-    # Colors for normal and edit modes
-    let normal_colors = "label:#ff6600,border:#ff6600,prompt:#ff6600,fg+:#0a0400,bg+:#ff6600,hl:#ff9c59,hl+:#ffffff,separator:#ff6600"
-    let edit_colors = "label:#ff9c59,border:#ff9c59,prompt:#ff9c59,fg+:#0a0400,bg+:#ff9c59,hl:#ff6600,hl+:#ffffff,separator:#ff9c59"
-    
-    # Bindings: Tab toggles mode, d deletes in edit mode
-    let bindings = $"tab:transform:[[ \\$FZF_BORDER_LABEL =~ EDIT ]] && echo 'change-border-label( Grave )+change-color(($normal_colors))+rebind(change,enter)' || echo 'change-border-label( EDIT )+change-color(($edit_colors))+unbind(change,enter)',d:transform:[[ \\$FZF_BORDER_LABEL =~ EDIT ]] && echo 'execute-silent(zellij delete-session {2} --force)+reload(nu -c \"use ~/.config/nushell/scripts/grave.nu *; grave list-display --exclude-current\")'"
-    
-    let margin_arg = if $fullscreen { "" } else { "--margin=15%,15%" }
-    
-    let fzf_args = ["--ansi" "--layout=reverse" "--info=inline-right" "--separator=─" "--border=sharp" "--border-label= Grave " "--prompt= " "--pointer=" "--highlight-line" $"--color=($normal_colors)" "--bind" $bindings "--delimiter=│" $margin_arg]
-    
-    # Filter out empty args
-    let fzf_args = ($fzf_args | where { |a| $a != "" })
-
-    try {
-        $display_lines 
-        | str join "\n" 
-        | ^fzf ...$fzf_args
-        | save -f $tmp_out
-    }
-
-    print --stderr -n "\e[0 q"
-
-    let selected = (open $tmp_out | str trim)
-    rm -f $tmp_out
-
-    if ($selected | is-empty) {
-        return null
+    let bind_arg = if $edit {
+        "--bind=j:down,k:up,h:first,l:last,d:become(" + $delete_cmd + "),tab:become(" + $become_cmd + ")"
+    } else {
+        "--bind=tab:become(" + $become_cmd + ")"
     }
     
-    # Extract session name (first part after icon, before first │)
-    let session_name = ($selected | split row "│" | first | str trim | split row " " | last | str trim)
-    $session_name
+    let result = try {
+        if $edit {
+            $lines | ^fzf ...$fzf_args "--disabled" $bind_arg
+        } else {
+            $lines | ^fzf ...$fzf_args $bind_arg
+        }
+    } catch { "" } 
+
+    if ($result | str trim) != "" {
+        $result | split row "│" | first | str trim | split row " " | last | str trim
+    }
+}
+
+export def "grave delete-session" [name: string] {
+    try { zellij delete-session $name --force }
 }
 
 export def main [--switch (-s)] {
@@ -204,7 +227,7 @@ export def main [--switch (-s)] {
     }
 }
 
-export def "grave switch" [] {
+export def switch [] {
     let pid_file = "/tmp/grave-pid"
     
     if ($pid_file | path exists) {
@@ -224,23 +247,21 @@ export def "grave switch" [] {
     }
 }
 
-# Toggle the grave pane - checks if Grave exists and toggles accordingly
-export def "grave toggle" [] {
+export def toggle [] {
     let layout = (zellij action dump-layout)
-    
     # Look for a pane with name="Grave" and extract its id
     let grave_match = ($layout | parse --regex 'pane.*id=(\d+).*name="Grave"' | get -o capture0 | first)
-    
+
     if $grave_match != null {
         # Grave pane exists, close it by ID
         zellij action close-pane --pane-id $grave_match
     } else {
         # No Grave pane, create one
-        zellij run --floating --close-on-exit --name "Grave" -- nu -c "use ~/.config/nushell/scripts/grave.nu *; grave switch"
+        zellij run --floating --close-on-exit --name "Grave" -- nu --no-config-file -c "use ~/.config/nushell/scripts/grave.nu *; grave switch"
     }
 }
 
-export def "grave clean" [--keep (-k): int = 10] {
+export def clean [--keep (-k): int = 10] {
     let sessions = (get-zellij-sessions)
     let exited_sessions = ($sessions | where status == "exited")
     
@@ -261,11 +282,11 @@ export def "grave clean" [--keep (-k): int = 10] {
     print $"Cleaned up ($deleted_count) sessions, kept ($keep) most recent."
 }
 
-export def "grave list" [] {
+export def list [] {
     get-zellij-sessions
 }
 
-export def "grave list-display" [--exclude-current (-e)] {
+export def list-display [--exclude-current (-e)] {
     let all_sessions = (get-zellij-sessions)
     let sessions = if $exclude_current {
         $all_sessions | where status != "current"
