@@ -183,6 +183,20 @@ local ai_plugins = {
 					on_new_file_reject = "close_window",
 				},
 			})
+
+			vim.api.nvim_create_autocmd("TermOpen", {
+				group = vim.api.nvim_create_augroup("ClaudeTerminalFix", { clear = true }),
+				pattern = "term://*claude*", 
+				callback = function()
+					local opts = { buffer = true, noremap = true, silent = true }
+
+					vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], opts)
+
+					vim.keymap.set("t", "<C-c>", [[<C-\><C-n>]], opts)
+
+					vim.keymap.set("n", "q", "<cmd>close<cr>", opts)
+				end,
+			})
 		end,
 	},
 }
