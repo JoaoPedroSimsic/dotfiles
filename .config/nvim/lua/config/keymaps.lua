@@ -2,6 +2,9 @@ vim.g.mapleader = " "
 
 local map = vim.keymap.set
 
+map('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Exit Terminal Mode" })
+map('t', '<C-c>', [[<C-\><C-n>]], { noremap = true, silent = true, desc = "Exit Terminal Mode" })
+
 -- Editor: Line movement and manipulation
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '<-2<CR>gv=gv")
