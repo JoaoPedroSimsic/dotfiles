@@ -2,7 +2,7 @@
     bg:       #0a0400;
     fg:       #ff6600;
     accent:   #ff6600;
-    dim:      #471d00;
+    dim:      #732e00;
 
     background-color: transparent;
     text-color:       @fg;
@@ -14,7 +14,7 @@ window {
     border:           0px;
     border-radius:    0px;
     width:            500px;
-    height:           500px;
+    height:            500px;
     padding:          0px;
 }
 
@@ -83,7 +83,6 @@ element normal.normal {
 }
 
 element-text {
-    font:             "JetBrainsMono Nerd Font 13";
     background-color: transparent;
     text-color:       inherit;
     highlight:        none;
@@ -91,6 +90,6 @@ element-text {
 
 element-icon {
     background-color: transparent;
-    size:             20px;
+    size:             16px;
     margin:           0px 8px 0px 0px;
 }
