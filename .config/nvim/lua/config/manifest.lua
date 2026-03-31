@@ -1,8 +1,7 @@
 local M = {}
 
 M.tools = {
-
-	ai = "cursor",
+	ai = "aider",
 
 	servers = {
 		"lua_ls",
