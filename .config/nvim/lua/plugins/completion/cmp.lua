@@ -6,6 +6,7 @@ return {
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		"saadparwaiz1/cmp_luasnip",
+		"f3fora/cmp-spell",
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -54,6 +55,15 @@ return {
 			}, {
 				{ name = "buffer" },
 				{ name = "path" },
+				{
+					name = "spell",
+					option = {
+						keep_all_entries = false,
+						enable_in_context = function()
+							return true
+						end,
+					},
+				},
 			}),
 		})
 	end,

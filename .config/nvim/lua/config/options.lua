@@ -18,3 +18,6 @@ vim.opt.termguicolors = true
 vim.opt.timeoutlen = 300
 
 vim.opt.updatetime = 250
+
+vim.opt.spell = true
+vim.opt.spelllang = { "en", "pt" }
