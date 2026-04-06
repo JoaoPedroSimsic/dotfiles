@@ -122,30 +122,6 @@ local ai_plugins = {
 			})
 		end,
 	},
-	aider = {
-		"joshuavial/aider.nvim",
-		cmd = { "AiderOpen", "AiderAddModifiedFiles" },
-		keys = {
-			{
-				"<leader>gg",
-				function()
-					require("utils.aider").toggle()
-				end,
-				mode = { "n", "t" },
-				desc = "Toggle aider",
-			},
-			{
-				"<leader>gm",
-				"<cmd>AiderAddModifiedFiles<CR>",
-				mode = { "n" },
-				desc = "Add modified files to aider",
-			},
-		},
-		opts = {
-			auto_manage_context = true,
-			default_bindings = false,
-		},
-	},
 	cursor = {
 		"felixcuello/neovim-cursor",
 		keys = {},

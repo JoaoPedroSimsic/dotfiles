@@ -5,7 +5,6 @@ local ai_keymaps = {
 	opencode = "config.keymaps.ai.opencode",
 	copilot = "config.keymaps.ai.copilot",
 	cursor = "config.keymaps.ai.cursor",
-	aider = "config.keymaps.ai.aider",
 }
 
 local keymap_path = ai_keymaps[selected_ai]
