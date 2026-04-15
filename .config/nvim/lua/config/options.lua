@@ -19,5 +19,10 @@ vim.opt.timeoutlen = 300
 
 vim.opt.updatetime = 250
 
-vim.opt.spell = true
 vim.opt.spelllang = { "en", "pt" }
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "markdown", "gitcommit" },
+	callback = function()
+		vim.opt_local.spell = true
+	end,
+})

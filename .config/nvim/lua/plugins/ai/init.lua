@@ -5,6 +5,7 @@ local ai_plugins = {
 	opencode = "plugins.ai.opencode.init",
 	copilot = "plugins.ai.copilot",
 	cursor = "plugins.ai.cursor",
+	claudecode = "plugins.ai.claudecode",
 }
 
 local module_path = ai_plugins[selected_ai]
