@@ -21,6 +21,7 @@ M.tools = {
 		"pyright",
 		"terraformls",
 		"rust_analyzer",
+    "wgsl_analyzer",
 	},
 
 	formatters = {
