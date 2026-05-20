@@ -2,23 +2,25 @@ local manifest = require("config.manifest")
 
 local get_rust_settings = function()
 	return {
-		["rust-analyzer"] = {
-			cachePriming = {
-				enable = false,
-			},
-			numThreads = 2,
-			check = {
-				extraArgs = { "--target-dir", "target/analyzer" },
-			},
-			completion = {
-				autoimport = {
+		settings = {
+			["rust-analyzer"] = {
+				cachePriming = {
 					enable = false,
 				},
-			},
-			cargo = {
-				features = {},
-				extraEnv = {
-					CARGO_BUILD_JOBS = "2",
+				numThreads = 2,
+				check = {
+					extraArgs = { "--target-dir", "target/analyzer" },
+				},
+				completion = {
+					autoimport = {
+						enable = false,
+					},
+				},
+				cargo = {
+					features = {},
+					extraEnv = {
+						CARGO_BUILD_JOBS = "2",
+					},
 				},
 			},
 		},
@@ -36,7 +38,7 @@ return {
 			local server_opts = { capabilities = capabilities }
 
 			if server == "rust_analyzer" then
-				server_opts.settings = get_rust_settings()
+				server_opts = vim.tbl_deep_extend("force", server_opts, get_rust_settings())
 			end
 
 			vim.lsp.config(server, server_opts)
