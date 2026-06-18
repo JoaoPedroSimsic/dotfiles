@@ -1,0 +1,22 @@
+services:
+  dev-env:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev-env
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    container_name: dev-env
+    environment:
+      TERM: xterm-256color
+      EDITOR: nvim
+      SSH_AUTH_SOCK: ${SSH_AUTH_SOCK}
+    volumes:
+      - .:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.ssh:/home/joao/.ssh:ro
+      - ${SSH_AUTH_SOCK:-/dev/null}:${SSH_AUTH_SOCK:-/dev/null}
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    command: tail -f /dev/null

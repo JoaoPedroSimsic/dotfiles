@@ -1,0 +1,101 @@
+FROM archlinux:latest
+
+ENV TERM=xterm-256color \
+    EDITOR=nvim \
+    SHELL=/usr/bin/zsh \
+    LANG=en_US.UTF-8 \
+    TMUX_CONF=/home/joao/.config/tmux/.tmux.conf
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN pacman-key --init && \
+    pacman-key --populate archlinux && \
+    pacman -Syu --noconfirm && \
+    pacman -S --noconfirm --needed \
+        git \
+        openssh \
+        sudo \
+        which \
+        zsh \
+        tmux \
+        neovim \
+        starship \
+        fzf \
+        ripgrep \
+        xclip \
+        fd \
+        diffutils \
+        lazygit \
+        docker \
+        docker-compose \
+        gcc \
+        make \
+        nodejs \
+        npm \
+        python \
+        python-pip \
+        php \
+        composer \
+        php-apache \
+        php-fpm \
+        php-gd \
+        stylua && \
+    pacman -Scc --noconfirm
+
+RUN LAZYDOCKER_VERSION=$(curl -sL https://api.github.com/repos/jesseduffield/lazydocker/releases/latest | grep -oP '"tag_name": "\K[^"]+') && \
+    curl -L "https://github.com/jesseduffield/lazydocker/releases/download/${LAZYDOCKER_VERSION}/lazydocker_${LAZYDOCKER_VERSION#v}_Linux_x86_64.tar.gz" | tar xz -C /tmp && \
+    mv /tmp/lazydocker /usr/local/bin/lazydocker
+
+RUN groupadd -g ${GROUP_ID} joao && \
+    useradd -m -u ${USER_ID} -g joao -s /usr/bin/zsh joao && \
+    echo "joao ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER joao
+WORKDIR /home/joao
+
+RUN git clone https://github.com/joaosimsic/dotfiles.git /home/joao/dotfiles && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
+    git clone https://github.com/jimeh/tmuxifier.git /home/joao/.tmuxifier && \
+    git clone https://github.com/tmux-plugins/tpm.git /home/joao/.tmux/plugins/tpm && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git /home/joao/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+RUN mkdir -p /home/joao/.config /home/joao/.local/bin /home/joao/.config/tmux && \
+    cp /home/joao/dotfiles/.zshrc /home/joao/.zshrc && \
+    cp /home/joao/dotfiles/.config/starship.toml /home/joao/.config/ && \
+    ln -sf /home/joao/dotfiles/.config/nvim /home/joao/.config/nvim && \
+    cp -r /home/joao/dotfiles/.config/lazygit /home/joao/.config/ && \
+    cp -r /home/joao/dotfiles/.config/tmux /home/joao/.config/ && \
+    cp -r /home/joao/dotfiles/.config/composer /home/joao/.config/ && \
+    cp -r /home/joao/dotfiles/scripts /home/joao/.local/bin/ && \
+    cp /home/joao/dotfiles/.tmux.conf /home/joao/.config/tmux/tmux.conf && \
+    ln -sf /home/joao/.config/tmux/.tmux.conf /home/joao/.tmux.conf
+
+RUN /home/joao/.tmux/plugins/tpm/bin/install_plugins || true
+
+RUN sudo npm install -g \
+        typescript \
+        typescript-language-server \
+        prettier \
+        @fsouza/prettierd \
+        eslint \
+        eslint_d \
+        intelephense \
+        blade-formatter \
+        tree-sitter-cli \
+        neovim && \
+    composer global install
+
+RUN nvim --headless "+Lazy! sync" +qa
+
+RUN timeout 300 nvim --headless \
+    -c "lua require('nvim-treesitter.install').install({'php', 'html', 'typescript', 'javascript', 'tsx', 'css', 'lua', 'json', 'markdown', 'markdown_inline'}, { force = false })" \
+    -c "sleep 60" \
+    -c "qa" || true
+
+RUN timeout 300 nvim --headless \
+    -c "MasonInstall typescript-language-server intelephense prettierd eslint_d blade-formatter lua-language-server" \
+    -c "sleep 90" \
+    -c "qa" || true
+
+CMD ["tail", "-f", "/dev/null"]
