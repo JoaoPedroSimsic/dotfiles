@@ -76,6 +76,7 @@ services:
       SHELL: /usr/bin/zsh
       HOME: /home/joao
       ZDOTDIR: /home/joao
+      ZSH_DISABLE_COMPFIX: "true"
       SSH_AUTH_SOCK: \${SSH_AUTH_SOCK:-}
     volumes:
       - $HOST_WORKSPACE_ROOT:$HOST_WORKSPACE_ROOT
