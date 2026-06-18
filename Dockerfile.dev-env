@@ -4,7 +4,8 @@ ENV TERM=xterm-256color \
     EDITOR=nvim \
     SHELL=/usr/bin/zsh \
     LANG=en_US.UTF-8 \
-    TMUX_CONF=/home/joao/.config/tmux/.tmux.conf
+    TMUX_CONF=/home/joao/.config/tmux/.tmux.conf \
+    PATH=/home/joao/.local/bin:${PATH}
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
@@ -14,6 +15,7 @@ RUN pacman-key --init && \
     pacman -Syu --noconfirm && \
     pacman -S --noconfirm --needed \
         git \
+        curl \
         openssh \
         sudo \
         which \
@@ -70,6 +72,9 @@ RUN mkdir -p /home/joao/.config /home/joao/.local/bin /home/joao/.config/tmux &&
     cp -r /home/joao/dotfiles/scripts /home/joao/.local/bin/ && \
     cp /home/joao/dotfiles/.tmux.conf /home/joao/.config/tmux/tmux.conf && \
     ln -sf /home/joao/.config/tmux/.tmux.conf /home/joao/.tmux.conf
+
+RUN curl https://cursor.com/install -fsS | bash && \
+    agent --version
 
 RUN /home/joao/.tmux/plugins/tpm/bin/install_plugins || true
 
