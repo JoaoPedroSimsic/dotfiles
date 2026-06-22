@@ -60,13 +60,17 @@ M.get_tools = function()
 		["golangcilint"] = "golangci-lint",
 		["clang_format"] = "clang-format",
 	}
+	local mason_skip = {
+		-- rustfmt is installed by rustup as a Rust component, not as a Mason package.
+		["rustfmt"] = true,
+	}
 
 	for group_name, group_data in pairs(M.tools) do
 		if type(group_data) == "table" then
 			if group_name == "servers" then
 				for _, item in ipairs(group_data) do
 					local mason_name = mason_name_map[item] or item
-					if not seen[mason_name] then
+					if not mason_skip[item] and not seen[mason_name] then
 						table.insert(all, mason_name)
 						seen[mason_name] = true
 					end
@@ -76,7 +80,7 @@ M.get_tools = function()
 					if type(items) == "table" then
 						for _, item in ipairs(items) do
 							local mason_name = mason_name_map[item] or item
-							if not seen[mason_name] then
+							if not mason_skip[item] and not seen[mason_name] then
 								table.insert(all, mason_name)
 								seen[mason_name] = true
 							end

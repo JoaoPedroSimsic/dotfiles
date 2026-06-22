@@ -6,10 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitfbda81a831155a38766ef6ec8e242fa3
 {
-    public static $files = array (
-        '062a54fe8f6f91078b197f2922521dd9' => __DIR__ . '/..' . '/laravel/pint/overrides/Runner/Parallel/ProcessFactory.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'D' => 
         array (

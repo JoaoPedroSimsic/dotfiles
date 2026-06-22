@@ -3,16 +3,21 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 export EDITOR="nvim"
 export TMUX_CONF="$HOME/.config/tmux/.tmux.conf"
+export LANG="${LANG:-C.UTF-8}"
+export LC_ALL="${LC_ALL:-C.UTF-8}"
 
 typeset -U path
 path=(
   "$HOME/.tmuxifier/bin"
   "$HOME/.config/composer/vendor/bin"
+  "$HOME/.composer/vendor/bin"
   "$HOME/.local/bin/scripts"
+  "$HOME/.fzf/bin"
   "$HOME/.npm-global/bin"
   "$HOME/.local/bin"
   "$HOME/.cargo/bin"
   "$GOBIN"
+  "/usr/local/bin"
   $path 
 )
 export PATH
@@ -25,21 +30,28 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 ssh-add -l > /dev/null || {
+    ssh-add ~/.ssh/server_key 2>/dev/null
     ssh-add ~/.ssh/personal_key 2>/dev/null
     ssh-add ~/.ssh/work_key 2>/dev/null
 }
 
-eval "$(tmuxifier init -)"
+if command -v tmuxifier >/dev/null 2>&1; then
+    eval "$(tmuxifier init -)"
+fi
 
-source $ZSH/oh-my-zsh.sh
-eval "$(starship init zsh)"
+if [ -r "$ZSH/oh-my-zsh.sh" ]; then
+    source "$ZSH/oh-my-zsh.sh"
+fi
+
+if [ "${TERM:-}" != "dumb" ] && command -v starship >/dev/null 2>&1; then
+    eval "$(starship init zsh)"
+fi
 
 alias zs="nvim ~/.zshrc"
 alias rb="reboot"
 alias sd="sudo shutdown now"
-alias hy="nvim ~/.config/hypr/hyprland.conf"
 
-[[ $- == *i* ]] && stty -ixon
+[[ $- == *i* && -t 0 ]] && stty -ixon
 
 bindkey -r '^S'
 bindkey -r -M emacs '^S'
