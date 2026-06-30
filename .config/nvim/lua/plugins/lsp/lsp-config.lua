@@ -27,6 +27,34 @@ local get_rust_settings = function()
 	}
 end
 
+local get_lua_settings = function()
+	return {
+		settings = {
+			Lua = {
+				runtime = {
+					version = "LuaJIT",
+					pathStrict = true,
+				},
+				diagnostics = { enable = true, globals = { "vim" } },
+				workspace = {
+					library = vim.api.nvim_get_runtime_file("", true),
+					checkThirdParty = false,
+				},
+				telemetry = { enable = false },
+				hint = {
+					enable = true,
+					paramName = "All",
+					paramType = true,
+					setType = true,
+					arrayIndex = "Auto",
+					await = true,
+					semicolon = "All",
+				},
+			},
+		},
+	}
+end
+
 return {
 	"neovim/nvim-lspconfig",
 	lazy = false,
@@ -39,6 +67,10 @@ return {
 
 			if server == "rust_analyzer" then
 				server_opts = vim.tbl_deep_extend("force", server_opts, get_rust_settings())
+			end
+
+			if server == "lua_ls" then
+				server_opts = vim.tbl_deep_extend("force", server_opts, get_lua_settings())
 			end
 
 			vim.lsp.config(server, server_opts)
